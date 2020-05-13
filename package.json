@@ -35,5 +35,8 @@
     "react-transition-group": "^4.4.1",
     "react-icons": "^3.10.0",
     "styled-components": "^5.1.0"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.7"
   }
 }

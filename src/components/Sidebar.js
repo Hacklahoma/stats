@@ -60,10 +60,6 @@ const StyledSidebar = styled.div`
     }
 `;
 
-function logout() {
-    Router.push("/login");
-}
-
 function Sidebar() {
     return (
         <StyledSidebar>
@@ -75,13 +71,13 @@ function Sidebar() {
             </Link>
             <div className="tabs">
                 {/* Metrics */}
-                <Tooltip title="Metrics" arrow placement="right">
-                    <Link href="/">
+                <Link href="/">
+                    <Tooltip title="Metrics" arrow placement="right">
                         <Button className="button">
                             <FiPieChart className="icon" />
                         </Button>
-                    </Link>
-                </Tooltip>
+                    </Tooltip>
+                </Link>
                 {/* Finances */}
                 <Tooltip title="Finances" arrow placement="right">
                     <Button disableRipple className="button disabled">
@@ -89,22 +85,22 @@ function Sidebar() {
                     </Button>
                 </Tooltip>
                 {/* Admin panel */}
-                <Tooltip title="Admin panel" arrow placement="right">
-                    <Link href="/admin">
+                <Link href="/admin">
+                    <Tooltip title="Admin panel" arrow placement="right">
                         <Button className="button">
                             <FiEdit2 className="icon" />
                         </Button>
-                    </Link>
-                </Tooltip>
+                    </Tooltip>
+                </Link>
             </div>
             {/* Logout */}
-            <Tooltip title="Log out" arrow placement="right">
-                <Link href="/login">
-                    <Button onClick={() => logout()} className="button">
+            <Link href="/login">
+                <Tooltip title="Log out" arrow placement="right">
+                    <Button className="button">
                         <FiLogOut className="icon" />
                     </Button>
-                </Link>
-            </Tooltip>
+                </Tooltip>
+            </Link>
         </StyledSidebar>
     );
 }
