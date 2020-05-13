@@ -112,8 +112,7 @@ function Login() {
                     <div className="content">
                         <h2>Hacklahoma’s statistics at your fingertips.</h2>
                         <p>
-                            We provide all sponsors with statistics of our audience and how we fund
-                            our events.
+                            We provide all sponsors with statistics of our attendees. Reach out to your Liaison for a password.
                         </p>
                     </div>
                 </div>
