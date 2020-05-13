@@ -8,6 +8,7 @@ import Link from "next/link";
 const StyledLogin = styled.div`
     display: flex;
     .logo {
+        animation: slide-in 0.20s;
         position: absolute;
         z-index: 1;
         top: 50px;
@@ -77,6 +78,17 @@ const StyledLogin = styled.div`
                 border-radius: 3px;
                 outline: none;
             }
+        }
+    }
+
+    @keyframes slide-in {
+        0% {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
         }
     }
 `;
