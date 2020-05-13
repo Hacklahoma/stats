@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { Button } from "@material-ui/core";
+import Link from "next/link";
 
 const StyledLogin = styled.div`
     display: flex;
@@ -112,7 +113,8 @@ function Login() {
                     <div className="content">
                         <h2>Hacklahoma’s statistics at your fingertips.</h2>
                         <p>
-                            We provide all sponsors with statistics of our attendees. Reach out to your Liaison for a password.
+                            We provide all sponsors with statistics of our attendees. Reach out to
+                            your Liaison for a password.
                         </p>
                     </div>
                 </div>
@@ -122,9 +124,11 @@ function Login() {
                 <div className="content">
                     <h2>Enter your password to get started:</h2>
                     <input type="password" />
-                    <Button variant="outlined" size="small" color="primary">
-                        Login
-                    </Button>
+                    <Link href="/">
+                        <Button variant="outlined" size="small" color="primary">
+                            Login
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </StyledLogin>

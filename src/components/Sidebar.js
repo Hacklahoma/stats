@@ -6,6 +6,7 @@ import { MdAttachMoney } from "react-icons/md";
 import { Button, Tooltip } from "@material-ui/core";
 
 const StyledSidebar = styled.div`
+    animation: slide-in 0.25s;
     background: #fcfcfc;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     height: 100vh;
@@ -20,6 +21,11 @@ const StyledSidebar = styled.div`
         img {
             width: 62px;
         }
+    }
+    .tabs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .button {
         margin: 5px 0;
@@ -43,9 +49,19 @@ const StyledSidebar = styled.div`
         margin-bottom: 20px;
         margin-top: auto;
     }
+
+    @keyframes slide-in {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
 `;
+
 function logout() {
-    Router.replace("/login", { shallow: true });
+    Router.push("/login");
 }
 
 function Sidebar() {
