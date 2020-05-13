@@ -1,10 +1,14 @@
-import Router from "next/router";
+import styled from "styled-components";
+import Sidebar from "../components/Sidebar";
+
+const StyledOverall = styled.div``;
 
 function Overall() {
-    React.useEffect(() => {
-        Router.replace("/login", { shallow: true });
-    }, []);
-    return <div className="container">Dashboard</div>;
+    return (
+        <StyledOverall>
+            <Sidebar />
+        </StyledOverall>
+    );
 }
 
 export default Overall;
