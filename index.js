@@ -8,7 +8,6 @@ const dotenv = require("dotenv");
 // Getting environmental variables
 dotenv.config();
 
-
 // Configuration for initiating keystone
 const PROJECT_NAME = "stats";
 const adapterConfig = {
@@ -16,13 +15,12 @@ const adapterConfig = {
     knexOptions: { connection: process.env.DATABASE_URL },
 };
 
-
 // Initiating keystone
 const keystone = new Keystone({
     name: PROJECT_NAME,
     adapter: new Adapter(adapterConfig),
+    cookieSecret: process.env.COOKIE_SECRET,
 });
-
 
 // Export
 module.exports = {
