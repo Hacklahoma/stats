@@ -86,7 +86,7 @@ const StyledHamburger = styled.div`
             background: white;
             height: ${MENU_HEIGHT};
             overflow: hidden;
-            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 4px -3px rgba(0, 0, 0, 0.15);
             .item {
                 margin: 8px 20px;
                 .button {
