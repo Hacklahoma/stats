@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
             <Head>
                 <title>Statistics</title>
             </Head>
-            {router.pathname === "/" || router.pathname === "/finances" ? <Sidebar /> : null }
+            {router.pathname !== "/login" && <Sidebar />}
             <Component {...pageProps} />
         </ApolloProvider>
     );

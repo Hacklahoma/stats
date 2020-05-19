@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
-const StyledOverall = styled.div``;
+const StyledMetrics = styled.div`
+    text-align: center;
+`;
 
-function Overall() {
+function Metrics() {
     return (
-        <StyledOverall>
-            Test
-        </StyledOverall>
+        <StyledMetrics>
+            <p>Metrics</p>
+        </StyledMetrics>
     );
 }
 
-export default Overall;
+export default Metrics;

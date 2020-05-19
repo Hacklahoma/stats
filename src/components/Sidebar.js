@@ -194,7 +194,7 @@ function Sidebar() {
                                 </Link>
                                 {/* Finances */}
                                 <div className="item">
-                                    <Button disableRipple className="button disabled">
+                                    <Button className="button">
                                         <MdAttachMoney className="icon" />
                                         <p>Finances</p>
                                     </Button>
@@ -245,7 +245,7 @@ function Sidebar() {
                     {/* Finances */}
                     <Link href="/finances">
                         <Tooltip title="Finances" arrow placement="right">
-                            <Button disableRipple className="button disabled">
+                            <Button className="button">
                                 <MdAttachMoney className="icon" />
                             </Button>
                         </Tooltip>
