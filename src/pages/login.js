@@ -8,7 +8,7 @@ import Link from "next/link";
 const StyledLogin = styled.div`
     display: flex;
     .logo {
-        animation: slide-in 0.20s;
+        animation: slide-in 0.2s;
         position: absolute;
         z-index: 1;
         top: 50px;
@@ -78,6 +78,14 @@ const StyledLogin = styled.div`
                 border-radius: 3px;
                 outline: none;
             }
+            .submit {
+                display: flex;
+                align-items: center;
+                .teamMember {
+                    margin-left: 10px;
+                    color: #888;
+                }
+            }
         }
     }
 
@@ -136,11 +144,16 @@ function Login() {
                 <div className="content">
                     <h2>Enter your password to get started:</h2>
                     <input type="password" />
-                    <Link href="/">
-                        <Button variant="outlined" size="small" color="primary">
-                            Login
+                    <div className="submit">
+                        <Link href="/">
+                            <Button variant="outlined" size="small" color="primary">
+                                Login
+                            </Button>
+                        </Link>
+                        <Button className="teamMember" size="small">
+                            team member?
                         </Button>
-                    </Link>
+                    </div>
                 </div>
             </div>
         </StyledLogin>
