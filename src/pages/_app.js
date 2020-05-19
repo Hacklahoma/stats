@@ -7,13 +7,18 @@ import { ThemeProvider } from "styled-components";
 import "../public/defaults.css";
 import client from "../lib/client";
 import Head from "next/head";
+import {useRouter} from "next/router";
+import Sidebar from "../components/Sidebar";
 
 function MyApp({ Component, pageProps }) {
+    const router = useRouter();
+
     return (
         <ApolloProvider client={client}>
             <Head>
                 <title>Statistics</title>
             </Head>
+            {router.pathname === "/" || router.pathname === "/finances" ? <Sidebar /> : null }
             <Component {...pageProps} />
         </ApolloProvider>
     );
