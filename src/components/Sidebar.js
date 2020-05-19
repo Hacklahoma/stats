@@ -243,11 +243,13 @@ function Sidebar() {
                         </Tooltip>
                     </Link>
                     {/* Finances */}
-                    <Tooltip title="Finances" arrow placement="right">
-                        <Button disableRipple className="button disabled">
-                            <MdAttachMoney className="icon" />
-                        </Button>
-                    </Tooltip>
+                    <Link href="/finances">
+                        <Tooltip title="Finances" arrow placement="right">
+                            <Button disableRipple className="button disabled">
+                                <MdAttachMoney className="icon" />
+                            </Button>
+                        </Tooltip>
+                    </Link>
                     {/* Admin panel */}
                     <Link href="/admin">
                         <Tooltip title="Admin panel" arrow placement="right">
