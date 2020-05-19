@@ -3,6 +3,7 @@ const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { NextApp } = require("@keystonejs/app-next");
+const { User, Event } = require("./models");
 const dotenv = require("dotenv");
 
 // Getting environmental variables
@@ -21,6 +22,11 @@ const keystone = new Keystone({
     adapter: new Adapter(adapterConfig),
     cookieSecret: process.env.COOKIE_SECRET,
 });
+
+//Creating lists for Users and Events
+keystone.createList("User", User);
+keystone.createList("Event", Event);
+
 
 // Export
 module.exports = {
