@@ -4,13 +4,13 @@ const User = {
     fields: {
         company: { type: Text },
         password: { type: Password },
-        disabled: { type: Checkbox, isRequired: true },
+        disabled: { type: Checkbox, isRequired: false },
         views: { type: Integer, defaultValue: 0 },
         activity: { 
             type: Relationship,
             ref: "Event",
         },
-        isAdmin: { type: Checkbox, isRequired: true },
+        isAdmin: { type: Checkbox, isRequired: false },
     },
 };
 
