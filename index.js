@@ -5,9 +5,13 @@ const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { NextApp } = require("@keystonejs/app-next");
 const { User, Event } = require("./models");
 const dotenv = require("dotenv");
+const keepAwake = require("./src/lib/keepAwake");
 
 // Getting environmental variables
 dotenv.config();
+
+// Keep heroku app alive
+keepAwake();
 
 // Configuration for initiating keystone
 const PROJECT_NAME = "stats";
@@ -26,7 +30,6 @@ const keystone = new Keystone({
 //Creating lists for Users and Events
 keystone.createList("User", User);
 keystone.createList("Event", Event);
-
 
 // Export
 module.exports = {
