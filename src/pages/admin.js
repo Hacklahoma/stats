@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
+import Accounts from "../components/Admin/Accounts";
 
 const StyledAdmin = styled.div`
     position: relative;
     left: 92px;
+    width: calc(100vw - 160px);
     padding: 55px 35px;
-    transition: 0.25s;
+    transition: padding 0.25s;
     .tabs {
         display: flex;
         justify-content: space-between;
@@ -27,6 +29,7 @@ const StyledAdmin = styled.div`
     }
 
     @media only screen and (max-width: 619px) {
+        width: auto;
         left: 0;
         margin-top: 50px;
         padding: 30px 35px;
@@ -67,6 +70,7 @@ function Admin() {
                     Finances
                 </h2>
             </div>
+            {view === "accounts" && <Accounts />}
         </StyledAdmin>
     );
 }

@@ -69,8 +69,11 @@ const StyledHamburger = styled.div`
     position: fixed;
     top: 0;
     left: 0;
+    width: 100vw;
+    height: 75px;
+    background: white;
     .hamburgerButton {
-        margin: 20px 20px 10px 20px;
+        margin: 10px 20px;
         padding: 8px 0;
         .hamburger {
             transform: rotate(90deg);
@@ -189,23 +192,34 @@ function Sidebar() {
                                 {/* Metrics */}
                                 <Link href="/">
                                     <div className="item">
-                                        <Button className="button">
+                                        <Button
+                                            onClick={() => setExpanded(false)}
+                                            className="button"
+                                        >
                                             <FiPieChart className="icon" />
                                             <p>Metrics</p>
                                         </Button>
                                     </div>
                                 </Link>
                                 {/* Finances */}
-                                <div className="item">
-                                    <Button className="button">
-                                        <MdAttachMoney className="icon" />
-                                        <p>Finances</p>
-                                    </Button>
-                                </div>
+                                <Link href="/finances">
+                                    <div className="item">
+                                        <Button
+                                            onClick={() => setExpanded(false)}
+                                            className="button"
+                                        >
+                                            <MdAttachMoney className="icon" />
+                                            <p>Finances</p>
+                                        </Button>
+                                    </div>
+                                </Link>
                                 {/* Admin panel */}
                                 <Link href="/admin">
                                     <div className="item">
-                                        <Button className="button">
+                                        <Button
+                                            onClick={() => setExpanded(false)}
+                                            className="button"
+                                        >
                                             <FiEdit2 className="icon" />
                                             <p>Admin Panel</p>
                                         </Button>
