@@ -65,9 +65,12 @@ const StyledSidebar = styled.div`
 // Styling for mobile menu
 const MENU_HEIGHT = "240px";
 const StyledHamburger = styled.div`
+    z-index: 100;
     position: fixed;
+    top: 0;
+    left: 0;
     .hamburgerButton {
-        margin: 20px;
+        margin: 20px 20px 10px 20px;
         padding: 8px 0;
         .hamburger {
             transform: rotate(90deg);
