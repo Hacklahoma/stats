@@ -24,6 +24,7 @@
         "@keystonejs/app-next": "^5.1.2",
         "@keystonejs/keystone": "^9.0.0",
         "@material-ui/core": "^4.9.14",
+        "@material-ui/icons": "^4.9.1",
         "@material-ui/styles": "^4.9.14",
         "cross-env": "^7.0.0",
         "dotenv": "^8.2.0",
