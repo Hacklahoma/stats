@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import {
     Table,
-    TableContainer,
-    Paper,
     TableHead,
     TableRow,
     TableCell,
@@ -12,9 +10,6 @@ import {
 const StyledTable = styled.div``;
 
 function CompanyTable({ rows }) {
-    console.log("TEST");
-    console.log(rows);
-
     return (
         <StyledTable>
             <Table size="small" aria-label="a dense table">

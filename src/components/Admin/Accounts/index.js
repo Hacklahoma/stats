@@ -68,11 +68,9 @@ function Accounts() {
         createData("Microsoft", "enabled", 16),
     ];
 
-    // console.log(data);
-    
-
     return (
         <StyledAccounts>
+            {/* Add account Dialog */}
             <AddAccount
                 name={name}
                 setName={setName}
@@ -81,6 +79,7 @@ function Accounts() {
                 setModal={setModal}
                 open={modal === "add"}
             />
+            {/* Add and Activity buttons */}
             <div className="buttons">
                 <Button onClick={() => setModal("add")} className="icon add" size="small">
                     <FiPlus />
@@ -89,6 +88,7 @@ function Accounts() {
                     <FiActivity />
                 </Button>
             </div>
+            {/* Table of company accounts */}
             <CompanyTable rows={data} />
         </StyledAccounts>
     );
