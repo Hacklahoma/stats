@@ -1,13 +1,11 @@
 import styled from "styled-components";
-import {
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-} from "@material-ui/core";
+import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
 
-const StyledTable = styled.div``;
+const StyledTable = styled.div`
+    .MuiTableCell-root {
+        font-family: inherit !important;
+    }
+`;
 
 function CompanyTable({ rows }) {
     return (
@@ -24,7 +22,7 @@ function CompanyTable({ rows }) {
                 <TableBody>
                     {rows.map((row) => (
                         <TableRow key={row.name}>
-                            <TableCell style={{ paddingLeft: "10px" }}>{row.name}</TableCell>
+                            <TableCell style={{ paddingLeft: "10px", fontWeight: "bold" }}>{row.name}</TableCell>
                             <TableCell>{row.views}</TableCell>
                             <TableCell>{row.status}</TableCell>
                             <TableCell align="right">•••</TableCell>

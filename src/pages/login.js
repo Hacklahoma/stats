@@ -84,6 +84,11 @@ const StyledLogin = styled.div`
                 .teamMember {
                     margin-left: 10px;
                     color: #888;
+                    text-decoration: none;
+                    font-size: .85em;
+                }
+                .teamMember:hover {
+                    text-decoration: underline;
                 }
             }
         }
@@ -150,9 +155,9 @@ function Login() {
                                 Login
                             </Button>
                         </Link>
-                        <Button className="teamMember" size="small">
+                        <a href="" className="teamMember">
                             team member?
-                        </Button>
+                        </a>
                     </div>
                 </div>
             </div>
