@@ -3,7 +3,7 @@ const { Text, Password, Checkbox, Integer, Relationship } = require("@keystonejs
 const User = {
     fields: {
         company: { type: Text },
-        password: { type: Password },
+        password: { type: Text },
         disabled: { type: Checkbox, isRequired: false },
         views: { type: Integer, defaultValue: 0 },
         activity: { 

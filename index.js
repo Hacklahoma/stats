@@ -4,6 +4,7 @@ const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { NextApp } = require("@keystonejs/app-next");
 const { User, Event } = require("./models");
+const { addUser } = require("./resolvers");
 const dotenv = require("dotenv");
 const keepAwake = require("./src/lib/keepAwake");
 
@@ -30,6 +31,16 @@ const keystone = new Keystone({
 //Creating lists for Users and Events
 keystone.createList("User", User);
 keystone.createList("Event", Event);
+
+//Adding custom schemas/resolvers
+keystone.extendGraphQLSchema({
+    mutations: [
+        {
+            schema: "addUser(company: String!, password: String!): User",
+            resolver: addUser,
+        },
+    ],
+});
 
 // Export
 module.exports = {
