@@ -4,6 +4,7 @@ import { Button } from "@material-ui/core";
 import { useState } from "react";
 import AddAccount from "../../Dialogs/AddAccount";
 import CompanyTable from "./CompanyTable";
+import { gql, useQuery } from "@apollo/client";
 
 const StyledAccounts = styled.div`
     .buttons {
@@ -51,22 +52,32 @@ const StyledAccounts = styled.div`
     }
 `;
 
+const GET_USERS = gql`
+    query Users {
+        allUsers {
+            id
+            company
+            password
+            disabled
+            views
+            isAdmin
+        }
+    }
+`;
+
 function Accounts() {
+    // Modal to display
     const [modal, setModal] = useState();
+    // Holds credentials for adding user
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    // Getting users
+    const { loading, error, data } = useQuery(GET_USERS);
 
-    function createData(name, status, views) {
-        return { name, status, views };
+    // Display error if necessary
+    if(error) {
+        return <p>{error.message}</p>
     }
-
-    const data = [
-        createData("Boeing", "disabled", 6),
-        createData("Tailwind", "enabled", 9),
-        createData("JPMorgan & Chase Co.", "disabled", 16),
-        createData("Northrop Grumman", "enabled", 3),
-        createData("Microsoft", "enabled", 16),
-    ];
 
     return (
         <StyledAccounts>
@@ -89,7 +100,7 @@ function Accounts() {
                 </Button>
             </div>
             {/* Table of company accounts */}
-            <CompanyTable rows={data} />
+            {loading ? <p>Loading...</p> : <CompanyTable rows={data.allUsers} />}
         </StyledAccounts>
     );
 }

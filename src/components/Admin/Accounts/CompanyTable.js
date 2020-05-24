@@ -38,23 +38,28 @@ function CompanyTable({ rows }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
-                            <TableCell
-                                size="medium"
-                                style={{ paddingLeft: "10px", fontWeight: "bold" }}
-                            >
-                                {row.name}
-                            </TableCell>
-                            <TableCell size="small">
-                                <div className={`status ${row.status}`}>{row.status}</div>
-                            </TableCell>
-                            <TableCell size="small">{row.views}</TableCell>
-                            <TableCell size="small" align="right">
-                                <More status={row.status} />
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {rows.map((row) => {
+                        if (!row.isAdmin) {
+                            const status = row.disabled ? "disabled" : "enabled";
+                            return (
+                                <TableRow key={row.company}>
+                                    <TableCell
+                                        size="medium"
+                                        style={{ paddingLeft: "10px", fontWeight: "bold" }}
+                                    >
+                                        {row.company}
+                                    </TableCell>
+                                    <TableCell size="small">
+                                        <div className={`status ${status}`}>{status}</div>
+                                    </TableCell>
+                                    <TableCell size="small">{row.views}</TableCell>
+                                    <TableCell size="small" align="right">
+                                        <More status={status} row={row} />
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        }
+                    })}
                 </TableBody>
             </Table>
         </StyledTable>
