@@ -1,5 +1,5 @@
 /**
- * Creates a new password with the company name and a password
+ * Creates a new user with the company name and a password
  */
 
 const addUser = async (_, { company, password }) => {
@@ -14,7 +14,9 @@ const addUser = async (_, { company, password }) => {
             }
         `);
     //Checks to see if any users with the same company name was returned
-    if(companyCheck.data.allUsers.length > 0){
+    if(companyCheck.data.allUsers.length === 0){
+        //Future: Add Event
+
         return null;
     }
 
@@ -29,10 +31,12 @@ const addUser = async (_, { company, password }) => {
 
     //Checks to see if any users with the same password was returned
     if(passwordCheck.data.allUsers.length > 0){
+        //Future: Add Event
+
         return null;
     }
 
-    // Create page
+    // Create user
     const result = await keystone.executeQuery(`
         mutation {
             createUser(data:{
@@ -41,10 +45,12 @@ const addUser = async (_, { company, password }) => {
                 disabled: false,
                 isAdmin: false,
             }) {
-                company
+                company, password
             }
         }
     `);
+
+    //Future: Add Event
 
     return result.data.createUser;
 };
