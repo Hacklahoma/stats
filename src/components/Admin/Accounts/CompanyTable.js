@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import {
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-} from "@material-ui/core";
+import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
 import More from "./More";
 
 const StyledTable = styled.div`
@@ -15,6 +9,18 @@ const StyledTable = styled.div`
     .MuiButton-root {
         min-width: 42px;
     }
+    .status {
+        border: 1px solid;
+        padding: 1px 8px;
+        border-radius: 50px;
+        display: inline-block;
+    }
+    .enabled {
+        color: #249c24;
+    }
+    .disabled {
+        color: #e81c0e;
+    }
 `;
 
 function CompanyTable({ rows }) {
@@ -23,21 +29,28 @@ function CompanyTable({ rows }) {
             <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{ paddingLeft: "10px" }}>Company Name</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Views</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell size="medium" style={{ paddingLeft: "10px" }}>
+                            Company Name
+                        </TableCell>
+                        <TableCell size="small">Status</TableCell>
+                        <TableCell size="small">Views</TableCell>
+                        <TableCell size="small"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map((row) => (
                         <TableRow key={row.name}>
-                            <TableCell style={{ paddingLeft: "10px", fontWeight: "bold" }}>
+                            <TableCell
+                                size="medium"
+                                style={{ paddingLeft: "10px", fontWeight: "bold" }}
+                            >
                                 {row.name}
                             </TableCell>
-                            <TableCell>{row.status}</TableCell>
-                            <TableCell>{row.views}</TableCell>
-                            <TableCell align="right">
+                            <TableCell size="small">
+                                <div className={`status ${row.status}`}>{row.status}</div>
+                            </TableCell>
+                            <TableCell size="small">{row.views}</TableCell>
+                            <TableCell size="small" align="right">
                                 <More status={row.status} />
                             </TableCell>
                         </TableRow>
