@@ -68,13 +68,13 @@ function CompanyTable({ rows }) {
                                         style={{ color: "#1d1d1d", fontSize: ".85em" }}
                                         onClick={handleClose}
                                     >
-                                        Copy Password
+                                        Copy password
                                     </MenuItem>
                                     <MenuItem
                                         style={{ color: "#1d1d1d", fontSize: ".85em" }}
                                         onClick={handleClose}
                                     >
-                                        Rename
+                                        Edit credentials
                                     </MenuItem>
                                     <div
                                         style={{
