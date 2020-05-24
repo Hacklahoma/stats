@@ -54,7 +54,7 @@ const StyledAccounts = styled.div`
 
 const GET_USERS = gql`
     query Users {
-        allUsers {
+        allUsers(sortBy: id_ASC) {
             id
             company
             password
@@ -68,28 +68,18 @@ const GET_USERS = gql`
 function Accounts() {
     // Modal to display
     const [modal, setModal] = useState();
-    // Holds credentials for adding user
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
     // Getting users
-    const { loading, error, data } = useQuery(GET_USERS);
+    const { loading, error, data, refetch } = useQuery(GET_USERS);
 
     // Display error if necessary
-    if(error) {
-        return <p>{error.message}</p>
+    if (error) {
+        return <p>{error.message}</p>;
     }
 
     return (
         <StyledAccounts>
             {/* Add account Dialog */}
-            <AddAccount
-                name={name}
-                setName={setName}
-                password={password}
-                setPassword={setPassword}
-                setModal={setModal}
-                open={modal === "add"}
-            />
+            <AddAccount setModal={setModal} refetch={refetch} open={modal === "add"} />
             {/* Add and Activity buttons */}
             <div className="buttons">
                 <Button onClick={() => setModal("add")} className="icon add" size="small">
@@ -100,7 +90,7 @@ function Accounts() {
                 </Button>
             </div>
             {/* Table of company accounts */}
-            {loading ? <p>Loading...</p> : <CompanyTable rows={data.allUsers} />}
+            {loading ? <p>Loading...</p> : <CompanyTable refetch={refetch} rows={data.allUsers} />}
         </StyledAccounts>
     );
 }
