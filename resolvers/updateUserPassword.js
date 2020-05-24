@@ -5,24 +5,24 @@
 const updateUserPassword = async (_, { company, password }) => {
     const { keystone } = require("../index.js");
 
-    //Get the company's ID first
-    const companyID = await keystone.executeQuery(`
+    //Get the company's Data first
+    const companyData = await keystone.executeQuery(`
         query {
             allUsers(where:{company: "${company}"}) {
-                company, password, id
+                password, id
             }
         }
     `);
 
     //Check to see if the company does exist
-    if(companyID.data.allUsers.length === 0){
+    if(companyData.data.allUsers.length === 0){
         //Future: Add Event
 
         return null;
     }
 
     //Check to see if the new password is different from the old one
-    if(password === companyID.data.allUsers[0].password){
+    if(password === companyData.data.allUsers[0].password){
         //Future: Add Event
 
         return null;
@@ -49,7 +49,7 @@ const updateUserPassword = async (_, { company, password }) => {
     const result = await keystone.executeQuery(`
         mutation {
             updateUser(
-                id: ${companyID.data.allUsers[0].id}, 
+                id: ${companyData.data.allUsers[0].id}, 
                 data:{
                     password: "${password}",
                 }

@@ -4,7 +4,7 @@ const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { NextApp } = require("@keystonejs/app-next");
 const { User, Event } = require("./models");
-const { addUser, updateUserPassword } = require("./resolvers");
+const { addUser, updateUserPassword, updateUserDisabled } = require("./resolvers");
 const dotenv = require("dotenv");
 const keepAwake = require("./src/lib/keepAwake");
 
@@ -42,6 +42,10 @@ keystone.extendGraphQLSchema({
         {
             schema: "updateUserPassword(company: String!, password: String!): User",
             resolver: updateUserPassword,
+        },
+        {
+            schema: "updateUserDisabled(company: String!): User",
+            resolver: updateUserDisabled,
         }
     ],
 });
