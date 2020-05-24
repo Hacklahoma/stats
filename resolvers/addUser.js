@@ -14,7 +14,7 @@ const addUser = async (_, { company, password }) => {
             }
         `);
     //Checks to see if any users with the same company name was returned
-    if(companyCheck.data.allUsers.length === 0){
+    if(companyCheck.data.allUsers.length > 0){
         //Future: Add Event
 
         return null;
