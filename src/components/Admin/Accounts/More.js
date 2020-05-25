@@ -28,8 +28,7 @@ function More({ row, refetch }) {
 
     // Handles copying password to clipboard
     const copyPassword = () => {
-        var password = "demo password";
-        navigator.clipboard.writeText(password);
+        navigator.clipboard.writeText(row.password);
         setCopied(true);
         setTimeout(() => handleClose(), 300);
     };
