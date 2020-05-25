@@ -59,7 +59,6 @@ const GET_USERS = gql`
             company
             password
             disabled
-            views
             isAdmin
         }
     }

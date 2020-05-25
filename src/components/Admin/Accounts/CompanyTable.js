@@ -53,7 +53,7 @@ function CompanyTable({ rows, refetch }) {
                                     <TableCell size="small">
                                         <div className={`status ${status}`}>{status}</div>
                                     </TableCell>
-                                    <TableCell size="small">{row.views}</TableCell>
+                                    <TableCell size="small">0</TableCell>
                                     <TableCell size="small" align="right">
                                         <More refetch={refetch} row={row} />
                                     </TableCell>
