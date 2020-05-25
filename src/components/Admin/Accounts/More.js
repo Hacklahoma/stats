@@ -1,6 +1,7 @@
 import { Menu, MenuItem, Button } from "@material-ui/core";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { gql, useMutation } from "@apollo/client";
+import EditAccount from "../../Dialogs/EditAccount";
 
 const MUTATE_STATUS = gql`
     mutation mutateStatus($id: ID!, $disabled: Boolean!) {
@@ -14,6 +15,7 @@ function More({ row, refetch }) {
     const [mutateStatus, { data }] = useMutation(MUTATE_STATUS);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [copied, setCopied] = React.useState(false);
+    const [modal, setModal] = React.useState();
 
     // Handles opening more menu
     const handleClick = (event) => {
@@ -33,6 +35,11 @@ function More({ row, refetch }) {
         setTimeout(() => handleClose(), 300);
     };
 
+    const editUser = () => {
+        setModal("edit");
+        setAnchorEl(null);
+    }
+
     // Handles enable/disable
     const changeStatus = () => {
         mutateStatus({
@@ -51,6 +58,7 @@ function More({ row, refetch }) {
 
     return (
         <div>
+            <EditAccount refetch={refetch} open={modal === "edit"} setModal={setModal} row={row} />
             {/* Button icon */}
             <Button size="small" onClick={handleClick}>
                 <FiMoreHorizontal size="22px" />
@@ -71,7 +79,7 @@ function More({ row, refetch }) {
                     {copied ? "Copied  ✔️" : "Copy password"}
                 </MenuItem>
                 {/* Edit credentials */}
-                <MenuItem style={{ color: "#1d1d1d", fontSize: ".85em" }} onClick={handleClose}>
+                <MenuItem style={{ color: "#1d1d1d", fontSize: ".85em" }} onClick={editUser}>
                     Edit credentials
                 </MenuItem>
                 {/* divider */}
