@@ -1,7 +1,17 @@
 import { Menu, MenuItem, Button } from "@material-ui/core";
 import { FiMoreHorizontal } from "react-icons/fi";
+import { gql, useMutation } from "@apollo/client";
 
-function More({ status }) {
+const MUTATE_STATUS = gql`
+    mutation mutateStatus($id: ID!, $disabled: Boolean!) {
+        updateUser(id: $id, data: { disabled: $disabled }) {
+            id
+        }
+    }
+`;
+
+function More({ row, refetch }) {
+    const [mutateStatus, { data }] = useMutation(MUTATE_STATUS);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [copied, setCopied] = React.useState(false);
 
@@ -22,6 +32,22 @@ function More({ status }) {
         navigator.clipboard.writeText(password);
         setCopied(true);
         setTimeout(() => handleClose(), 300);
+    };
+
+    // Handles enable/disable
+    const changeStatus = () => {
+        mutateStatus({
+            variables: {
+                id: row.id,
+                disabled: !row.disabled,
+            },
+        })
+            .then(() => {
+                refetch();
+            })
+            .catch((e) => {
+                console.log(e);
+            });
     };
 
     return (
@@ -61,12 +87,12 @@ function More({ status }) {
                 {/* Disable/Enable */}
                 <MenuItem
                     style={{
-                        color: `${status === "disabled" ? "#249c24" : "#e81c0e"}`,
+                        color: `${row.disabled ? "#249c24" : "#e81c0e"}`,
                         fontSize: ".85em",
                     }}
-                    onClick={handleClose}
+                    onClick={changeStatus}
                 >
-                    {status === "disabled" ? "Enable" : "Disable"}
+                    {row.disabled ? "Enable" : "Disable"}
                 </MenuItem>
             </Menu>
         </div>

@@ -25,7 +25,7 @@ const ADD_USER = gql`
 `;
 
 function AddAccount({ open, setModal, refetch }) {
-    const [addTodo, { data }] = useMutation(ADD_USER);
+    const [addUser, { data }] = useMutation(ADD_USER);
     const [isVisible, setVisible] = useState(false);
     // Holds credentials for adding user
     const [name, setName] = useState("");
@@ -38,7 +38,7 @@ function AddAccount({ open, setModal, refetch }) {
         if (name === null || password === null || name === "" || password === "") return;
         console.log(`Adding the user '${name}' with password '${password}'...`);
         // Adding user to backend
-        addTodo({ variables: { company: name, password: password } }).then(() => {
+        addUser({ variables: { company: name, password: password } }).then(() => {
             setModal(null);
             refetch();
         }).catch((error) => {

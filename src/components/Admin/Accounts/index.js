@@ -54,7 +54,7 @@ const StyledAccounts = styled.div`
 
 const GET_USERS = gql`
     query Users {
-        allUsers {
+        allUsers(sortBy: id_ASC) {
             id
             company
             password
@@ -90,7 +90,7 @@ function Accounts() {
                 </Button>
             </div>
             {/* Table of company accounts */}
-            {loading ? <p>Loading...</p> : <CompanyTable rows={data.allUsers} />}
+            {loading ? <p>Loading...</p> : <CompanyTable refetch={refetch} rows={data.allUsers} />}
         </StyledAccounts>
     );
 }

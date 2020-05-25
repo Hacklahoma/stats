@@ -23,7 +23,7 @@ const StyledTable = styled.div`
     }
 `;
 
-function CompanyTable({ rows }) {
+function CompanyTable({ rows, refetch }) {
     return (
         <StyledTable>
             <Table size="small" aria-label="a dense table">
@@ -54,7 +54,7 @@ function CompanyTable({ rows }) {
                                     </TableCell>
                                     <TableCell size="small">{row.views}</TableCell>
                                     <TableCell size="small" align="right">
-                                        <More status={status} row={row} />
+                                        <More refetch={refetch} row={row} />
                                     </TableCell>
                                 </TableRow>
                             );
