@@ -80,7 +80,7 @@ function More({ row, refetch }) {
                 </MenuItem>
                 {/* Edit credentials */}
                 <MenuItem style={{ color: "#1d1d1d", fontSize: ".85em" }} onClick={editUser}>
-                    Edit credentials
+                    Edit company
                 </MenuItem>
                 {/* divider */}
                 <div
