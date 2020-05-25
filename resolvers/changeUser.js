@@ -8,9 +8,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     //Checks to see if any of the variables were given
     if (!company && !password && disabled === null) {
         //Future: Add Event and Exception
-        console.log("variables were not given");
-
-        return null;
+        throw new Error("Incorrect parameters");
     }
 
     //Grab the company's data
@@ -25,9 +23,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     //Check to see if the company exist at the id
     if (companyData.data.allUsers.length === 0) {
         //Future: Add Event and Exception
-         console.log("There does not exist an id");
-
-        return null;
+        throw new Error("Unable to locate company (ID does not exist)");
     }
 
     //Set up some variables to store new values into
@@ -52,10 +48,8 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         //same company
         if (check.data.allUsers.length > 0) {
             if (check.data.allUsers[0].id !== id) {
-                //Future: Add Event and Exception
-                console.log("duplicate company");
-                
-                return null;
+                //Future: Add Event
+                throw new Error("Duplicate company");
             }
         }
 
@@ -82,10 +76,8 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         //same company
         if (check.data.allUsers.length > 0) {
             if (check.data.allUsers[0].id !== id) {
-                //Future: Add Event and Exception
-                console.log("duplicate password");
-
-                return null;
+                //Future: Add Event
+                throw new Error("Duplicate password");
             }
         }
 

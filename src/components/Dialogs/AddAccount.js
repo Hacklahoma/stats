@@ -43,7 +43,7 @@ function AddAccount({ open, setModal, refetch }) {
             refetch();
         }).catch((error) => {
             // TODO: Catch errors
-            console.log(error.message);
+            console.log(error);
         });
     };
 

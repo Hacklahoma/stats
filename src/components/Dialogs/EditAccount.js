@@ -12,6 +12,7 @@ import {
     InputLabel,
     Input,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
@@ -27,9 +28,19 @@ const EDIT_USER = gql`
 function EditAccount({ row, open, setModal, refetch }) {
     const [changeUser, { data }] = useMutation(EDIT_USER);
     const [isVisible, setVisible] = useState(false);
+    const [error, setError] = useState();
     // Holds credentials for adding user
     const [name, setName] = useState(row.company);
     const [password, setPassword] = useState(row.password);
+
+    const handleClose = () => {
+        setModal(null);
+        setTimeout(() => {
+            setError(null);
+            setName(row.company);
+            setPassword(row.password);
+        }, 1000)
+    };
 
     const submit = () => {
         // Checking to make sure name and password is not empty
@@ -44,8 +55,7 @@ function EditAccount({ row, open, setModal, refetch }) {
                 refetch();
             })
             .catch((error) => {
-                // TODO: Catch errors
-                console.log(error.message);
+                setError("Error: " + error.message.substring(15));
             });
     };
 
@@ -91,13 +101,15 @@ function EditAccount({ row, open, setModal, refetch }) {
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setModal(null)} color="primary">
+                <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
                 <Button variant="outlined" onClick={submit} color="primary">
                     Edit
                 </Button>
             </DialogActions>
+            {/* Display error */}
+            {error && <Alert severity="error">{error}</Alert>}
         </Dialog>
     );
 }
