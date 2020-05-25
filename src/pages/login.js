@@ -169,10 +169,13 @@ function Login() {
             },
         })
             // Successfully logged in
-            .then((data) => {
-                console.log("Success!");
-                console.log(data);
-                router.push("/");
+            .then((snapshot) => {
+                // Set token to local storage
+                localStorage.setItem("token", snapshot.data.login.id);
+                // Push to dashboard and force reload
+                router.push("/").then(() => {
+                    router.reload();
+                });
             })
             // Error logging in
             .catch((e) => {

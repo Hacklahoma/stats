@@ -8,7 +8,10 @@ const login = async (_, { password }) => {
     const result = await keystone.executeQuery(`
         query {
             allUsers(where:{password:"${password}"}) {
-                company, disabled
+                id
+                company
+                disabled
+                isAdmin
             }
         }
     `);
@@ -20,9 +23,9 @@ const login = async (_, { password }) => {
     }
 
     //Checks to see if the user account is disabled
-    if(result.data.allUsers[0].disabled){
+    if (result.data.allUsers[0].disabled) {
         //Future: Add Event
-        throw new Error("User account disabled."); 
+        throw new Error("User account disabled.");
     }
 
     //Future: Add Event

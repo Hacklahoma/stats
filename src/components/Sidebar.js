@@ -5,6 +5,7 @@ import { MdAttachMoney } from "react-icons/md";
 import { Button, Tooltip, ClickAwayListener } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
+import { useRouter } from "next/router";
 
 // Styling for desktop sidebar
 const StyledSidebar = styled.div`
@@ -147,9 +148,10 @@ const StyledHamburger = styled.div`
     }
 `;
 
-function Sidebar() {
+function Sidebar({ user }) {
     const [isMobile, setMobile] = useState();
     const [isExpanded, setExpanded] = useState();
+    const router = useRouter();
 
     // Populating isMobile state
     useEffect(() => {
@@ -162,6 +164,12 @@ function Sidebar() {
             window.removeEventListener("resize", onResize);
         };
     }, []);
+
+    // Handle logout
+    const logout = () => {
+        localStorage.removeItem("token");
+        router.push("/login");
+    };
 
     // Closing menu when transitioning from desktop to mobile
     useEffect(() => {
@@ -277,13 +285,11 @@ function Sidebar() {
                     </Link>
                 </div>
                 {/* Logout */}
-                <Link href="/login">
-                    <Tooltip title="Log out" arrow placement="right">
-                        <Button className="button">
-                            <FiLogOut className="icon" />
-                        </Button>
-                    </Tooltip>
-                </Link>
+                <Tooltip title="Log out" arrow placement="right">
+                    <Button className="button" onClick={logout}>
+                        <FiLogOut className="icon" />
+                    </Button>
+                </Tooltip>
             </StyledSidebar>
         );
     } else {
