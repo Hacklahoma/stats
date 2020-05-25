@@ -8,6 +8,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     //Checks to see if any of the variables were given
     if (!company && !password && disabled === null) {
         //Future: Add Event and Exception
+        console.log("variables were not given");
 
         return null;
     }
@@ -24,6 +25,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     //Check to see if the company exist at the id
     if (companyData.data.allUsers.length === 0) {
         //Future: Add Event and Exception
+         console.log("There does not exist an id");
 
         return null;
     }
@@ -40,16 +42,21 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         const check = await keystone.executeQuery(`
             query {
                 allUsers(where:{company: "${company}"}) {
+                    id
                     company
                 }
             }
         `);
 
-        //Check to see if any companies were returned from the query
+        //Check to see if any companies were returned from the query and not the
+        //same company
         if (check.data.allUsers.length > 0) {
-            //Future: Add Event and Exception
-
-            return null;
+            if (check.data.allUsers[0].id !== id) {
+                //Future: Add Event and Exception
+                console.log("duplicate company");
+                
+                return null;
+            }
         }
 
         //Set the new company to the given company
@@ -61,27 +68,25 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         //Set the newPassword variable to the old password
         newPassword = companyData.data.allUsers[0].password;
     } else {
-        //Check to see if the new password is different from the old one
-        if (password === companyData.data.allUsers[0].password) {
-            //Future: Add Event and Exception
-
-            return null;
-        }
-
         //looks to see if the password is already being used
         const check = await keystone.executeQuery(`
             query {
                 allUsers(where:{password: "${password}"}) {
+                    id
                     password
                 }
             }
         `);
 
-        //Check to see if any companies were returned from the query
+        //Check to see if any companies were returned from the query and not the
+        //same company
         if (check.data.allUsers.length > 0) {
-            //Future: Add Event and Exception
+            if (check.data.allUsers[0].id !== id) {
+                //Future: Add Event and Exception
+                console.log("duplicate password");
 
-            return null;
+                return null;
+            }
         }
 
         //Set the new password to the given password
@@ -114,7 +119,6 @@ const changeUser = async (_, { id, company, password, disabled }) => {
             }
         }
     );`);
-    
 
     //Update the data
     const result = await keystone.executeQuery(`

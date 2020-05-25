@@ -40,7 +40,6 @@ function EditAccount({ row, open, setModal, refetch }) {
         // Adding user to backend
         changeUser({ variables: { id: row.id, company: name, password: password } })
             .then(() => {
-                console.log(data);
                 setModal(null);
                 refetch();
             })
