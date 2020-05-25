@@ -1,11 +1,11 @@
-const { Text, Password, Checkbox, Integer, Relationship } = require("@keystonejs/fields");
+const { Text, Checkbox, Relationship, Uuid } = require("@keystonejs/fields");
 
 const User = {
     fields: {
+        token: { type: Uuid, isUnique: true },
         company: { type: Text },
         password: { type: Text },
         disabled: { type: Checkbox, isRequired: false },
-        views: { type: Integer, defaultValue: 0 },
         activity: { 
             type: Relationship,
             ref: "Event",
