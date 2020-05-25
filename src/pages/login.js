@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { Button } from "@material-ui/core";
 import Link from "next/link";
+import { gql, useMutation } from "@apollo/client";
 
 const StyledLogin = styled.div`
     display: flex;
@@ -105,6 +106,17 @@ const StyledLogin = styled.div`
         }
     }
 `;
+
+
+//Query for login
+const LOGIN = gql`
+    mutation login($password: String!) {
+        login(password: $password) {
+            id, name, disabled
+        }
+    }
+`;
+
 
 function Login() {
     // State to determine whether to render for mobile or not
