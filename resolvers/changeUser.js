@@ -7,7 +7,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
 
     //Checks to see if any of the variables were given
     if (!company && !password && disabled === null) {
-        //Future: Add Event and Exception
+        //Future: Add Event
         throw new Error("Incorrect parameters");
     }
 
@@ -22,7 +22,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
 
     //Check to see if the company exist at the id
     if (companyData.data.allUsers.length === 0) {
-        //Future: Add Event and Exception
+        //Future: Add Event
         throw new Error("Unable to locate company (ID does not exist)");
     }
 
@@ -49,7 +49,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         if (check.data.allUsers.length > 0) {
             if (check.data.allUsers[0].id !== id) {
                 //Future: Add Event
-                throw new Error("Duplicate company");
+                throw new Error("There already exists a company with that name.");
             }
         }
 
@@ -77,7 +77,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         if (check.data.allUsers.length > 0) {
             if (check.data.allUsers[0].id !== id) {
                 //Future: Add Event
-                throw new Error("Duplicate password");
+                throw new Error("There already exists a company with that password.");
             }
         }
 
@@ -93,24 +93,6 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         //Set the new disabled to the given disabled
         newDisabled = disabled;
     }
-
-    console.log(`
-    mutation {
-            updateUser(
-                id: ${id}, 
-                data:{
-                    ${newCompany !== undefined ? `company: "${newCompany}",` : ``}
-                    ${newPassword !== undefined ? `password: "${newPassword}",` : ``}
-                    ${newDisabled !== undefined ? `disabled: ${newDisabled},` : ``}
-                }
-            ){
-               id 
-               company
-               password 
-               disabled
-            }
-        }
-    );`);
 
     //Update the data
     const result = await keystone.executeQuery(`
@@ -131,7 +113,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         }
     `);
 
-    //Future: Add Event and Exceptions
+    //Future: Add Event
 
     return result.data.updateUser;
 };

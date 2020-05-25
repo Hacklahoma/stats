@@ -52,15 +52,18 @@ function EditAccount({ row, open, setModal, refetch }) {
         changeUser({ variables: { id: row.id, company: name, password: password } })
             .then(() => {
                 setModal(null);
+                setTimeout(() => {
+                    setError(null);
+                }, 1000);
                 refetch();
             })
             .catch((error) => {
-                setError("Error: " + error.message.substring(15));
+                setError(error.message.substring(15));
             });
     };
 
     return (
-        <Dialog onClose={() => setModal(null)} open={open} fullWidth maxWidth="xs">
+        <Dialog onClose={handleClose} open={open} fullWidth maxWidth="xs">
             <DialogTitle>Edit Company</DialogTitle>
             <DialogContent>
                 <DialogContentText>

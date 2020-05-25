@@ -12,6 +12,7 @@ import {
     InputLabel,
     Input,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
@@ -27,9 +28,17 @@ const ADD_USER = gql`
 function AddAccount({ open, setModal, refetch }) {
     const [addUser, { data }] = useMutation(ADD_USER);
     const [isVisible, setVisible] = useState(false);
+    const [error, setError] = useState();
     // Holds credentials for adding user
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+
+    const handleClose = () => {
+        setModal(null);
+        setTimeout(() => {
+            setError(null);
+        }, 1000);
+    };
 
     const submit = () => {
         // Checking to make sure name and password is not empty
@@ -38,17 +47,20 @@ function AddAccount({ open, setModal, refetch }) {
         if (name === null || password === null || name === "" || password === "") return;
         console.log(`Adding the user '${name}' with password '${password}'...`);
         // Adding user to backend
-        addUser({ variables: { company: name, password: password } }).then(() => {
-            setModal(null);
-            refetch();
-        }).catch((error) => {
-            // TODO: Catch errors
-            console.log(error);
-        });
+        addUser({ variables: { company: name, password: password } })
+            .then(() => {
+                handleClose();
+                setName("");
+                setPassword("");
+                refetch();
+            })
+            .catch((error) => {
+                setError(error.message.substring(15));
+            });
     };
 
     return (
-        <Dialog onClose={() => setModal(null)} open={open} fullWidth maxWidth="xs">
+        <Dialog onClose={handleClose} open={open} fullWidth maxWidth="xs">
             <DialogTitle>Add Company</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -90,13 +102,15 @@ function AddAccount({ open, setModal, refetch }) {
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setModal(null)} color="primary">
+                <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
                 <Button variant="outlined" onClick={submit} color="primary">
                     Add
                 </Button>
             </DialogActions>
+            {/* Display error */}
+            {error && <Alert severity="error">{error}</Alert>}
         </Dialog>
     );
 }

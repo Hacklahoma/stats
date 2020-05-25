@@ -11,7 +11,8 @@ const StyledTable = styled.div`
     }
     .status {
         border: 1px solid;
-        padding: 1px 8px;
+        min-width: 75px;
+        text-align: center;
         border-radius: 50px;
         display: inline-block;
     }

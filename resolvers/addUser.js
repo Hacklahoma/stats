@@ -13,12 +13,11 @@ const addUser = async (_, { company, password }) => {
                 }
             }
         `);
-        
-    //Checks to see if any users with the same company name was returned
-    if(companyCheck.data.allUsers.length > 0){
-        //Future: Add Event and throw an error
 
-        return null;
+    //Checks to see if any users with the same company name was returned
+    if (companyCheck.data.allUsers.length > 0) {
+        //Future: Add Event
+        throw new Error("There already exists a company with that name.");
     }
 
     //Check to see if the password was already used
@@ -31,10 +30,9 @@ const addUser = async (_, { company, password }) => {
     `);
 
     //Checks to see if any users with the same password was returned
-    if(passwordCheck.data.allUsers.length > 0){
-        //Future: Add Event and throw an error
-
-        return null;
+    if (passwordCheck.data.allUsers.length > 0) {
+        //Future: Add Event
+        throw new Error("There already exists a company with that password.");
     }
 
     // Create user
