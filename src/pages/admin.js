@@ -42,37 +42,51 @@ const StyledAdmin = styled.div`
     }
 `;
 
-function Admin() {
+function Admin({ user }) {
     // Holds active view, defaults to accounts
     const [view, setView] = useState("accounts");
-    return (
-        <StyledAdmin>
-            <div className="tabs">
-                {/* Accounts */}
-                <h2
-                    onClick={() => setView("accounts")}
-                    className={`item ${view === "accounts" && `active`}`}
-                >
-                    Accounts
-                </h2>
-                {/* Metrics */}
-                <h2
-                    onClick={() => setView("metrics")}
-                    className={`item ${view === "metrics" && `active`}`}
-                >
-                    Metrics
-                </h2>
-                {/* Finances */}
-                <h2
-                    onClick={() => setView("finances")}
-                    className={`item ${view === "finances" && `active`}`}
-                >
-                    Finances
-                </h2>
-            </div>
-            {view === "accounts" && <Accounts />}
-        </StyledAdmin>
-    );
+    if (user.isAdmin)
+        return (
+            <StyledAdmin>
+                <div className="tabs">
+                    {/* Accounts */}
+                    <h2
+                        onClick={() => setView("accounts")}
+                        className={`item ${view === "accounts" && `active`}`}
+                    >
+                        Accounts
+                    </h2>
+                    {/* Metrics */}
+                    <h2
+                        onClick={() => setView("metrics")}
+                        className={`item ${view === "metrics" && `active`}`}
+                    >
+                        Metrics
+                    </h2>
+                    {/* Finances */}
+                    <h2
+                        onClick={() => setView("finances")}
+                        className={`item ${view === "finances" && `active`}`}
+                    >
+                        Finances
+                    </h2>
+                </div>
+                {view === "accounts" && <Accounts />}
+            </StyledAdmin>
+        );
+    else
+        return (
+            <p
+                style={{
+                    position: "absolute",
+                    top: "50vh",
+                    left: "50vw",
+                    transform: "translate(-50%, -50%)",
+                }}
+            >
+                Restricted Access
+            </p>
+        );
 }
 
 export default Admin;

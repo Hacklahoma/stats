@@ -222,26 +222,26 @@ function Sidebar({ user }) {
                                     </div>
                                 </Link>
                                 {/* Admin panel */}
-                                <Link href="/admin">
-                                    <div className="item">
-                                        <Button
-                                            onClick={() => setExpanded(false)}
-                                            className="button"
-                                        >
-                                            <FiEdit2 className="icon" />
-                                            <p>Admin Panel</p>
-                                        </Button>
-                                    </div>
-                                </Link>
+                                {user.isAdmin && (
+                                    <Link href="/admin">
+                                        <div className="item">
+                                            <Button
+                                                onClick={() => setExpanded(false)}
+                                                className="button"
+                                            >
+                                                <FiEdit2 className="icon" />
+                                                <p>Admin Panel</p>
+                                            </Button>
+                                        </div>
+                                    </Link>
+                                )}
                                 {/* Log out */}
-                                <Link href="/login">
-                                    <div className="item">
-                                        <Button className="button">
-                                            <FiLogOut className="icon" />
-                                            <p>Log Out</p>
-                                        </Button>
-                                    </div>
-                                </Link>
+                                <div className="item">
+                                    <Button onClick={logout} className="button">
+                                        <FiLogOut className="icon" />
+                                        <p>Log Out</p>
+                                    </Button>
+                                </div>
                             </div>
                         </ClickAwayListener>
                     </div>
@@ -276,13 +276,15 @@ function Sidebar({ user }) {
                         </Tooltip>
                     </Link>
                     {/* Admin panel */}
-                    <Link href="/admin">
-                        <Tooltip title="Admin panel" arrow placement="right">
-                            <Button className="button">
-                                <FiEdit2 className="icon" />
-                            </Button>
-                        </Tooltip>
-                    </Link>
+                    {user.isAdmin && (
+                        <Link href="/admin">
+                            <Tooltip title="Admin panel" arrow placement="right">
+                                <Button className="button">
+                                    <FiEdit2 className="icon" />
+                                </Button>
+                            </Tooltip>
+                        </Link>
+                    )}
                 </div>
                 {/* Logout */}
                 <Tooltip title="Log out" arrow placement="right">
