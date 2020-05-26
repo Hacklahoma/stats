@@ -9,6 +9,7 @@ const login = async (_, { password }) => {
         query {
             allUsers(where:{password:"${password}"}) {
                 id
+                token
                 company
                 disabled
                 isAdmin
