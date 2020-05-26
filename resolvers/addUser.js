@@ -2,8 +2,6 @@
  * Creates a new user with the company name and a password
  */
 
-const { v4: uuidv4 } = require('uuid');
-
 const addUser = async (_, { company, password }) => {
     const { keystone } = require("../index.js");
 
@@ -41,13 +39,10 @@ const addUser = async (_, { company, password }) => {
     const result = await keystone.executeQuery(`
         mutation {
             createUser(data:{
-                token: "${uuidv4()}",
                 company: "${company}",
                 password: "${password}",
-                disabled: false,
-                isAdmin: false,
             }) {
-                company, password, token
+                id, token, company, password
             }
         }
     `);
