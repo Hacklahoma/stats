@@ -12,8 +12,8 @@ import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 
 const GET_USER = gql`
-    query getUser($id: ID!) {
-        User(where: { id: $id }) {
+    query getUser($token: ID!) {
+        allUsers(where: { token: $token }) {
             id
             company
             isAdmin
@@ -31,9 +31,12 @@ function MyApp({ Component, pageProps }) {
     const [user, setUser] = useState(false);
     // Calling query
     const { loading, error, data } = useQuery(GET_USER, {
-        variables: { id: token === null ? 0 : token },
+        variables: { token: token === null ? 0 : token },
         client: client,
     });
+
+    // console.log(user);
+    
 
     // Effect to execute when loading changes
     useEffect(() => {
@@ -46,7 +49,7 @@ function MyApp({ Component, pageProps }) {
                 });
                 // Data found, setting user state
             } else {
-                setUser(data.User);
+                setUser(data.allUsers[0]);
                 setReady(true);
             }
         }

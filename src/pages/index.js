@@ -4,10 +4,11 @@ const StyledMetrics = styled.div`
     text-align: center;
 `;
 
-function Metrics() {
+function Metrics({ user }) {
     return (
         <StyledMetrics>
             <p>Metrics</p>
+            <p>Hello, {user.company}</p>
         </StyledMetrics>
     );
 }

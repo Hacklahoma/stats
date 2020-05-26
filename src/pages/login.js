@@ -129,8 +129,7 @@ const StyledLogin = styled.div`
 const LOGIN = gql`
     mutation login($password: String!) {
         login(password: $password) {
-            id
-            isAdmin
+            token
         }
     }
 `;
@@ -171,11 +170,9 @@ function Login() {
             // Successfully logged in
             .then((snapshot) => {
                 // Set token to local storage
-                localStorage.setItem("token", snapshot.data.login.id);
+                localStorage.setItem("token", snapshot.data.login.token);
                 // Push to dashboard and force reload
-                router.push("/").then(() => {
-                    router.reload();
-                });
+                router.push("/");
             })
             // Error logging in
             .catch((e) => {
