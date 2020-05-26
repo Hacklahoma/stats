@@ -159,8 +159,6 @@ function Login() {
 
     // Called on login
     const onSubmit = () => {
-        console.log(password);
-
         // Calling mutation
         login({
             variables: {
@@ -172,7 +170,7 @@ function Login() {
                 // Set token to local storage
                 localStorage.setItem("token", snapshot.data.login.token);
                 // Push to dashboard and force reload
-                router.push("/");
+                setTimeout(() => router.push("/"), 500);
             })
             // Error logging in
             .catch((e) => {

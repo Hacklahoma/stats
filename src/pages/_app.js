@@ -35,13 +35,17 @@ function MyApp({ Component, pageProps }) {
         client: client,
     });
 
-    // console.log(user);
-    
+    // If the browser exists, then compare tokens and reset them if necessary
+    if (process.browser) {
+        if (localStorage.getItem("token") !== token) {
+            setToken(localStorage.getItem("token"));
+        }
+    }
 
     // Effect to execute when loading changes
     useEffect(() => {
-        // If no longer loading and is not at login
-        if (!loading && router.pathname !== "/login") {
+        // Condition: Not loading, not at login, and user is not defined already
+        if (!loading && router.pathname !== "/login" && !user) {
             // Data is not found (no token or invalid token)
             if (data === undefined) {
                 router.push("/login").then(() => {
