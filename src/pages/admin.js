@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import Accounts from "../components/Admin/Accounts";
+import Metrics from "../components/Admin/Metrics";
 
 const StyledAdmin = styled.div`
     position: relative;
@@ -72,6 +73,7 @@ function Admin({ user }) {
                     </h2>
                 </div>
                 {view === "accounts" && <Accounts />}
+                {view === "metrics" && <Metrics />}
             </StyledAdmin>
         );
     else

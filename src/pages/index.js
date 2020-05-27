@@ -1,16 +1,16 @@
 import styled from "styled-components";
 
-const StyledMetrics = styled.div`
+const StyledHome = styled.div`
     text-align: center;
 `;
 
-function Metrics({ user }) {
+function Home({ user }) {
     return (
-        <StyledMetrics>
-            <p>Metrics</p>
+        <StyledHome>
+            <p>Home</p>
             <p>Hello, {user.company}</p>
-        </StyledMetrics>
+        </StyledHome>
     );
 }
 
-export default Metrics;
+export default Home;
