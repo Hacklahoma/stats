@@ -2,6 +2,8 @@
  * Updates the user based on values given. ID is only required argument.
  */
 
+const { v4: uuidv4 } = require("uuid");
+
 const changeUser = async (_, { id, company, password, disabled }) => {
     const { keystone } = require("../index.js");
 
@@ -15,7 +17,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     const companyData = await keystone.executeQuery(`
         query {
             allUsers(where:{id: ${id}}) {
-                company, password, disabled
+                company, password, disabled, token
             }
         }
     `);
@@ -27,7 +29,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     }
 
     //Set up some variables to store new values into
-    var newCompany, newPassword, newDisabled;
+    var newCompany, newPassword, newDisabled, newToken;
 
     //Check to see if the company was given
     if (!company) {
@@ -61,6 +63,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     if (!password) {
         //Set the newPassword variable to the old password
         newPassword = companyData.data.allUsers[0].password;
+        newToken = companyData.data.allUsers[0].login;
     } else {
         //looks to see if the password is already being used
         const check = await keystone.executeQuery(`
@@ -83,6 +86,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
 
         //Set the new password to the given password
         newPassword = password;
+        newToken = uuidv4();
     }
 
     //Checks to see if disabled was given
@@ -103,12 +107,14 @@ const changeUser = async (_, { id, company, password, disabled }) => {
                     ${newCompany !== undefined ? `company: "${newCompany}",` : ``}
                     ${newPassword !== undefined ? `password: "${newPassword}",` : ``}
                     ${newDisabled !== undefined ? `disabled: ${newDisabled},` : ``}
+                    ${newToken !== undefined ? `token: "${newToken}",` : ``}
                 }
             ){
                id 
                company
                password 
                disabled
+               token
             }
         }
     `);
@@ -119,3 +125,4 @@ const changeUser = async (_, { id, company, password, disabled }) => {
 };
 
 module.exports = changeUser;
+
