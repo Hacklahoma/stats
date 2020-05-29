@@ -47,10 +47,11 @@ function MyApp({ Component, pageProps }) {
         // Condition: Not loading, not at login, and user is not defined already
         if (!loading && router.pathname !== "/login" && !user) {
             // Data is not found (no token or invalid token)
-            if (data === undefined) {
+            if (data === undefined || data.allUsers.length === 0) {
                 router.push("/login").then(() => {
                     setReady(true);
                 });
+
                 // Data found, setting user state
             } else {
                 setUser(data.allUsers[0]);
