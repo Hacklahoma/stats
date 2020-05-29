@@ -54,7 +54,16 @@ const login = async (_, { password, code }) => {
         fetch(url, settings)
             .then(res => res.json())
             .then((json)=> {
-                console.log(JSON.stringify(json));
+                if(json.ok === false){
+                    throw new Error("Could not log in through Slack.");
+                }
+                else {
+                    if (json.team.id !== process.env.SLACK_TEAM_ID){
+                        throw new Error("Wrong Slack team entered.");
+                    }
+                    
+                    console.log(`Logging in as "${json.user.name}"`);
+                }
             });
 
         //Sees if the hacklahoma account is already created

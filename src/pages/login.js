@@ -134,6 +134,9 @@ const LOGIN = gql`
     }
 `;
 
+//Page reloads quite a bit and doesn't let slack log in. Thats why this is here
+let code = null;
+
 function Login() {
     // State to determine whether to render for mobile or not
     const [isMobile, setMobile] = useState(true);
@@ -144,6 +147,37 @@ function Login() {
     const [error, setError] = useState();
     // Router
     const router = useRouter();
+
+    
+    //Check to see if the param code is included
+    if(router.asPath.includes("code=") && code === null){
+        const params = new URLSearchParams(window.location.search);
+        code = params.get('code');
+        
+        login({
+            variables: {
+                code: code,
+            },
+        })
+            // Successfully logged in
+            .then((snapshot) => {
+                // Set token to local storage
+                localStorage.setItem("token", snapshot.data.login.token);
+                // Push to dashboard and force reload
+                setTimeout(() => router.push("/"), 500);
+            })
+            // Error logging in
+            .catch((e) => {
+                if (error) {
+                    setError(undefined);
+                    setTimeout(() => {
+                        setError(e.message.substring(15));
+                    }, 125);
+                } else {
+                    setError(e.message.substring(15));
+                }
+            });
+    }
 
     // Resize listener to set mobile on render
     useEffect(() => {
