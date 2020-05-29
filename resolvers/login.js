@@ -51,9 +51,11 @@ const login = async (_, { password, code }) => {
         let url = `https://slack.com/api/oauth.access?code=${code}&client_id=${process.env.SLACK_CLIENT_ID}&client_secret=${process.env.SLACK_CLIENT_SECRET}`
         let settings = { method: "Get" };
 
+        //Fetch the json file
         fetch(url, settings)
             .then(res => res.json())
             .then((json)=> {
+                //checks to see if the data was able to be pulled
                 if(json.ok === false){
                     throw new Error("Could not log in through Slack.");
                 }
@@ -62,7 +64,7 @@ const login = async (_, { password, code }) => {
                         throw new Error("Wrong Slack team entered.");
                     }
                     
-                    console.log(`Logging in as "${json.user.name}"`);
+                    //console.log(`Logging in as "${json.user.name}"`);
                 }
             });
 
