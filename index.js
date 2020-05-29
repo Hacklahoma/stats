@@ -44,7 +44,7 @@ keystone.extendGraphQLSchema({
             resolver: changeUser,
         },
         {
-            schema: "login(password: String!): User",
+            schema: "login(password: String, code: String): User",
             resolver: login,
         },
     ],

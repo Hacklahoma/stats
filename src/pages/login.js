@@ -127,8 +127,8 @@ const StyledLogin = styled.div`
 
 //Mutation for login
 const LOGIN = gql`
-    mutation login($password: String!) {
-        login(password: $password) {
+    mutation login($password: String, $code: String) {
+        login(password: $password, code: $code) {
             token
         }
     }
@@ -138,18 +138,12 @@ function Login() {
     // State to determine whether to render for mobile or not
     const [isMobile, setMobile] = useState(true);
     // Mutation to login
-    const [login, { data }] = useMutation(LOGIN);
+    const [login, {data}] = useMutation(LOGIN);
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState();
     // Router
     const router = useRouter();
-
-    if(router.asPath.includes("?code=")){
-        const code = window.location.search;
-        const params = new URLSearchParams(code);
-        console.log(params.get('code'));
-    }
 
     // Resize listener to set mobile on render
     useEffect(() => {
