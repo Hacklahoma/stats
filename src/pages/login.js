@@ -158,7 +158,9 @@ function Login() {
     }, []);
 
     // Called on login
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        event.preventDefault();
+        event.stopPropagation();
         // Calling mutation
         login({
             variables: {
@@ -209,7 +211,7 @@ function Login() {
             </CSSTransition>
 
             <div className="right">
-                <div className="content">
+                <form onSubmit={onSubmit} className="content">
                     <h2>Enter your password to get started:</h2>
                     {/* Password input */}
                     <div className="input">
@@ -244,7 +246,7 @@ function Login() {
                             {error}
                         </Alert>
                     </Fade>
-                </div>
+                </form>
             </div>
         </StyledLogin>
     );
