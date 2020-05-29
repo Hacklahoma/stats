@@ -145,6 +145,12 @@ function Login() {
     // Router
     const router = useRouter();
 
+    if(router.asPath.includes("?code=")){
+        const code = window.location.search;
+        const params = new URLSearchParams(code);
+        console.log(params.get('code'));
+    }
+
     // Resize listener to set mobile on render
     useEffect(() => {
         function handleResize() {
@@ -231,7 +237,10 @@ function Login() {
                         <Button onClick={onSubmit} variant="outlined" size="small" color="primary">
                             Login
                         </Button>
-                        <a href="" className="teamMember">
+                        <a 
+                            href={`https://slack.com/oauth/authorize?scope=identity.basic&client_id=${process.env.SLACK_CLIENT_ID}`} 
+                            className="teamMember"
+                            >
                             team member?
                         </a>
                     </div>
