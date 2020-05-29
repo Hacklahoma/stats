@@ -3,6 +3,11 @@ const { v4: uuidv4 } = require("uuid");
 
 const User = {
     fields: {
+        company: { type: Text },
+        password: { type: Text },
+        isAdmin: { type: Checkbox, defaultValue: false },
+        disabled: { type: Checkbox, defaultValue: false },
+        activity: { type: Relationship, ref: "Event", many: true },
         token: {
             type: Uuid,
             isUnique: true,
@@ -10,11 +15,6 @@ const User = {
                 return uuidv4();
             },
         },
-        company: { type: Text },
-        password: { type: Text },
-        disabled: { type: Checkbox, defaultValue: false },
-        activity: { type: Relationship, ref: "Event", many: true },
-        isAdmin: { type: Checkbox, defaultValue: false },
     },
     labelField: "company",
 };
