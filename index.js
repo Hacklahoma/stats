@@ -5,11 +5,10 @@ const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { NextApp } = require("@keystonejs/app-next");
 const { User, Event } = require("./models");
 const { addUser, changeUser, login } = require("./resolvers");
-const dotenv = require("dotenv");
 const keepAwake = require("./src/lib/keepAwake");
 
-// Getting environmental variables
-dotenv.config();
+// Get environmental variables
+require("dotenv").config();
 
 // Keep heroku app alive
 keepAwake();
