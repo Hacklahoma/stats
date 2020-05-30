@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { useState } from "react";
+import { Button } from "@material-ui/core";
 
 const StyledYearItem = styled.div`
     border: 3px solid #eaeaea;
@@ -12,15 +13,21 @@ const StyledYearItem = styled.div`
     /* min-width: 200px; */
     margin: 10px;
     p {
-        padding: 10px;
+        padding: 10px 14px;
         font-weight: bold;
         font-size: 2em;
+        transition: color .25s;
         ${(props) => props.locked && "color: rgb(244, 68 ,54)"};
     }
     .lock {
-        padding: 10px 15px;
+        margin: 8px;
         color: #aaa;
+        min-width: 30px;
         cursor: pointer;
+        .icon {
+            height: 17px;
+            width: 17px;
+        }
     }
 `;
 
@@ -29,11 +36,9 @@ function YearItem({ year }) {
     return (
         <StyledYearItem locked={locked}>
             <p>{year}</p>
-            {locked ? (
-                <FaLock className="lock" onClick={() => setLocked(false)} />
-            ) : (
-                <FaLockOpen className="lock" onClick={() => setLocked(true)} />
-            )}
+            <Button className="lock" onClick={() => setLocked(!locked)}>
+                {locked ? <FaLock className="icon" /> : <FaLockOpen className="icon" />}
+            </Button>
         </StyledYearItem>
     );
 }
