@@ -147,6 +147,35 @@ function Login() {
 
     // Resize listener to set mobile on render
     useEffect(() => {
+        //Check to see if the param code is included
+        if(router.asPath.includes("code=")){
+            const params = new URLSearchParams(window.location.search);
+            
+            //Login mutation
+            login({
+                variables: {
+                    code: params.get('code'),
+                },
+            })
+                // Successfully logged in
+                .then((snapshot) => {
+                    // Set token to local storage
+                    localStorage.setItem("token", snapshot.data.login.token);
+                    // Push to dashboard and force reload
+                    setTimeout(() => router.push("/"), 500);
+                })
+                // Error logging in
+                .catch((e) => {
+                    if (error) {
+                        setError(undefined);
+                        setTimeout(() => {
+                            setError(e.message.substring(15));
+                        }, 125);
+                    } else {
+                        setError(e.message.substring(15));
+                    }
+                });
+        }
         function handleResize() {
             setMobile(window.innerWidth < 720);
         }
