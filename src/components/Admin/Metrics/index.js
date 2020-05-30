@@ -4,6 +4,7 @@ import { parse } from "papaparse";
 import { useState } from "react";
 import AddYear from "../../Dialogs/AddYear";
 import { FiPlus } from "react-icons/fi";
+import YearItem from "./YearItem";
 
 const StyledMetrics = styled.div`
     .buttons {
@@ -19,6 +20,11 @@ const StyledMetrics = styled.div`
                 height: 24px;
             }
         }
+    }
+    .years {
+        width: 100%;
+        margin-top: 40px;
+        background: red;
     }
 
     @media only screen and (max-width: 619px) {
@@ -46,8 +52,10 @@ function Metrics() {
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                <div>
-                    <p>After adding a year, view the console for the data output.</p>
+                <div className="years">
+                    <YearItem year="2020" />
+                    <YearItem year="2019" />
+                    <YearItem year="2018" />
                 </div>
             )}
         </StyledMetrics>
