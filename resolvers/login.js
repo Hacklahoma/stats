@@ -52,26 +52,25 @@ const login = async (_, { password, code }) => {
         let settings = { method: "Get" };
 
         //Fetch the json file
-        fetch(url, settings)
-            .then(res => res.json())
-            .then((json)=> {
-                //checks to see if the data was able to be pulled
-                if(json.ok === false){
-                    throw new Error("Could not log in through Slack.");
-                }
-                else {
-                    if (json.team.id !== process.env.SLACK_TEAM_ID){
-                        throw new Error("Wrong Slack team entered.");
+        const user = 
+            await fetch(url, settings)
+                .then((res) => res.json())
+                .then((json) => {
+                    //checks to see if the data was able to be pulled
+                    if (json.ok === false) {
+                        throw new Error("Could not log in through Slack.");
+                    } else {
+                        if (json.team.id !== process.env.SLACK_TEAM_ID) {
+                            throw new Error("Wrong Slack team entered.");
+                        }
+                        return json.user.name;
                     }
-                    
-                    //console.log(`Logging in as "${json.user.name}"`);
-                }
-            });
+                });
 
-        //Sees if the hacklahoma account is already created
+        //Sees if the hacklahoma user's account is already created
         const hacklahomaAccount = await keystone.executeQuery(`
             query {
-                allUsers(where:{company:"Hacklahoma"}) {
+                allUsers(where:{company: "${user}"}) {
                     id
                     token
                     company
@@ -88,7 +87,7 @@ const login = async (_, { password, code }) => {
             const result = await keystone.executeQuery(`
                 mutation {
                     createUser(data:{
-                        company: "Hacklahoma",
+                        company: "${user}",
                         password: "",
                         isAdmin: true, 
                     }) {
