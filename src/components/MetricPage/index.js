@@ -29,19 +29,31 @@ function MetricPage({ year }) {
             <div className="topStats">
                 <div className="item">
                     <p className="label">Total Hackers</p>
-                    <p className="data">923</p>
+                    {year === "" && <p className="data">923</p>}
+                    {year === "2020" && <p className="data">296</p>}
+                    {year === "2019" && <p className="data">267</p>}
+                    {year === "2018" && <p className="data">203</p>}
                 </div>
                 <div className="item">
                     <p className="label">Total Projects</p>
-                    <p className="data">127</p>
+                    {year === "" && <p className="data">127</p>}
+                    {year === "2020" && <p className="data">62</p>}
+                    {year === "2019" && <p className="data">38</p>}
+                    {year === "2018" && <p className="data">27</p>}
                 </div>
                 <div className="item">
                     <p className="label">Unique Hackers</p>
-                    <p className="data">268</p>
+                    {year === "" && <p className="data">268</p>}
+                    {year === "2020" && <p className="data">38</p>}
+                    {year === "2019" && <p className="data">27</p>}
+                    {year === "2018" && <p className="data">203</p>}
                 </div>
                 <div className="item">
                     <p className="label">First Time Hackers</p>
-                    <p className="data">438</p>
+                    {year === "" && <p className="data">438</p>}
+                    {year === "2020" && <p className="data">132</p>}
+                    {year === "2019" && <p className="data">89</p>}
+                    {year === "2018" && <p className="data">192</p>}
                 </div>
             </div>
         </StyledMetricPage>
