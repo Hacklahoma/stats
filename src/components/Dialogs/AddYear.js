@@ -31,15 +31,15 @@ const DropZone = styled.div`
 `;
 
 const ADD_YEAR = gql`
-    mutation addUser($data: String!, $year: String!) {
-        addYear(data: $data, year: $year) {
+    mutation uploadYear($year: String!, $data: String!) {
+        uploadYear(year: $year, data: $data) {
             id
         }
     }
 `;
 
 function AddYear({ open, setModal, refetch }) {
-    const [addYear, { data }] = useMutation(ADD_YEAR);
+    const [uploadYear, { data }] = useMutation(ADD_YEAR);
     const [error, setError] = useState();
     // Holds inputs for adding year
     const [name, setName] = useState("");
@@ -61,12 +61,32 @@ function AddYear({ open, setModal, refetch }) {
         setSubmitted(true);
         if (name === null || acceptedFiles.length === 0 || name === "") return;
         console.log(`Adding the year '${name}' with file '${acceptedFiles[0].name}'...`);
-        parse(acceptedFiles[0], {
+        
+        var reader = new FileReader();
+        reader.onload = function(file) {
+            console.log("text: " + file.target.result);
+            uploadYear({ 
+                variables: { 
+                    year: name, 
+                    data: file.target.result 
+                } 
+            })
+            .then(() => {
+                handleClose();
+                console.log("I did it dad");
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
+        };
+        reader.readAsText(acceptedFiles[0]);
+       
+        /*parse(acceptedFiles[0], {
             complete: function(results, file) {
                 console.log(results);
             },
             header: true,
-        });
+        });*/
         // Adding user to backend
         // addYear({ variables: { company: name, password: password } })
         //     .then(() => {
