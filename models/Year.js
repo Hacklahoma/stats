@@ -9,6 +9,7 @@ const Year = {
             many: true,
         },
     },
+    labelField: "label",
 };
 
 module.exports = Year;

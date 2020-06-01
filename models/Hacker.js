@@ -62,6 +62,7 @@ const Event = {
         github: { type: Url },
         website: { type: Url }
     },
+    labelField: "name",
 };
 
 module.exports = Event;
