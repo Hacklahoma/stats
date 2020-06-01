@@ -52,7 +52,8 @@ const Event = {
         diet: { 
             type: Select,
             options: "VEGETARIAN, VEGAN, LACTOSE, GLUTEN, " +
-                "NUT_ALLERGY, HALAL, KOSHER, OTHER"
+                "NUT_ALLERGY, HALAL, KOSHER, OTHER",
+            many: true,
         },
         shirt: {
             type: Select,
