@@ -3,7 +3,7 @@ const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { NextApp } = require("@keystonejs/app-next");
-const { User, Event } = require("./models");
+const { User, Event, Year, Hacker } = require("./models");
 const { addUser, changeUser, login } = require("./resolvers");
 const keepAwake = require("./src/lib/keepAwake");
 
@@ -30,6 +30,8 @@ const keystone = new Keystone({
 //Creating lists for Users and Events
 keystone.createList("User", User);
 keystone.createList("Event", Event);
+keystone.createList("Year", Year);
+keystone.createList("Hacker", Hacker);
 
 //Adding custom schemas/resolvers
 keystone.extendGraphQLSchema({
