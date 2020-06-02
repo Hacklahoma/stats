@@ -63,8 +63,11 @@ function AddYear({ open, setModal, refetch }) {
         console.log(`Adding the year '${name}' with file '${acceptedFiles[0].name}'...`);
         
         var reader = new FileReader();
+
+        //When a file is read in, execute this function
         reader.onload = function(file) {
-            console.log("text: " + file.target.result);
+
+            //Upload Year Resollver
             uploadYear({ 
                 variables: { 
                     year: name, 
@@ -79,6 +82,8 @@ function AddYear({ open, setModal, refetch }) {
                 setError(error.message);
             });
         };
+
+        //Read the file in
         reader.readAsText(acceptedFiles[0]);
        
         /*parse(acceptedFiles[0], {

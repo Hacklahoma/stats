@@ -102,7 +102,7 @@ const changeUser = async (_, { id, company, password, disabled }) => {
     const result = await keystone.executeQuery(`
         mutation {
             updateUser(
-                id: ${id}, 
+                id: ${id},
                 data:{
                     ${newCompany !== undefined ? `company: "${newCompany}",` : ``}
                     ${newPassword !== undefined ? `password: "${newPassword}",` : ``}
