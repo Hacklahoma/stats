@@ -2,8 +2,9 @@ const { Keystone } = require("@keystonejs/keystone");
 const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
+const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 const { NextApp } = require("@keystonejs/app-next");
-const { User, Event, Year, Hacker } = require("./models");
+const { User, Event, Year, Hacker, Admin } = require("./models");
 const { addUser, changeUser, login, uploadYear } = require("./resolvers");
 const keepAwake = require("./src/lib/keepAwake");
 
@@ -25,9 +26,16 @@ const keystone = new Keystone({
     name: PROJECT_NAME,
     adapter: new Adapter(adapterConfig),
     cookieSecret: process.env.COOKIE_SECRET,
+    onConnect: async () => {
+        // Setting up admin account
+        keystone.createItems({
+            Admin: [{ username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD }],
+        });
+    },
 });
 
 //Creating lists for Users and Events
+keystone.createList("Admin", Admin);
 keystone.createList("User", User);
 keystone.createList("Event", Event);
 keystone.createList("Year", Year);
@@ -55,13 +63,22 @@ keystone.extendGraphQLSchema({
     ],
 });
 
+// Securing admin panel
+const authStrategy = keystone.createAuthStrategy({
+    type: PasswordAuthStrategy,
+    list: "Admin",
+    config: {
+        identityField: "username",
+        secretField: "password",
+    },
+});
 
 // Export
 module.exports = {
     keystone,
     apps: [
         new GraphQLApp(),
-        new AdminUIApp({ enableDefaultRoute: false, adminPath: "/admin-ui" }),
+        new AdminUIApp({ enableDefaultRoute: false, adminPath: "/admin-ui", authStrategy }),
         new NextApp({ dir: "src" }),
         "dist",
     ],
