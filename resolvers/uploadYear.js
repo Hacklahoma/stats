@@ -18,7 +18,7 @@ function convertDate(date){
         }
         //Fix the year
         if(d[2].length !== 4){
-            d[2] = (d[2] < 90) ? '20' + d[2] : '19' + d[2];
+            d[2] = (d[2] < 80) ? '20' + d[2] : '19' + d[2];
         }
 
         //Return the compatible date
