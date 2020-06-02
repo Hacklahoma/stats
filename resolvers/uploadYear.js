@@ -2,11 +2,41 @@
  * Creates a new year with all of the hacker data
  */
 
+//Function to convert date from dd/mm/yy to yyyy-mm-dd (ISO 8601)
+function convertDate(date){
+    var d = date.split("/");
+
+    //Checks to ensure that the date is the correct length
+    if(d.length === 3){
+        //Fix the month
+        if(d[0].length !== 2){
+            d[0] = "0" + d[0];
+        }
+        //Fix the day
+        if(d[1].length !== 2){
+            d[1] = "0" + d[1];
+        }
+        //Fix the year
+        if(d[2].length !== 4){
+            d[2] = (d[2] < 90) ? '20' + d[2] : '19' + d[2];
+        }
+
+        //Return the compatible date
+        return d[2] + "-" + d[0] + "-" + d[1];
+    }
+    //Graduation Dates
+    else if(d.length === 1){
+        return date + "-05"
+    }
+
+    //If it manages to get down here return null
+    return null;
+}
+
 const uploadYear = async (_, { year, data }) => {
     const { keystone } = require("../index.js");
     const { parse } = require("papaparse")
 
-    console.log("1");
     //Check to make sure the year isn't already being used
     const yearCheck = await keystone.executeQuery(`
             query {
@@ -16,13 +46,11 @@ const uploadYear = async (_, { year, data }) => {
             }
         `);
 
-    console.log("2");
     //Check to see if any years were returned from query
     if(yearCheck.data.allYears.length > 0){
         throw new Error("Year is currently already being used.")
     }
     
-    console.log("3");
     //Create the initial year
     const yearData = await keystone.executeQuery(`
                 mutation {
@@ -33,8 +61,8 @@ const uploadYear = async (_, { year, data }) => {
                     }
                 }
             `);
+    console.log(yearData.data.createYear);
 
-    console.log("4");
     //Parse the data
     const hackerData = parse(data , {
         complete: function(results, file) {
@@ -43,48 +71,72 @@ const uploadYear = async (_, { year, data }) => {
         header: true,
     })
 
-    console.log("5");
     //Empty Hacker Array
-    var hackers = new Array();
+    //var hackers = new Array();
+
+    console.log(`"${convertDate(hackerData.data[0].birthday)}"`);
+    
+
+    
 
     //Go through the hacker data and parse it all
     for (i in hackerData.data){
-        //parent: ${yearData.data.createYear},
+        //Check the name
+        if(hackerData.data[i].name.includes(`"`)){
+            throw new Error(`Incorrectly formated name at line ${+i+ +2}.`)
+        }
 
+        //Create a new hacker
         const hacker = await keystone.executeQuery(`
                 mutation {
                     createHacker(data:{
-                        name: ${hackerData.data[i].name},
-                        email: ${hackerData.data[i].email},
-                        school: ${hackerData.data[i].school},
-                        birthday: ${hackerData.data[i].birthday},
-                        gender: ${hackerData.data[i].gender},
-                        race: ${hackerData.data[i].race},
-                        levelOfStudy: ${hackerData.data[i].levelOfStudy},
-                        graduation: ${hackerData.data[i].graduation},
-                        major: ${hackerData.data[i].major},
-                        hackathons: ${hackerData.data[i].hackathons},
-                        diet: ${hackerData.data[i].diet},
-                        shirt: ${hackerData.data[i].shirt},
+                        
+                        ${hackerData.data[i].name.length > 0 ? `parent: ${yearData.data.createYear},` : ``}
+                        ${hackerData.data[i].name.length > 0 ? `name: "${hackerData.data[i].name}",` : ``}
+                        ${hackerData.data[i].email.length > 0 ? `email: "${hackerData.data[i].email}",` : ``}
+                        ${hackerData.data[i].school.length > 0 ? `school: "${hackerData.data[i].school}",` : ``}
+                        ${hackerData.data[i].birthday.length > 0 ? `birthday: "${convertDate(hackerData.data[i].birthday)}",` : ``}
+                        ${hackerData.data[i].gender.length > 0 ? `gender: "${hackerData.data[i].gender}",` : ``}
+                        ${hackerData.data[i].race.length > 0 ? `race: "${hackerData.data[i].race}",` : ``}
+                        ${hackerData.data[i].levelOfStudy.length > 0 ? `levelOfStudy: "${hackerData.data[i].levelOfStudy}",` : ``}
+                        ${hackerData.data[i].graduation.length > 0 ? `graduation: "${convertDate(hackerData.data[i].graduation)}",` : ``} 
+                        ${hackerData.data[i].major.length > 0 ? `major: "${hackerData.data[i].major}",` : ``} 
+                        ${hackerData.data[i].hackathons.length > 0 ? `hackathons: ${hackerData.data[i].hackathons},` : ``} 
+                        ${hackerData.data[i].diet.length > 0 ? `diet: "${hackerData.data[i].diet}",` : ``} 
+                        ${hackerData.data[i].shirt.length > 0 ? `shirt: "${hackerData.data[i].shirt}",` : ``} 
                         needsReimbursement: false,
-                        github: ${hackerData.data[i].github},
-                        website: ${hackerData.data[i].website},
+                        ${hackerData.data[i].github.length > 0 ? `github: "${hackerData.data[i].github}",` : ``} 
+                        ${hackerData.data[i].website.length > 0 ? `website: "${hackerData.data[i].website}",` : ``} 
+
                     }) {
-                        name, email, school, birthday, gender, race, levelOfStudy,
-                        graduation, major, hackathons, diet, shirt, needReimbursement,
-                        github, website
+                        parent
+                        name
+                        email
+                        school
+                        birthday
+                        gender
+                        race
+                        levelOfStudy
+                        graduation
+                        major
+                        hackathons
+                        diet
+                        shirt
+                        needsReimbursement
+                        github
+                        website
                     }
                 }
             `);
-
-        hackers.push(hacker.data.createHacker);
+        
+        //console.log(hacker.data.createHacker);
+       // hackers.push(hacker.data.createHacker);
     }
-    console.log("6");
 
-    console.log(hackers);
-    console.log(yearData.data.createYear.id);
+    //console.log(hackers);
+    //console.log(yearData.data.createYear.id);
 
-    const result = await keystone.executeQuery(`
+    /*const result = await keystone.executeQuery(`
                 mutation {
                     updateYear(
                         id: ${yearData.data.createYear.id}, 
@@ -94,10 +146,9 @@ const uploadYear = async (_, { year, data }) => {
                         name
                     }
                 }
-            `);
+            `);*/
 
-            console.log("7");
-    return result.data.updateYear;
+    return yearData.data.createYear;
 }
 
 module.exports = uploadYear;
