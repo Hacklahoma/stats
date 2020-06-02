@@ -61,7 +61,6 @@ const uploadYear = async (_, { year, data }) => {
                     }
                 }
             `);
-    console.log(yearData.data.createYear);
 
     //Parse the data
     const hackerData = parse(data , {
@@ -71,13 +70,7 @@ const uploadYear = async (_, { year, data }) => {
         header: true,
     })
 
-    //Empty Hacker Array
-    //var hackers = new Array();
-
-    console.log(`"${convertDate(hackerData.data[0].birthday)}"`);
-
     //Go through the hacker data and parse it all
-    //${hackerData.data[i].name.length > 0 ? `parent: ${yearData.data.createYear},` : ``}
     for (i in hackerData.data){
         //Check the name
         if(hackerData.data[i].name.includes(`"`)){
@@ -88,6 +81,7 @@ const uploadYear = async (_, { year, data }) => {
         const hacker = await keystone.executeQuery(`
                 mutation {
                     createHacker(data:{
+                        parent: {connect: {id: ${yearData.data.createYear.id}}}
                         ${hackerData.data[i].name.length > 0 ? `name: "${hackerData.data[i].name}",` : ``}
                         ${hackerData.data[i].email.length > 0 ? `email: "${hackerData.data[i].email}",` : ``}
                         ${hackerData.data[i].school.length > 0 ? `school: "${hackerData.data[i].school}",` : ``}
@@ -104,7 +98,8 @@ const uploadYear = async (_, { year, data }) => {
                         ${hackerData.data[i].github.length > 0 ? `github: "${hackerData.data[i].github}",` : ``} 
                         ${hackerData.data[i].website.length > 0 ? `website: "${hackerData.data[i].website}",` : ``} 
                     }) {
-                        parent
+                        id
+                        parent {label}
                         name
                         email
                         school
@@ -124,24 +119,21 @@ const uploadYear = async (_, { year, data }) => {
                 }
             `);
         
-        //console.log(hacker.data.createHacker);
-       // hackers.push(hacker.data.createHacker);
-    }
-
-    //console.log(hackers);
-    //console.log(yearData.data.createYear.id);
-
-    /*const result = await keystone.executeQuery(`
+        //Add the hacker to the year
+        const addHacker = await keystone.executeQuery(`
                 mutation {
                     updateYear(
                         id: ${yearData.data.createYear.id}, 
                         data:{
-                            hackers: ${hackers}
-                    }) {
-                        name
+                            hackers: {connect:{id:"${hacker.data.createHacker.id}"}}
+                        }
+                    ){
+                        label
+                        hackers {name}
                     }
                 }
-            `);*/
+            `);
+    }
 
     return yearData.data.createYear;
 }
