@@ -75,11 +75,9 @@ const uploadYear = async (_, { year, data }) => {
     //var hackers = new Array();
 
     console.log(`"${convertDate(hackerData.data[0].birthday)}"`);
-    
-
-    
 
     //Go through the hacker data and parse it all
+    //${hackerData.data[i].name.length > 0 ? `parent: ${yearData.data.createYear},` : ``}
     for (i in hackerData.data){
         //Check the name
         if(hackerData.data[i].name.includes(`"`)){
@@ -90,8 +88,6 @@ const uploadYear = async (_, { year, data }) => {
         const hacker = await keystone.executeQuery(`
                 mutation {
                     createHacker(data:{
-                        
-                        ${hackerData.data[i].name.length > 0 ? `parent: ${yearData.data.createYear},` : ``}
                         ${hackerData.data[i].name.length > 0 ? `name: "${hackerData.data[i].name}",` : ``}
                         ${hackerData.data[i].email.length > 0 ? `email: "${hackerData.data[i].email}",` : ``}
                         ${hackerData.data[i].school.length > 0 ? `school: "${hackerData.data[i].school}",` : ``}
@@ -107,7 +103,6 @@ const uploadYear = async (_, { year, data }) => {
                         needsReimbursement: false,
                         ${hackerData.data[i].github.length > 0 ? `github: "${hackerData.data[i].github}",` : ``} 
                         ${hackerData.data[i].website.length > 0 ? `website: "${hackerData.data[i].website}",` : ``} 
-
                     }) {
                         parent
                         name
