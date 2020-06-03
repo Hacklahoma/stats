@@ -1,3 +1,7 @@
+/**
+ * Handles displaying and functionality of adding a year
+ */
+
 import {
     Dialog,
     DialogTitle,
@@ -11,7 +15,6 @@ import { Alert } from "@material-ui/lab";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { gql, useMutation } from "@apollo/client";
-import { parse } from "papaparse";
 import styled from "styled-components";
 
 const DropZone = styled.div`
@@ -48,11 +51,19 @@ function AddYear({ open, setModal, refetch }) {
         accept: ".csv",
     });
 
+    // Closes modal
     const handleClose = () => {
         setModal(null);
         setTimeout(() => {
             setError(null);
         }, 1000);
+    };
+
+    // Checks if input is a number and less than 4
+    const handleChange = (e) => {
+        if (!isNaN(e.target.value) && e.target.value !== "" && e.target.value.length <= 4)
+            setName(Number.parseInt(e.target.value));
+        else if (e.target.value === "") setName("");
     };
 
     const submit = () => {
@@ -61,48 +72,29 @@ function AddYear({ open, setModal, refetch }) {
         setSubmitted(true);
         if (name === null || acceptedFiles.length === 0 || name === "") return;
         console.log(`Adding the year '${name}' with file '${acceptedFiles[0].name}'...`);
-        
+
         var reader = new FileReader();
 
         //When a file is read in, execute this function
         reader.onload = function(file) {
-
-            //Upload Year Resollver
-            uploadYear({ 
-                variables: { 
-                    year: name, 
-                    data: file.target.result 
-                } 
+            //Upload Year Resolver
+            uploadYear({
+                variables: {
+                    year: name,
+                    data: file.target.result,
+                },
             })
-            .then(() => {
-                handleClose();
-                console.log("I did it dad");
-            })
-            .catch((error) => {
-                setError(error.message);
-            });
+                .then(() => {
+                    handleClose();
+                    console.log("I did it dad");
+                })
+                .catch((error) => {
+                    setError(error.message);
+                });
         };
 
         //Read the file in
         reader.readAsText(acceptedFiles[0]);
-       
-        /*parse(acceptedFiles[0], {
-            complete: function(results, file) {
-                console.log(results);
-            },
-            header: true,
-        });*/
-        // Adding user to backend
-        // addYear({ variables: { company: name, password: password } })
-        //     .then(() => {
-        //         handleClose();
-        //         setName("");
-        //         setPassword("");
-        //         refetch();
-        //     })
-        //     .catch((error) => {
-        //         setError(error.message.substring(15));
-        //     });
     };
 
     return (
@@ -120,10 +112,9 @@ function AddYear({ open, setModal, refetch }) {
                     id="name"
                     value={name === null ? "" : name}
                     required
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={handleChange}
                     label="Year"
                     type="text"
-                    fullWidth
                 />
                 {/* Upload */}
                 <DropZone
