@@ -86,7 +86,6 @@ function AddYear({ open, setModal, refetch }) {
             })
                 .then(() => {
                     handleClose();
-                    console.log("I did it dad");
                 })
                 .catch((error) => {
                     setError(error.message);
