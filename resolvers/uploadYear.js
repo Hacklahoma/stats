@@ -40,8 +40,8 @@ const uploadYear = async (_, { year, data }) => {
     //Check to make sure the year isn't already being used
     const yearCheck = await keystone.executeQuery(`
             query {
-                allYears(where:{label:"${year}"}) {
-                    label
+                allYears(where:{year:"${year}"}) {
+                    year
                 }
             }
         `);
@@ -55,9 +55,9 @@ const uploadYear = async (_, { year, data }) => {
     const yearData = await keystone.executeQuery(`
                 mutation {
                     createYear(data:{
-                        label: "${year}",
+                        year: "${year}",
                     }) {
-                        id ,label
+                        id ,year
                     }
                 }
             `);
@@ -99,7 +99,7 @@ const uploadYear = async (_, { year, data }) => {
                         ${hackerData.data[i].website.length > 0 ? `website: "${hackerData.data[i].website}",` : ``} 
                     }) {
                         id
-                        parent {label}
+                        parent {year}
                         name
                         email
                         school
@@ -128,7 +128,7 @@ const uploadYear = async (_, { year, data }) => {
                             hackers: {connect:{id:"${hacker.data.createHacker.id}"}}
                         }
                     ){
-                        label
+                        year
                         hackers {name}
                     }
                 }

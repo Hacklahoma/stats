@@ -1,8 +1,8 @@
-const { Text, Relationship } = require("@keystonejs/fields");
+const { Integer, Relationship } = require("@keystonejs/fields");
 
 const Year = {
     fields: {
-        label: { type: Text },
+        year: { type: Integer, isUnique: true },
         hackers: {
             type: Relationship,
             ref: "Hacker",
