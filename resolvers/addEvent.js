@@ -28,7 +28,7 @@ const addEvent = async (_, { token, type, description }) => {
                 data:{
                     parent: {connect: {id: ${user.data.allUsers[0].id}}}, 
                     type: ${type},
-                    description: "${description}",
+                    ${description ? `description: "${description}",` : ``}
                 }
             ){
                 id
