@@ -150,6 +150,7 @@ function Login() {
     const [isMobile, setMobile] = useState(true);
     // Mutation to login
     const [login, {data}] = useMutation(LOGIN);
+    //Mutation to add an event
     const [addEvent, {eventData}] = useMutation(ADD_EVENT);
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);

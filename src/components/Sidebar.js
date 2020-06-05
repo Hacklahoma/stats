@@ -4,6 +4,7 @@ import { FiPieChart, FiBarChart2, FiX, FiEdit2, FiLogOut } from "react-icons/fi"
 import { MdAttachMoney } from "react-icons/md";
 import { Button, Tooltip, ClickAwayListener } from "@material-ui/core";
 import { useState, useEffect } from "react";
+import { gql, useMutation } from "@apollo/client";
 import { CSSTransition } from "react-transition-group";
 import { useRouter } from "next/router";
 
@@ -148,9 +149,22 @@ const StyledHamburger = styled.div`
     }
 `;
 
+//Mutation for adding events
+const ADD_EVENT = gql`
+    mutation addEvent($token: String!, $type: String!, $description: String) {
+        addEvent(token: $token, type: $type, description: $description) {
+            id
+            type
+            description
+        }
+    }
+`;
+
 function Sidebar({ user }) {
     const [isMobile, setMobile] = useState();
     const [isExpanded, setExpanded] = useState();
+    //Mutation to add an event
+    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
     const router = useRouter();
 
     // Populating isMobile state
@@ -167,6 +181,23 @@ function Sidebar({ user }) {
 
     // Handle logout
     const logout = () => {
+        //Event logger
+        addEvent({
+            variables: {
+                token: localStorage.getItem("token"),
+                type: "LOGOUT",
+                description: "Logout",
+            },
+        })
+            // Successfully logged in
+            .then((snapshot) => {
+                //The event has been created
+            })
+            // Error logging
+            .catch((e) => {
+                console.log(e.message);
+            });
+
         localStorage.removeItem("token");
         router.push("/login");
     };
