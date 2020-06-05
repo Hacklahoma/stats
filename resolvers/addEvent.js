@@ -29,12 +29,14 @@ const addEvent = async (_, { token, type, description }) => {
                     parent: {connect: {id: ${user.data.allUsers[0].id}}}, 
                     type: ${type},
                     ${description ? `description: "${description}",` : ``}
+                    timestamp: "${(new Date()).toISOString()}",
                 }
             ){
                 id
                 parent { id company }
                 type 
                 description
+                timestamp
             }
         }
     `);

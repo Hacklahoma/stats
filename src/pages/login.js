@@ -134,11 +134,23 @@ const LOGIN = gql`
     }
 `;
 
+//Mutation for adding events
+const ADD_EVENT = gql`
+    mutation addEvent($token: String!, $type: String!, $description: String) {
+        addEvent(token: $token, type: $type, description: $description) {
+            id
+            type
+            description
+        }
+    }
+`;
+
 function Login() {
     // State to determine whether to render for mobile or not
     const [isMobile, setMobile] = useState(true);
     // Mutation to login
     const [login, {data}] = useMutation(LOGIN);
+    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState();
@@ -161,6 +173,27 @@ function Login() {
                 .then((snapshot) => {
                     // Set token to local storage
                     localStorage.setItem("token", snapshot.data.login.token);
+                    
+
+                    console.log("Loggin in...");
+                    
+                    //Event logger
+                    addEvent({
+                        variables: {
+                            token: snapshot.data.login.token,
+                            type: "LOGIN",
+                            description: "Slack Login",
+                        },
+                    })
+                        // Successfully logged in
+                        .then((snapshot) => {
+                            //The event has been created
+                        })
+                        // Error logging
+                        .catch((e) => {
+                            console.log(e.message);
+                        });
+
                     // Push to dashboard and force reload
                     setTimeout(() => router.push("/"), 500);
                 })
@@ -200,6 +233,24 @@ function Login() {
             .then((snapshot) => {
                 // Set token to local storage
                 localStorage.setItem("token", snapshot.data.login.token);
+                
+                //Event logger
+                addEvent({
+                    variables: {
+                        token: snapshot.data.login.token,
+                        type: "LOGIN",
+                        description: "Company Login",
+                    },
+                })
+                    // Successfully logged in
+                    .then((snapshot) => {
+                        //The event has been created
+                    })
+                    // Error logging
+                    .catch((e) => {
+                        console.log(e.message);
+                    });
+                
                 // Push to dashboard and force reload
                 setTimeout(() => router.push("/"), 500);
             })
