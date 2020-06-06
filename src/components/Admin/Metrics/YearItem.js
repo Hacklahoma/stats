@@ -16,7 +16,7 @@ const StyledYearItem = styled.div`
         padding: 10px 14px;
         font-weight: bold;
         font-size: 2em;
-        transition: color .25s;
+        transition: color 0.25s;
         ${(props) => props.locked && "color: rgb(244, 68 ,54)"};
     }
     .lock {
@@ -31,11 +31,11 @@ const StyledYearItem = styled.div`
     }
 `;
 
-function YearItem({ year }) {
-    const [locked, setLocked] = useState(false);
+function YearItem({ row }) {
+    const [locked, setLocked] = useState(row.disabled);
     return (
         <StyledYearItem locked={locked}>
-            <p>{year}</p>
+            <p>{row.year}</p>
             <Button className="lock" onClick={() => setLocked(!locked)}>
                 {locked ? <FaLock className="icon" /> : <FaLockOpen className="icon" />}
             </Button>

@@ -71,12 +71,8 @@ const uploadYear = async (_, { year, data }) => {
     })
 
     //Go through the hacker data and parse it all
+    const hackerIDs = [];
     for (i in hackerData.data){
-        //Check the name
-        if(hackerData.data[i].name.includes(`"`)){
-            throw new Error(`Incorrectly formated name at line ${+i+ +2}.`)
-        }
-
         //Create a new hacker
         const hacker = await keystone.executeQuery(`
                 mutation {
@@ -118,9 +114,40 @@ const uploadYear = async (_, { year, data }) => {
                     }
                 }
             `);
-        
+
+        // Checks for errors within parsing process
+        if(hacker.errors) {
+            // Remove hackers
+            await keystone.executeQuery(`
+                mutation {
+                    deleteHackers(
+                        ids: ${JSON.stringify(hackerIDs)}, 
+                    ){
+                        id
+                    }
+                }
+            `);
+
+            // Remove year
+            await keystone.executeQuery(`
+                mutation {
+                    deleteYear(
+                        id: ${yearData.data.createYear.id}, 
+                    ){
+                        id
+                    }
+                }
+            `);            
+
+            // Throw error
+            throw new Error(`${hacker.errors[0].message} at line ${+i + +2}.`);
+        }
+
+        // Pushing hacker ids to array in case we need to remove them
+        hackerIDs.push(hacker.data.createHacker.id);
+
         //Add the hacker to the year
-        const addHacker = await keystone.executeQuery(`
+        await keystone.executeQuery(`
                 mutation {
                     updateYear(
                         id: ${yearData.data.createYear.id}, 

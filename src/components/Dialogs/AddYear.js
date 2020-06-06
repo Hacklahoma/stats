@@ -42,7 +42,7 @@ const ADD_YEAR = gql`
 `;
 
 function AddYear({ open, setModal, refetch }) {
-    const [uploadYear, { data }] = useMutation(ADD_YEAR);
+    const [uploadYear, info] = useMutation(ADD_YEAR);
     const [error, setError] = useState();
     // Holds inputs for adding year
     const [name, setName] = useState("");
@@ -80,15 +80,16 @@ function AddYear({ open, setModal, refetch }) {
             //Upload Year Resolver
             uploadYear({
                 variables: {
-                    year: name,
+                    year: name.toString(),
                     data: file.target.result,
                 },
             })
                 .then(() => {
                     handleClose();
+                    refetch();
                 })
                 .catch((error) => {
-                    setError(error.message);
+                    setError(error.message.replace("GraphQL error: ", ""));
                 });
         };
 
@@ -141,7 +142,7 @@ function AddYear({ open, setModal, refetch }) {
                 </Button>
             </DialogActions>
             {/* Display error */}
-            {error && <Alert severity="error">{error}</Alert>}
+            {error ? <Alert severity="error">{error}</Alert> : info.loading && <Alert severity="info">Parsing the data...</Alert>}
         </Dialog>
     );
 }

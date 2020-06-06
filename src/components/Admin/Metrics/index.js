@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
-import { parse } from "papaparse";
 import { useState } from "react";
 import AddYear from "../../Dialogs/AddYear";
 import { FiPlus } from "react-icons/fi";
 import YearItem from "./YearItem";
+import { gql, useQuery } from "@apollo/client";
 
 const StyledMetrics = styled.div`
     .buttons {
@@ -24,7 +24,6 @@ const StyledMetrics = styled.div`
     .years {
         width: 100%;
         margin-top: 40px;
-        background: red;
     }
 
     @media only screen and (max-width: 619px) {
@@ -35,14 +34,25 @@ const StyledMetrics = styled.div`
     }
 `;
 
+const GET_YEARS = gql`
+    query Years {
+        allYears(sortBy: year_DESC) {
+            id
+            year
+            disabled
+        }
+    }
+`;
+
 function Metrics() {
     const [modal, setModal] = useState();
-    const [loading, setLoading] = useState(false);
+    // Getting years
+    const { loading, error, data, refetch } = useQuery(GET_YEARS);
 
     return (
         <StyledMetrics>
             {/* Add account Dialog */}
-            <AddYear setModal={setModal} refetch={null} open={modal === "add"} />
+            <AddYear setModal={setModal} refetch={refetch} open={modal === "add"} />
             {/* Add and Activity buttons */}
             <div className="buttons">
                 <Button onClick={() => setModal("add")} className="icon add" size="small">
@@ -53,9 +63,9 @@ function Metrics() {
                 <p>Loading...</p>
             ) : (
                 <div className="years">
-                    <YearItem year="2020" />
-                    <YearItem year="2019" />
-                    <YearItem year="2018" />
+                    {data.allYears.map((row) => {
+                        return <YearItem row={row} />;
+                    })}
                 </div>
             )}
         </StyledMetrics>
