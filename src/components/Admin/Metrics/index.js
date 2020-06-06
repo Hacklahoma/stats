@@ -61,10 +61,12 @@ function Metrics() {
             </div>
             {loading ? (
                 <p>Loading...</p>
+            ) : data.allYears.length === 0 ? (
+                <p>No data to display.</p>
             ) : (
                 <div className="years">
                     {data.allYears.map((row) => {
-                        return <YearItem refetch={refetch} row={row} />;
+                        return <YearItem key={row.id} refetch={refetch} row={row} />;
                     })}
                 </div>
             )}
