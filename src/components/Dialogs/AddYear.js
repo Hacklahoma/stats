@@ -142,7 +142,11 @@ function AddYear({ open, setModal, refetch }) {
                 </Button>
             </DialogActions>
             {/* Display error */}
-            {error ? <Alert severity="error">{error}</Alert> : info.loading && <Alert severity="info">Parsing the data...</Alert>}
+            {error ? (
+                <Alert severity="error">{error}</Alert>
+            ) : (
+                info.loading && <Alert severity="info">Parsing data... Hang tight!</Alert>
+            )}
         </Dialog>
     );
 }

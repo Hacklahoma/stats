@@ -64,7 +64,7 @@ function Metrics() {
             ) : (
                 <div className="years">
                     {data.allYears.map((row) => {
-                        return <YearItem row={row} />;
+                        return <YearItem refetch={refetch} row={row} />;
                     })}
                 </div>
             )}

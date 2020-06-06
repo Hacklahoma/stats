@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { useState } from "react";
 import { Button } from "@material-ui/core";
+import { gql, useMutation } from "@apollo/client";
 
 const StyledYearItem = styled.div`
     border: 3px solid #eaeaea;
@@ -31,12 +32,34 @@ const StyledYearItem = styled.div`
     }
 `;
 
-function YearItem({ row }) {
+const UPDATE_YEAR = gql`
+    mutation updateYear($id: ID!, $disabled: Boolean!) {
+        updateYear(id: $id, data: { disabled: $disabled }) {
+            id
+        }
+    }
+`;
+
+function YearItem({ row, refetch }) {
+    refetch();
     const [locked, setLocked] = useState(row.disabled);
+    const [updateYear] = useMutation(UPDATE_YEAR);
+
+    const toggleLock = () => {
+        updateYear({
+            variables: {
+                id: row.id,
+                disabled: !locked,
+            },
+        })
+            .then(() => setLocked(!locked))
+            .catch((error) => console.log(error.message));
+    };
+
     return (
         <StyledYearItem locked={locked}>
             <p>{row.year}</p>
-            <Button className="lock" onClick={() => setLocked(!locked)}>
+            <Button className="lock" onClick={toggleLock}>
                 {locked ? <FaLock className="icon" /> : <FaLockOpen className="icon" />}
             </Button>
         </StyledYearItem>
