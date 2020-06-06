@@ -4,6 +4,7 @@
 
 import styled from "styled-components";
 import { Select, MenuItem, InputLabel, FormControl } from "@material-ui/core";
+import { gql, useQuery } from "@apollo/client";
 
 const StyledSelectYear = styled.div`
     .yearSelect {
@@ -22,16 +23,47 @@ const StyledSelectYear = styled.div`
     }
 `;
 
-function SelectYear({ year, setYear }) {
+const GET_YEARS = gql`
+    query Years {
+        allYears(sortBy: year_DESC) {
+            id
+            year
+            disabled
+        }
+    }
+`;
+
+function SelectYear({ setYearId, year, yearId, setYear }) {
+    const { loading, data } = useQuery(GET_YEARS);
+
+    /*
+     * Sets states based on input
+     * e.target.value is formatted as ID:YEAR
+     */
+    const handleChange = (e) => {
+        if (e.target.value == "") {
+            setYearId(0);
+            setYear("");
+        } else {
+            setYearId(e.target.value.split(":")[0]);
+            setYear(e.target.value.split(":")[1]);
+        }
+    };
+
     return (
         <StyledSelectYear>
             <FormControl size="small" variant="outlined" className="yearSelect">
-                {year === "" && <InputLabel shrink={false}>Select a year</InputLabel>}
-                <Select value={year} onChange={(e) => setYear(e.target.value)}>
+                {yearId === 0 && <InputLabel shrink={false}>Select a year</InputLabel>}
+                <Select value={`${yearId}:${year}`} onChange={handleChange}>
                     <MenuItem value="">Overall</MenuItem>
-                    <MenuItem value="2020">2020</MenuItem>
-                    <MenuItem value="2019">2019</MenuItem>
-                    <MenuItem value="2018">2018</MenuItem>
+                    {!loading &&
+                        data.allYears.map((row) => {
+                            return (
+                                <MenuItem key={row.id} value={`${row.id}:${row.year}`}>
+                                    {row.year}
+                                </MenuItem>
+                            );
+                        })}
                 </Select>
             </FormControl>
         </StyledSelectYear>

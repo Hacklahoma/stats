@@ -23,11 +23,12 @@ const StyledHome = styled.div`
 
 function Home({ user }) {
     const [year, setYear] = useState("");
+    const [yearId, setYearId] = useState(0);
     return (
         <StyledHome>
             <h1 className="title">{year === "" ? "Overall" : year} Metrics</h1>
-            <SelectYear setYear={setYear} year={year} />
-            <MetricPage year={year} />
+            <SelectYear setYearId={setYearId} setYear={setYear} yearId={yearId} year={year} />
+            <MetricPage yearId={yearId} year={year} />
         </StyledHome>
     );
 }

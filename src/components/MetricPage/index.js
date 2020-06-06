@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { gql, useQuery } from "@apollo/client";
+import { useEffect } from "react";
 
 const StyledMetricPage = styled.div`
     margin-top: 20px;
@@ -23,39 +25,45 @@ const StyledMetricPage = styled.div`
     }
 `;
 
-function MetricPage({ year }) {
+const YEAR_DATA = gql`
+    query Year($id: ID!) {
+        Year(where: { id: $id }) {
+            _hackersMeta {
+                count
+            }
+        }
+    }
+`;
+
+function MetricPage({ year, yearId }) {
+    const { loading, error, data, refetch } = useQuery(YEAR_DATA, {
+        variables: {
+            id: yearId,
+        },
+    });
+
     return (
         <StyledMetricPage>
-            <div className="topStats">
-                <div className="item">
-                    <p className="label">Total Hackers</p>
-                    {year === "" && <p className="data">923</p>}
-                    {year === "2020" && <p className="data">296</p>}
-                    {year === "2019" && <p className="data">267</p>}
-                    {year === "2018" && <p className="data">203</p>}
+            {!loading && (
+                <div className="topStats">
+                    <div className="item">
+                        <p className="label">Total Hackers</p>
+                        {year !== "" && <p className="data">{data.Year._hackersMeta.count}</p>}
+                    </div>
+                    <div className="item">
+                        <p className="label">Total Projects</p>
+                        <p className="data"></p>
+                    </div>
+                    <div className="item">
+                        <p className="label">Unique Hackers</p>
+                        <p className="data"></p>
+                    </div>
+                    <div className="item">
+                        <p className="label">First Time Hackers</p>
+                        <p className="data"></p>
+                    </div>
                 </div>
-                <div className="item">
-                    <p className="label">Total Projects</p>
-                    {year === "" && <p className="data">127</p>}
-                    {year === "2020" && <p className="data">62</p>}
-                    {year === "2019" && <p className="data">38</p>}
-                    {year === "2018" && <p className="data">27</p>}
-                </div>
-                <div className="item">
-                    <p className="label">Unique Hackers</p>
-                    {year === "" && <p className="data">268</p>}
-                    {year === "2020" && <p className="data">38</p>}
-                    {year === "2019" && <p className="data">27</p>}
-                    {year === "2018" && <p className="data">203</p>}
-                </div>
-                <div className="item">
-                    <p className="label">First Time Hackers</p>
-                    {year === "" && <p className="data">438</p>}
-                    {year === "2020" && <p className="data">132</p>}
-                    {year === "2019" && <p className="data">89</p>}
-                    {year === "2018" && <p className="data">192</p>}
-                </div>
-            </div>
+            )}
         </StyledMetricPage>
     );
 }
