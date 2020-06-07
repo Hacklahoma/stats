@@ -175,7 +175,6 @@ function Login() {
                     // Set token to local storage
                     localStorage.setItem("token", snapshot.data.login.token);
                     
-
                     console.log("Loggin in...");
                     
                     //Event logger

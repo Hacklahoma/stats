@@ -41,8 +41,20 @@ const ADD_YEAR = gql`
     }
 `;
 
+//Mutation for adding events
+const ADD_EVENT = gql`
+    mutation addEvent($token: String!, $type: String!, $description: String) {
+        addEvent(token: $token, type: $type, description: $description) {
+            id
+            type
+            description
+        }
+    }
+`;
+
 function AddYear({ open, setModal, refetch }) {
     const [uploadYear, info] = useMutation(ADD_YEAR);
+    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
     const [error, setError] = useState();
     // Holds inputs for adding year
     const [name, setName] = useState("");
@@ -85,6 +97,22 @@ function AddYear({ open, setModal, refetch }) {
                 },
             })
                 .then(() => {
+                    //Event logger
+                    addEvent({
+                        variables: {
+                            token: localStorage.getItem("token"),
+                            type: "UPLOAD_YEAR",
+                            description: `${name.toString()} Created`,
+                        },
+                    })
+                        .then(() => {
+                            //The event has been created
+                        })
+                        // Error logging
+                        .catch((events) => {
+                            console.log(e.message);
+                        })
+
                     handleClose();
                     refetch();
                 })

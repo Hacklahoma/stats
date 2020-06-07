@@ -8,8 +8,8 @@ const Event = {
         },
         type: {
             type: Select,
-            options: "LOGIN, LOGOUT, DISABLE_COMPANY, ENABLE_COMPANY" +
-            ", ENABLE_YEAR, CREATE_COMPANY, CREATE_YEAR, UPLOAD_YEAR, VIEW"
+            options: "LOGIN, LOGOUT, DISABLE_COMPANY, ENABLE_COMPANY, " +
+            "DISABLE_YEAR, ENABLE_YEAR, CREATE_COMPANY, UPLOAD_YEAR, VIEW"
         },
         description: { type: Text },
         timestamp: { type: DateTime }, 

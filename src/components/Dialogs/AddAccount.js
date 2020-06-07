@@ -25,8 +25,21 @@ const ADD_USER = gql`
     }
 `;
 
+//Mutation for adding events
+const ADD_EVENT = gql`
+    mutation addEvent($token: String!, $type: String!, $description: String) {
+        addEvent(token: $token, type: $type, description: $description) {
+            id
+            type
+            description
+        }
+    }
+`;
+
+
 function AddAccount({ open, setModal, refetch }) {
     const [addUser, { data }] = useMutation(ADD_USER);
+    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
     const [isVisible, setVisible] = useState(false);
     const [error, setError] = useState();
     // Holds credentials for adding user
@@ -49,6 +62,22 @@ function AddAccount({ open, setModal, refetch }) {
         // Adding user to backend
         addUser({ variables: { company: name, password: password } })
             .then(() => {
+                //Event logger
+                addEvent({
+                    variables: {
+                        token: localStorage.getItem("token"),
+                        type: "CREATE_COMPANY",
+                        description: `${name} Created`,
+                    },
+                })
+                    .then(() => {
+                        //The event has been created
+                    })
+                    // Error logging
+                    .catch((events) => {
+                        console.log(e.message);
+                    })
+
                 handleClose();
                 setName("");
                 setPassword("");

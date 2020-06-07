@@ -40,9 +40,21 @@ const UPDATE_YEAR = gql`
     }
 `;
 
+//Mutation for adding events
+const ADD_EVENT = gql`
+    mutation addEvent($token: String!, $type: String!, $description: String) {
+        addEvent(token: $token, type: $type, description: $description) {
+            id
+            type
+            description
+        }
+    }
+`;
+
 function YearItem({ row, refetch }) {
     refetch();
     const [locked, setLocked] = useState(row.disabled);
+    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
     const [updateYear] = useMutation(UPDATE_YEAR);
 
     const toggleLock = () => {
@@ -52,7 +64,25 @@ function YearItem({ row, refetch }) {
                 disabled: !locked,
             },
         })
-            .then(() => setLocked(!locked))
+            .then(() => {
+                //Event logger
+                addEvent({
+                    variables: {
+                        token: localStorage.getItem("token"),
+                        type: (!locked ? "DISABLE_YEAR" : "ENABLE_YEAR"),
+                        description: (!locked ? `${row.year} Disabled` : `${row.year} Enabled`),
+                    },
+                })
+                    .then(() => {
+                        //The event has been created
+                    })
+                    // Error logging
+                    .catch((events) => {
+                        console.log(e.message);
+                    })
+                
+                setLocked(!locked)
+            })
             .catch((error) => console.log(error.message));
     };
 
