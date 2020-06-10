@@ -4,8 +4,8 @@ const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 const { NextApp } = require("@keystonejs/app-next");
-const { User, Event, Year, Hacker, Admin } = require("./models");
-const { addUser, changeUser, login, uploadYear, addEvent } = require("./resolvers");
+const { User, Event, Year, Hacker, Admin, Metric } = require("./models");
+const { addUser, changeUser, login, uploadYear, addEvent, addView } = require("./resolvers");
 const keepAwake = require("./src/lib/keepAwake");
 
 // Get environmental variables
@@ -40,6 +40,7 @@ keystone.createList("User", User);
 keystone.createList("Event", Event);
 keystone.createList("Year", Year);
 keystone.createList("Hacker", Hacker);
+keystone.createList("Metric", Metric);
 
 //Adding custom schemas/resolvers
 keystone.extendGraphQLSchema({
@@ -64,6 +65,10 @@ keystone.extendGraphQLSchema({
             schema: "addEvent(token: String!, type: String!, description: String): Event",
             resolver: addEvent,
         },
+        {
+            schema: "addView(id: ID!): Event",
+            resolver: addView,
+        }
     ],
 });
 
