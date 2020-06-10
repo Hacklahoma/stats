@@ -9,7 +9,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 
 const GET_USER = gql`
     query getUser($token: ID!) {
@@ -17,6 +17,14 @@ const GET_USER = gql`
             id
             company
             isAdmin
+        }
+    }
+`;
+
+const ADD_VIEW = gql`
+    mutation addView($id: ID!) {
+        addView(id: $id) {
+            id
         }
     }
 `;
@@ -34,11 +42,31 @@ function MyApp({ Component, pageProps }) {
         variables: { token: token === null ? 0 : token },
         client: client,
     });
+    // Adds view to user
+    const [addView] = useMutation(ADD_VIEW, {
+        client: client,
+    });
 
     // If the browser exists, then compare tokens and reset them if necessary
     if (process.browser) {
         if (localStorage.getItem("token") !== token) {
             setToken(localStorage.getItem("token"));
+        }
+        // If we have a user and there is no token in session storage
+        if (user && !sessionStorage.getItem("token")) {
+            // Add token to session storage and add view
+            sessionStorage.setItem(
+                "token",
+                Math.random()
+                    .toString(36)
+                    .substr(2)
+            );
+            // Adding view to user
+            addView({
+                variables: {
+                    id: user.id,
+                },
+            });
         }
     }
 
