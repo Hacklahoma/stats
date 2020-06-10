@@ -62,7 +62,7 @@ keystone.extendGraphQLSchema({
             resolver: uploadYear,
         },
         {
-            schema: "addEvent(token: String!, type: String!, description: String): Event",
+            schema: "addEvent(id: ID!, type: String!, description: String): Event",
             resolver: addEvent,
         },
         {

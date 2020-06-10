@@ -72,8 +72,8 @@ function Admin({ user }) {
                         Finances
                     </h2>
                 </div>
-                {view === "accounts" && <Accounts />}
-                {view === "metrics" && <Metrics />}
+                {view === "accounts" && <Accounts user={user} />}
+                {view === "metrics" && <Metrics user={user} />}
             </StyledAdmin>
         );
     else

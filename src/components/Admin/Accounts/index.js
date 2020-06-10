@@ -64,7 +64,7 @@ const GET_USERS = gql`
     }
 `;
 
-function Accounts() {
+function Accounts({ user }) {
     // Modal to display
     const [modal, setModal] = useState();
     // Getting users
@@ -78,7 +78,7 @@ function Accounts() {
     return (
         <StyledAccounts>
             {/* Add account Dialog */}
-            <AddAccount setModal={setModal} refetch={refetch} open={modal === "add"} />
+            <AddAccount user={user} setModal={setModal} refetch={refetch} open={modal === "add"} />
             {/* Add and Activity buttons */}
             <div className="buttons">
                 <Button onClick={() => setModal("add")} className="icon add" size="small">
@@ -89,7 +89,11 @@ function Accounts() {
                 </Button>
             </div>
             {/* Table of company accounts */}
-            {loading ? <p>Loading...</p> : <CompanyTable refetch={refetch} rows={data.allUsers} />}
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <CompanyTable user={user} refetch={refetch} rows={data.allUsers} />
+            )}
         </StyledAccounts>
     );
 }

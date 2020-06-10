@@ -129,6 +129,7 @@ const StyledLogin = styled.div`
 const LOGIN = gql`
     mutation login($password: String, $code: String) {
         login(password: $password, code: $code) {
+            id
             token
         }
     }
@@ -136,11 +137,9 @@ const LOGIN = gql`
 
 //Mutation for adding events
 const ADD_EVENT = gql`
-    mutation addEvent($token: String!, $type: String!, $description: String) {
-        addEvent(token: $token, type: $type, description: $description) {
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
-            type
-            description
         }
     }
 `;
@@ -149,9 +148,9 @@ function Login() {
     // State to determine whether to render for mobile or not
     const [isMobile, setMobile] = useState(true);
     // Mutation to login
-    const [login, {data}] = useMutation(LOGIN);
+    const [login, { data }] = useMutation(LOGIN);
     //Mutation to add an event
-    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
+    const [addEvent] = useMutation(ADD_EVENT);
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState();
@@ -161,39 +160,32 @@ function Login() {
     // Resize listener to set mobile on render
     useEffect(() => {
         //Check to see if the param code is included
-        if(router.asPath.includes("code=")){
+        if (router.asPath.includes("code=")) {
             const params = new URLSearchParams(window.location.search);
-            
+
+            console.log("Checking validity...");
+
             //Login mutation
             login({
                 variables: {
-                    code: params.get('code'),
+                    code: params.get("code"),
                 },
             })
                 // Successfully logged in
                 .then((snapshot) => {
                     // Set token to local storage
                     localStorage.setItem("token", snapshot.data.login.token);
-                    
-                    console.log("Loggin in...");
-                    
+
+                    console.log("Logging you in via slack...");
+
                     //Event logger
                     addEvent({
                         variables: {
-                            token: snapshot.data.login.token,
+                            id: snapshot.data.login.id,
                             type: "LOGIN",
                             description: "Slack Login",
                         },
-                    })
-                        // Successfully logged in
-                        .then((snapshot) => {
-                            //The event has been created
-                        })
-                        // Error logging
-                        .catch((e) => {
-                            console.log(e.message);
-                        });
-
+                    });
                     // Push to dashboard and force reload
                     setTimeout(() => router.push("/"), 500);
                 })
@@ -233,24 +225,15 @@ function Login() {
             .then((snapshot) => {
                 // Set token to local storage
                 localStorage.setItem("token", snapshot.data.login.token);
-                
+
                 //Event logger
                 addEvent({
                     variables: {
-                        token: snapshot.data.login.token,
+                        id: snapshot.data.login.id,
                         type: "LOGIN",
                         description: "Company Login",
                     },
-                })
-                    // Successfully logged in
-                    .then((snapshot) => {
-                        //The event has been created
-                    })
-                    // Error logging
-                    .catch((e) => {
-                        console.log(e.message);
-                    });
-                
+                });
                 // Push to dashboard and force reload
                 setTimeout(() => router.push("/"), 500);
             })
@@ -313,10 +296,10 @@ function Login() {
                         <Button onClick={onSubmit} variant="outlined" size="small" color="primary">
                             Login
                         </Button>
-                        <a 
-                            href={`https://slack.com/oauth/authorize?scope=identity.basic&client_id=${process.env.SLACK_CLIENT_ID}`} 
+                        <a
+                            href={`https://slack.com/oauth/authorize?scope=identity.basic&client_id=${process.env.SLACK_CLIENT_ID}`}
                             className="teamMember"
-                            >
+                        >
                             team member?
                         </a>
                     </div>

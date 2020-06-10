@@ -42,48 +42,37 @@ const UPDATE_YEAR = gql`
 
 //Mutation for adding events
 const ADD_EVENT = gql`
-    mutation addEvent($token: String!, $type: String!, $description: String) {
-        addEvent(token: $token, type: $type, description: $description) {
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
-            type
-            description
         }
     }
 `;
 
-function YearItem({ row, refetch }) {
+function YearItem({ user, row, refetch }) {
     refetch();
     const [locked, setLocked] = useState(row.disabled);
-    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
+    const [addEvent] = useMutation(ADD_EVENT);
     const [updateYear] = useMutation(UPDATE_YEAR);
 
     const toggleLock = () => {
+        // Update year when locking/unlocking
         updateYear({
             variables: {
                 id: row.id,
                 disabled: !locked,
             },
-        })
-            .then(() => {
-                //Event logger
-                addEvent({
-                    variables: {
-                        token: localStorage.getItem("token"),
-                        type: (!locked ? "DISABLE_YEAR" : "ENABLE_YEAR"),
-                        description: (!locked ? `${row.year} Disabled` : `${row.year} Enabled`),
-                    },
-                })
-                    .then(() => {
-                        //The event has been created
-                    })
-                    // Error logging
-                    .catch((events) => {
-                        console.log(e.message);
-                    })
-                
-                setLocked(!locked)
-            })
-            .catch((error) => console.log(error.message));
+        }).then(() => {
+            //Event logger
+            addEvent({
+                variables: {
+                    id: user.id,
+                    type: !locked ? "DISABLE_YEAR" : "ENABLE_YEAR",
+                    description: !locked ? `${row.year} Disabled` : `${row.year} Enabled`,
+                },
+            });
+            setLocked(!locked);
+        });
     };
 
     return (

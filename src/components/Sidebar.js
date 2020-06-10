@@ -151,11 +151,9 @@ const StyledHamburger = styled.div`
 
 //Mutation for adding events
 const ADD_EVENT = gql`
-    mutation addEvent($token: String!, $type: String!, $description: String) {
-        addEvent(token: $token, type: $type, description: $description) {
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
-            type
-            description
         }
     }
 `;
@@ -164,7 +162,7 @@ function Sidebar({ user }) {
     const [isMobile, setMobile] = useState();
     const [isExpanded, setExpanded] = useState();
     //Mutation to add an event
-    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
+    const [addEvent] = useMutation(ADD_EVENT);
     const router = useRouter();
 
     // Populating isMobile state
@@ -184,20 +182,11 @@ function Sidebar({ user }) {
         //Event logger
         addEvent({
             variables: {
-                token: localStorage.getItem("token"),
+                id: user.id,
                 type: "LOGOUT",
                 description: "Logout",
             },
-        })
-            // Successfully logged in
-            .then((snapshot) => {
-                //The event has been created
-            })
-            // Error logging
-            .catch((e) => {
-                console.log(e.message);
-            });
-
+        });
         localStorage.removeItem("token");
         router.push("/login");
     };

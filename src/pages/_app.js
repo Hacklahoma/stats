@@ -21,9 +21,9 @@ const GET_USER = gql`
     }
 `;
 
-const ADD_VIEW = gql`
-    mutation addView($id: ID!) {
-        addView(id: $id) {
+const ADD_EVENT = gql`
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
         }
     }
@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
         client: client,
     });
     // Adds view to user
-    const [addView] = useMutation(ADD_VIEW, {
+    const [addEvent] = useMutation(ADD_EVENT, {
         client: client,
     });
 
@@ -62,9 +62,11 @@ function MyApp({ Component, pageProps }) {
                     .substr(2)
             );
             // Adding view to user
-            addView({
+            addEvent({
                 variables: {
                     id: user.id,
+                    type: "VIEW",
+                    description: "Company View",
                 },
             });
         }

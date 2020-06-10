@@ -43,18 +43,16 @@ const ADD_YEAR = gql`
 
 //Mutation for adding events
 const ADD_EVENT = gql`
-    mutation addEvent($token: String!, $type: String!, $description: String) {
-        addEvent(token: $token, type: $type, description: $description) {
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
-            type
-            description
         }
     }
 `;
 
-function AddYear({ open, setModal, refetch }) {
+function AddYear({ user, open, setModal, refetch }) {
     const [uploadYear, info] = useMutation(ADD_YEAR);
-    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
+    const [addEvent] = useMutation(ADD_EVENT);
     const [error, setError] = useState();
     // Holds inputs for adding year
     const [name, setName] = useState("");
@@ -91,7 +89,14 @@ function AddYear({ open, setModal, refetch }) {
         if (name === "") setName(null);
         if (projects === "") setProjects(null);
         setSubmitted(true);
-        if (name === null || acceptedFiles.length === 0 || name === "" || projects === null || projects === "") return;
+        if (
+            name === null ||
+            acceptedFiles.length === 0 ||
+            name === "" ||
+            projects === null ||
+            projects === ""
+        )
+            return;
         console.log(`Adding the year '${name}' with file '${acceptedFiles[0].name}'...`);
 
         var reader = new FileReader();
@@ -110,19 +115,11 @@ function AddYear({ open, setModal, refetch }) {
                     //Event logger
                     addEvent({
                         variables: {
-                            token: localStorage.getItem("token"),
+                            id: user.id,
                             type: "UPLOAD_YEAR",
                             description: `${name.toString()} Created`,
                         },
-                    })
-                        .then(() => {
-                            //The event has been created
-                        })
-                        // Error logging
-                        .catch((events) => {
-                            console.log(e.message);
-                        })
-
+                    });
                     handleClose();
                     refetch();
                 })
@@ -153,7 +150,7 @@ function AddYear({ open, setModal, refetch }) {
                     onChange={handleYearChange}
                     label="Year"
                     type="text"
-                    style={{marginRight: "50px"}}
+                    style={{ marginRight: "50px" }}
                 />
                 {/* Number of projects */}
                 <TextField

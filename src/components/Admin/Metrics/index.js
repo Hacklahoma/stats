@@ -44,7 +44,7 @@ const GET_YEARS = gql`
     }
 `;
 
-function Metrics() {
+function Metrics({ user }) {
     const [modal, setModal] = useState();
     // Getting years
     const { loading, error, data, refetch } = useQuery(GET_YEARS);
@@ -52,7 +52,7 @@ function Metrics() {
     return (
         <StyledMetrics>
             {/* Add account Dialog */}
-            <AddYear setModal={setModal} refetch={refetch} open={modal === "add"} />
+            <AddYear user={user} setModal={setModal} refetch={refetch} open={modal === "add"} />
             {/* Add and Activity buttons */}
             <div className="buttons">
                 <Button onClick={() => setModal("add")} className="icon add" size="small">
@@ -66,7 +66,7 @@ function Metrics() {
             ) : (
                 <div className="years">
                     {data.allYears.map((row) => {
-                        return <YearItem key={row.id} refetch={refetch} row={row} />;
+                        return <YearItem user={user} key={row.id} refetch={refetch} row={row} />;
                     })}
                 </div>
             )}

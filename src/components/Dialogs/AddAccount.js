@@ -27,19 +27,16 @@ const ADD_USER = gql`
 
 //Mutation for adding events
 const ADD_EVENT = gql`
-    mutation addEvent($token: String!, $type: String!, $description: String) {
-        addEvent(token: $token, type: $type, description: $description) {
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
-            type
-            description
         }
     }
 `;
 
-
-function AddAccount({ open, setModal, refetch }) {
+function AddAccount({ user, open, setModal, refetch }) {
     const [addUser, { data }] = useMutation(ADD_USER);
-    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
+    const [addEvent] = useMutation(ADD_EVENT);
     const [isVisible, setVisible] = useState(false);
     const [error, setError] = useState();
     // Holds credentials for adding user
@@ -65,26 +62,18 @@ function AddAccount({ open, setModal, refetch }) {
                 //Event logger
                 addEvent({
                     variables: {
-                        token: localStorage.getItem("token"),
+                        id: user.id,
                         type: "CREATE_COMPANY",
                         description: `${name} Created`,
                     },
-                })
-                    .then(() => {
-                        //The event has been created
-                    })
-                    // Error logging
-                    .catch((events) => {
-                        console.log(e.message);
-                    })
-
+                });
                 handleClose();
                 setName("");
                 setPassword("");
                 refetch();
             })
             .catch((error) => {
-                setError(error.message.substring(15));
+                setError(error.message.replace("GraphQL error: ", ""));
             });
     };
 

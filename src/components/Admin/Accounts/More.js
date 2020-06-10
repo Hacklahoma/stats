@@ -13,18 +13,16 @@ const MUTATE_STATUS = gql`
 
 //Mutation for adding events
 const ADD_EVENT = gql`
-    mutation addEvent($token: String!, $type: String!, $description: String) {
-        addEvent(token: $token, type: $type, description: $description) {
+    mutation addEvent($id: ID!, $type: String!, $description: String) {
+        addEvent(id: $id, type: $type, description: $description) {
             id
-            type
-            description
         }
     }
 `;
 
-function More({ row, refetch }) {
+function More({ user, row, refetch }) {
     const [mutateStatus, { data }] = useMutation(MUTATE_STATUS);
-    const [addEvent, {eventData}] = useMutation(ADD_EVENT);
+    const [addEvent] = useMutation(ADD_EVENT);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [copied, setCopied] = React.useState(false);
     const [modal, setModal] = React.useState();
@@ -50,7 +48,7 @@ function More({ row, refetch }) {
     const editUser = () => {
         setModal("edit");
         setAnchorEl(null);
-    }
+    };
 
     // Handles enable/disable
     const changeStatus = () => {
@@ -59,29 +57,19 @@ function More({ row, refetch }) {
                 id: row.id,
                 disabled: !row.disabled,
             },
-        })
-            .then(() => {
-                //Event logger
-                addEvent({
-                    variables: {
-                        token: localStorage.getItem("token"),
-                        type: (!row.disabled ? "DISABLE_COMPANY" : "ENABLE_COMPANY"),
-                        description: (!row.disabled ? `${row.company} Disabled` : `${row.company} Enabled`),
-                    },
-                })
-                    .then(() => {
-                        //The event has been created
-                    })
-                    // Error logging
-                    .catch((events) => {
-                        console.log(e.message);
-                    });
-                    
-                refetch();
-            })
-            .catch((e) => {
-                console.log(e);
+        }).then(() => {
+            //Event logger
+            addEvent({
+                variables: {
+                    id: user.id,
+                    type: !row.disabled ? "DISABLE_COMPANY" : "ENABLE_COMPANY",
+                    description: !row.disabled
+                        ? `${row.company} Disabled`
+                        : `${row.company} Enabled`,
+                },
             });
+            refetch();
+        });
     };
 
     return (

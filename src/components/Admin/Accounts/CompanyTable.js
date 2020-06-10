@@ -24,7 +24,7 @@ const StyledTable = styled.div`
     }
 `;
 
-function CompanyTable({ rows, refetch }) {
+function CompanyTable({ user, rows, refetch }) {
     return (
         <StyledTable>
             <Table size="small" aria-label="a dense table">
@@ -55,7 +55,7 @@ function CompanyTable({ rows, refetch }) {
                                     </TableCell>
                                     <TableCell size="small">0</TableCell>
                                     <TableCell size="small" align="right">
-                                        <More refetch={refetch} row={row} />
+                                        <More user={user} refetch={refetch} row={row} />
                                     </TableCell>
                                 </TableRow>
                             );
