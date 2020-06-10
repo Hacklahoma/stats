@@ -54,7 +54,7 @@ function SelectYear({ setYearId, year, yearId, setYear }) {
         <StyledSelectYear>
             <FormControl size="small" variant="outlined" className="yearSelect">
                 {yearId === 0 && <InputLabel shrink={false}>Select a year</InputLabel>}
-                <Select value={`${yearId}:${year}`} onChange={handleChange}>
+                <Select value={yearId !== 0 ? `${yearId}:${year}` : ""} onChange={handleChange}>
                     <MenuItem value="">Overall</MenuItem>
                     {!loading &&
                         data.allYears.map((row) => {
