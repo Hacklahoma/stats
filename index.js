@@ -58,7 +58,7 @@ keystone.extendGraphQLSchema({
             resolver: login,
         },
         {
-            schema: "uploadYear(year: String!, data: String!): Year",
+            schema: "uploadYear(year: Int!, projects: Int!, data: String!): Year",
             resolver: uploadYear,
         },
         {

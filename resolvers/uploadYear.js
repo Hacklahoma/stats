@@ -33,14 +33,14 @@ function convertDate(date){
     return null;
 }
 
-const uploadYear = async (_, { year, data }) => {
+const uploadYear = async (_, { year, projects, data }) => {
     const { keystone } = require("../index.js");
     const { parse } = require("papaparse")
 
     //Check to make sure the year isn't already being used
     const yearCheck = await keystone.executeQuery(`
             query {
-                allYears(where:{year:"${year}"}) {
+                allYears(where:{year:${year}}) {
                     year
                 }
             }
@@ -55,7 +55,7 @@ const uploadYear = async (_, { year, data }) => {
     const yearData = await keystone.executeQuery(`
                 mutation {
                     createYear(data:{
-                        year: "${year}",
+                        year: ${year},
                     }) {
                         id ,year
                     }

@@ -34,8 +34,8 @@ const DropZone = styled.div`
 `;
 
 const ADD_YEAR = gql`
-    mutation uploadYear($year: String!, $data: String!) {
-        uploadYear(year: $year, data: $data) {
+    mutation uploadYear($year: Int!, $projects: Int!, $data: String!) {
+        uploadYear(year: $year, projects: $projects, data: $data) {
             id
         }
     }
@@ -58,6 +58,7 @@ function AddYear({ open, setModal, refetch }) {
     const [error, setError] = useState();
     // Holds inputs for adding year
     const [name, setName] = useState("");
+    const [projects, setProjects] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         accept: ".csv",
@@ -72,17 +73,25 @@ function AddYear({ open, setModal, refetch }) {
     };
 
     // Checks if input is a number and less than 4
-    const handleChange = (e) => {
+    const handleYearChange = (e) => {
         if (!isNaN(e.target.value) && e.target.value !== "" && e.target.value.length <= 4)
             setName(Number.parseInt(e.target.value));
         else if (e.target.value === "") setName("");
     };
 
+    // Checks if input is a number and less than 4
+    const handleProjectsChange = (e) => {
+        if (!isNaN(e.target.value) && e.target.value !== "" && e.target.value.length <= 4)
+            setProjects(Number.parseInt(e.target.value));
+        else if (e.target.value === "") setProjects("");
+    };
+
     const submit = () => {
         // Checking to make sure name and password is not empty
         if (name === "") setName(null);
+        if (projects === "") setProjects(null);
         setSubmitted(true);
-        if (name === null || acceptedFiles.length === 0 || name === "") return;
+        if (name === null || acceptedFiles.length === 0 || name === "" || projects === null || projects === "") return;
         console.log(`Adding the year '${name}' with file '${acceptedFiles[0].name}'...`);
 
         var reader = new FileReader();
@@ -92,7 +101,8 @@ function AddYear({ open, setModal, refetch }) {
             //Upload Year Resolver
             uploadYear({
                 variables: {
-                    year: name.toString(),
+                    year: name,
+                    projects: projects,
                     data: file.target.result,
                 },
             })
@@ -140,8 +150,20 @@ function AddYear({ open, setModal, refetch }) {
                     id="name"
                     value={name === null ? "" : name}
                     required
-                    onChange={handleChange}
+                    onChange={handleYearChange}
                     label="Year"
+                    type="text"
+                    style={{marginRight: "50px"}}
+                />
+                {/* Number of projects */}
+                <TextField
+                    autoFocus
+                    error={projects === null}
+                    id="projects"
+                    value={projects === null ? "" : projects}
+                    required
+                    onChange={handleProjectsChange}
+                    label="Number of projects"
                     type="text"
                 />
                 {/* Upload */}
