@@ -1,6 +1,5 @@
 const { Text, Integer } = require("@keystonejs/fields");
 
-
 const Metric = {
     fields: {
         hackers: {type: Integer},
