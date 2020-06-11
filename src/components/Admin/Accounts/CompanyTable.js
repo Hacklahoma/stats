@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
+import { gql, useMutation } from "@apollo/client";
 import More from "./More";
 
 const StyledTable = styled.div`
@@ -24,7 +25,18 @@ const StyledTable = styled.div`
     }
 `;
 
+//Mutation for adding events
+const RETRIEVE_VIEWS = gql`
+    mutation retrieveViews($id: ID!) {
+        retrieveViews(id: $id) {
+            id
+        }
+    }
+`;
+
 function CompanyTable({ user, rows, refetch }) {
+    const [retrieveViews, { data }] = useMutation(RETRIEVE_VIEWS);
+
     return (
         <StyledTable>
             <Table size="small" aria-label="a dense table">
@@ -53,7 +65,9 @@ function CompanyTable({ user, rows, refetch }) {
                                     <TableCell size="small">
                                         <div className={`status ${status}`}>{status}</div>
                                     </TableCell>
-                                    <TableCell size="small">0</TableCell>
+                                    <TableCell size="small">
+                                        0
+                                    </TableCell>
                                     <TableCell size="small" align="right">
                                         <More user={user} refetch={refetch} row={row} />
                                     </TableCell>

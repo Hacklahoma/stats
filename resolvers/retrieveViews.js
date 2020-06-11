@@ -3,7 +3,7 @@
  * Returns an array of events.
  */
 
-const retreiveViews = async (_, { id }) => {
+const retrieveViews = async (_, { id }) => {
     const { keystone } = require("../index.js");
 
     //Retrieve the views from a company
@@ -25,5 +25,5 @@ const retreiveViews = async (_, { id }) => {
     return views.data.allEvents;
 };
 
-module.exports = retreiveViews;
+module.exports = retrieveViews;
 
