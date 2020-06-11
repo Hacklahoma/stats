@@ -5,6 +5,10 @@
 const addEvent = async (_, { id, type, description }) => {
     const { keystone } = require("../index.js");
 
+    // Get date in CST
+    const date = new Date();
+    const convertedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
+
     //Update the user to include the new event
     const user = await keystone.executeQuery(`
         mutation {
@@ -16,9 +20,7 @@ const addEvent = async (_, { id, type, description }) => {
                             parent: {connect: {id: ${id}}}, 
                             type: ${type},
                             ${description ? `description: "${description}",` : ``}
-                            timestamp: "${new Date().toISOString("en-US", {
-                                timeZone: "America/Chicago",
-                            })}",
+                            timestamp: "${convertedDate}",
                         }
                     },
                 }
@@ -28,7 +30,7 @@ const addEvent = async (_, { id, type, description }) => {
             }
         }
     `);
-
+    
     return user.data.updateUser;
 };
 
