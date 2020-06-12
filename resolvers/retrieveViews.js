@@ -22,7 +22,7 @@ const retrieveViews = async (_, { id }) => {
         }
     `);
 
-    return views.data.allEvents;
+    return views.data.allEvents.length;
 };
 
 module.exports = retrieveViews;

@@ -66,7 +66,7 @@ keystone.extendGraphQLSchema({
             resolver: addEvent,
         },
         {
-            schema: "retrieveViews(id: ID!): [Event]",
+            schema: "retrieveViews(id: ID!): Int!",
             resolver: retrieveViews,
         }
     ],

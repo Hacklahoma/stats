@@ -28,9 +28,7 @@ const StyledTable = styled.div`
 //Mutation for adding events
 const RETRIEVE_VIEWS = gql`
     mutation retrieveViews($id: ID!) {
-        retrieveViews(id: $id) {
-            id
-        }
+        retrieveViews(id: $id)
     }
 `;
 
