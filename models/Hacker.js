@@ -24,7 +24,7 @@ const Event = {
         levelOfStudy: {
             type: Select,
             dataType: 'string',
-            options: "High School, Tech School, Undergraduate University, Graduate University",
+            options: "High School, Tech School, Undergraduate University, Graduate University, Prefer not to answer",
         },
         graduation: { type: DateTime },
         major: { type: Text },

@@ -70,6 +70,38 @@ const uploadYear = async (_, { year, projects, data }) => {
         header: true,
     })
 
+        var gender_F = 0, 
+            gender_M = 0,
+            gender_NB = 0,
+            gender_N = 0,
+            race_WC = 0,
+            race_API = 0,
+            race_H = 0,
+            race_BAA = 0,
+            race_AIAN = 0,
+            race_N = 0,
+            levelOfStudy_HS = 0,
+            levelOfStudy_TS = 0,
+            levelOfStudy_UU = 0,
+            levelOfStudy_GU = 0,
+            levelOfStudy_N = 0,
+            diet_VT = 0,
+            diet_VE = 0,
+            diet_L = 0,
+            diet_G = 0,
+            diet_NA = 0,
+            diet_H = 0,
+            diet_K = 0,
+            diet_O = 0,
+            diet_N = 0,
+            shirt_XS = 0,
+            shirt_S = 0,
+            shirt_M = 0,
+            shirt_L = 0,
+            shirt_XL = 0,
+            shirt_XXL = 0;
+
+
     //Go through the hacker data and parse it all
     const hackerIDs = [];
     for (i in hackerData.data){
@@ -143,6 +175,111 @@ const uploadYear = async (_, { year, projects, data }) => {
             throw new Error(`${hacker.errors[0].message} at line ${+i + +2}.`);
         }
 
+        //Switch statement for gender
+        switch (hackerData.data[i].gender) {
+            case "Male":
+                gender_M++;
+                break;
+            case "Female":
+                gender_F++;
+                break;
+            case "Non-binary":
+                gender_NB++;
+                break;
+            default:
+                gender_N++;
+        }
+
+        //Switch statement for races
+        switch (hackerData.data[i].race) {
+            case "White/Caucasian":
+                race_WC++;
+                break;
+            case "Asian/Pacific Islander":
+                race_API++;
+                break;
+            case "Hispanic":
+                race_H++;
+                break;
+            case "Black or African American":
+                race_BAA++;
+                break;
+            case "American Indian or Alaskan Native":
+                race_AIAN++;
+                break;
+            default:
+                race_N++;
+        }
+
+        //Switch statement for level of study
+        switch (hackerData.data[i].levelOfStudy) {
+            case "High School":  
+                levelOfStudy_HS++;
+                break;
+            case "Tech School":
+                levelOfStudy_TS++;
+                break;
+            case "Undergraduate University":
+                levelOfStudy_UU++;
+                break;
+            case "Graduate University":
+                levelOfStudy_GU++;
+                break;
+            default:
+                levelOfStudy_N++;
+        }
+
+        //Switch statement for diet
+        switch (hackerData.data[i].diet) {
+            case "Vegetarian":
+                diet_VT++;
+                break;
+            case "Vegan":
+                diet_VE++;
+                break;
+            case "Lactose":
+                diet_L++;
+                break;
+            case "Gluten":
+                diet_G++;
+                break;
+            case "Nut Allergy":
+                diet_NA++;
+                break;
+            case "Halal":
+                diet_H++;
+                break;
+            case "Kosher":
+                diet_K++;
+                break;
+            case "Other":
+                diet_O++;
+                break;
+            default:
+                diet_N++;
+        }
+
+        //Switch statement for shirt size
+        switch (hackerData.data[i].shirt) {
+            case "XS":
+                shirt_XS++;
+                break;
+            case "S":
+                shirt_S++;
+                break;
+            case "M":
+                shirt_M++;
+                break;
+            case "L":
+                shirt_L++;
+                break;
+            case "XL":
+                shirt_XL++;
+                break;
+            case "XXL":
+                shirt_XXL++;
+        }
+        
         // Pushing hacker ids to array in case we need to remove them
         hackerIDs.push(hacker.data.createHacker.id);
 
@@ -161,6 +298,89 @@ const uploadYear = async (_, { year, projects, data }) => {
                 }
             `);
     }
+
+    const test = await keystone.executeQuery(`
+        mutation {
+            updateYear(
+                id: ${yearData.data.createYear.id},
+                data: {
+                    metrics: {
+                        create: {
+                            hackers: ${hackerData.data.length},
+                            projects: ${projects},
+                            majors: "Test",
+                            gender_F: ${gender_F}, 
+                            gender_M: ${gender_M},
+                            gender_NB: ${gender_NB},
+                            gender_N: ${gender_N},
+                            race_WC: ${race_WC},
+                            race_API: ${race_API},
+                            race_H: ${race_H},
+                            race_BAA: ${race_BAA},
+                            race_AIAN: ${race_AIAN},
+                            race_N: ${race_N},
+                            levelOfStudy_HS: ${levelOfStudy_HS},
+                            levelOfStudy_TS: ${levelOfStudy_TS},
+                            levelOfStudy_UU: ${levelOfStudy_UU},
+                            levelOfStudy_GU: ${levelOfStudy_GU},
+                            levelOfStudy_N: ${levelOfStudy_N},
+                            diet_VT: ${diet_VT},
+                            diet_VE: ${diet_VE},
+                            diet_L: ${diet_L},
+                            diet_G: ${diet_G},
+                            diet_NA: ${diet_NA},
+                            diet_H: ${diet_H},
+                            diet_K: ${diet_K},
+                            diet_O: ${diet_O},
+                            diet_N: ${diet_N},
+                            shirt_XS: ${shirt_XS},
+                            shirt_S: ${shirt_S},
+                            shirt_M: ${shirt_M},
+                            shirt_L: ${shirt_L},
+                            shirt_XL: ${shirt_XL},
+                            shirt_XXL: ${shirt_XXL},
+                        }
+                    }
+                }
+            ){
+                year
+                metrics { hackers
+                    projects
+                    majors
+                    gender_F 
+                    gender_M
+                    gender_NB
+                    gender_N
+                    race_WC
+                    race_API
+                    race_H
+                    race_BAA
+                    race_AIAN
+                    race_N
+                    levelOfStudy_HS
+                    levelOfStudy_TS
+                    levelOfStudy_UU
+                    levelOfStudy_GU
+                    levelOfStudy_N
+                    diet_VT
+                    diet_VE
+                    diet_L
+                    diet_G
+                    diet_NA
+                    diet_H
+                    diet_K
+                    diet_O
+                    diet_N
+                    shirt_XS
+                    shirt_S
+                    shirt_M
+                    shirt_L
+                    shirt_XL
+                    shirt_XXL
+                }
+            }
+        }
+    `)
 
     return yearData.data.createYear;
 }

@@ -8,6 +8,10 @@ const Year = {
             ref: "Hacker",
             many: true,
         },
+        metrics: { 
+            type: Relationship,
+            ref: "Metric",
+        },
         disabled: { type: Checkbox, defaultValue: false },
     },
     labelField: "label",
