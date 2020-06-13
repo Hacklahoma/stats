@@ -60,6 +60,9 @@ const GET_USERS = gql`
             password
             disabled
             isAdmin
+            _activityMeta(where: { type: VIEW }) {
+                count
+            }
         }
     }
 `;

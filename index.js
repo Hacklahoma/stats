@@ -5,7 +5,7 @@ const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 const { NextApp } = require("@keystonejs/app-next");
 const { User, Event, Year, Hacker, Admin, Metric } = require("./models");
-const { addUser, changeUser, login, uploadYear, addEvent, retrieveViews } = require("./resolvers");
+const { addUser, changeUser, login, uploadYear, addEvent } = require("./resolvers");
 const keepAwake = require("./src/lib/keepAwake");
 
 // Get environmental variables
@@ -64,12 +64,8 @@ keystone.extendGraphQLSchema({
         {
             schema: "addEvent(id: ID!, type: String!, description: String): Event",
             resolver: addEvent,
-        },
-        {
-            schema: "retrieveViews(id: ID!): Int!",
-            resolver: retrieveViews,
         }
-    ],
+    ]
 });
 
 // Securing admin panel

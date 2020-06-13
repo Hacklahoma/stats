@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
-import { gql, useMutation } from "@apollo/client";
-import More from "./More";
+import CompanyRow from "./CompanyRow";
 
 const StyledTable = styled.div`
     .MuiTableCell-root {
@@ -25,16 +24,8 @@ const StyledTable = styled.div`
     }
 `;
 
-//Mutation for adding events
-const RETRIEVE_VIEWS = gql`
-    mutation retrieveViews($id: ID!) {
-        retrieveViews(id: $id)
-    }
-`;
 
 function CompanyTable({ user, rows, refetch }) {
-    const [retrieveViews, { data }] = useMutation(RETRIEVE_VIEWS);
-
     return (
         <StyledTable>
             <Table size="small" aria-label="a dense table">
@@ -51,25 +42,13 @@ function CompanyTable({ user, rows, refetch }) {
                 <TableBody>
                     {rows.map((row) => {
                         if (!row.isAdmin) {
-                            const status = row.disabled ? "disabled" : "enabled";
                             return (
-                                <TableRow key={row.company}>
-                                    <TableCell
-                                        size="medium"
-                                        style={{ paddingLeft: "10px", fontWeight: "bold" }}
-                                    >
-                                        {row.company}
-                                    </TableCell>
-                                    <TableCell size="small">
-                                        <div className={`status ${status}`}>{status}</div>
-                                    </TableCell>
-                                    <TableCell size="small">
-                                        0
-                                    </TableCell>
-                                    <TableCell size="small" align="right">
-                                        <More user={user} refetch={refetch} row={row} />
-                                    </TableCell>
-                                </TableRow>
+                                <CompanyRow
+                                    key={row.company}
+                                    user={user}
+                                    refetch={refetch}
+                                    row={row}
+                                />
                             );
                         }
                     })}
