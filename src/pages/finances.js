@@ -1,13 +1,16 @@
 import styled from "styled-components";
 
 const StyledFinances = styled.div`
-    text-align: center;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
 `;
 
 function Finances() {
     return (
         <StyledFinances>
-            <p>Finances</p>
+            <p>Work in progress...</p>
         </StyledFinances>
     );
 }
