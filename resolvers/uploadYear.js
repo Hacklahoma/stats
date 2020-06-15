@@ -299,6 +299,8 @@ const uploadYear = async (_, { year, projects, data }) => {
             `);
     }
 
+    //Create the metrics
+    //Currently a const because I need to test majors still
     const test = await keystone.executeQuery(`
         mutation {
             updateYear(
@@ -342,7 +344,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                         }
                     }
                 }
-            ){
+            ){School
                 year
                 metrics { hackers
                     projects
