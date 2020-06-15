@@ -4,7 +4,7 @@ const { AdminUIApp } = require("@keystonejs/app-admin-ui");
 const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
 const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 const { NextApp } = require("@keystonejs/app-next");
-const { User, Event, Year, Hacker, Admin, Metric } = require("./models");
+const { User, Event, Year, Hacker, Admin, Metric, Major } = require("./models");
 const { addUser, changeUser, login, uploadYear, addEvent } = require("./resolvers");
 const keepAwake = require("./src/lib/keepAwake");
 
@@ -41,6 +41,7 @@ keystone.createList("Event", Event);
 keystone.createList("Year", Year);
 keystone.createList("Hacker", Hacker);
 keystone.createList("Metric", Metric);
+keystone.createList("Major", Major);
 
 //Adding custom schemas/resolvers
 keystone.extendGraphQLSchema({
