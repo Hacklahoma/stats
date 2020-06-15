@@ -355,7 +355,6 @@ const uploadYear = async (_, { year, projects, data }) => {
                         create: {
                             hackers: ${hackerData.data.length},
                             projects: ${projects},
-                            majors: "Test",
                             gender_F: ${gender_F}, 
                             gender_M: ${gender_M},
                             gender_NB: ${gender_NB},
@@ -393,7 +392,6 @@ const uploadYear = async (_, { year, projects, data }) => {
                 year
                 metrics { hackers
                     projects
-                    majors
                     gender_F 
                     gender_M
                     gender_NB
