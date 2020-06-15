@@ -33,6 +33,17 @@ function convertDate(date){
     return null;
 }
 
+//Major Keywords
+const ARTS_KEYWORDS = ["Arts", "Ballet", "Crafts", "Dance", "Film", "Documentary", "Music", "Photography", "Theater", "Performing"];
+const BUSINESS_KEYWORDS = ["Business", "Accounting", "Human Resources" ];
+const HEALTH_KEYWORDS = ["Health", "Medicine", "Nursing"];
+const INTERDISCIPLINARY_KEYWORDS = ["Gender", "Family", "Liberal", "Recreation", "Fitness"];
+const PUBLIC_SOCIAL_SERVICES_KEYWORDS = ["Law", "Prelaw", "Legal", "Court", "Public", "Social", "Services", "Community"];
+const STEM_KEYWORDS = ["Math", "Mathematics", "Engineering", "Data", "Science"];
+const COMP_TECH_KEYWORDS = ["Software", "Computer"];
+const SOCIAL_SCIENCES_KEYWORDS = ["Education", "Psychology", "History", "Library", "Sociology"];
+const TRADES_KEYWORDS = ["Construction", "Mechanic", "Culinary", "Production", "Transportation"];
+
 const uploadYear = async (_, { year, projects, data }) => {
     const { keystone } = require("../index.js");
     const { parse } = require("papaparse")
@@ -279,7 +290,41 @@ const uploadYear = async (_, { year, projects, data }) => {
             case "XXL":
                 shirt_XXL++;
         }
-        
+
+        /*
+        let major = hacker.data[i].major.split(" ");
+
+        for(i in major){
+            if(ARTS_KEYWORDS.includes(major)){
+
+            }
+            else if(BUSINESS_KEYWORDS.includes(major)) {
+
+            }
+            else if(HEALTH_KEYWORDS.includes(major)) {
+
+            }
+            else if(HEALTH_KEYWORDS.includes(major)){
+
+            }
+            else if(PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major)){
+
+            }
+            else if(STEM_KEYWORDS.includes(major)){
+
+            }
+            else if(COMP_TECH_KEYWORDS.includes(major)){
+
+            }
+            else if(SOCIAL_SCIENCES_KEYWORDS.includes(major)){
+
+            }
+            else if(TRADES_KEYWORDS.includes(majors)){
+
+
+            }
+        }
+        */
         // Pushing hacker ids to array in case we need to remove them
         hackerIDs.push(hacker.data.createHacker.id);
 

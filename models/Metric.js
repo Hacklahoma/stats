@@ -1,10 +1,14 @@
-const { Text, Integer } = require("@keystonejs/fields");
+const { Relationship, Integer } = require("@keystonejs/fields");
 
 const Metric = {
     fields: {
         hackers: {type: Integer},
         projects: {type: Integer},
-        majors: {type: Text, many: true},
+        majors: {
+            type: Relationship,
+            ref: "Major", 
+            many: true
+        },
         gender_F: {type: Integer}, 
         gender_M: {type: Integer},
         gender_NB: {type: Integer},
