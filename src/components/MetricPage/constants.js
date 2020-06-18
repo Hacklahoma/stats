@@ -7,16 +7,29 @@ export const pieOptions = {
         display: false,
         position: "right",
     },
+    tooltips: {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                var sum = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                var value = data.datasets[0].data[tooltipItem.index];
+                var percentage = Math.round((value / sum) * 100);
+                var label = data.labels[tooltipItem.index];
+                return ` ${label}: ${percentage}% (${value})`;
+            },
+        },
+        backgroundColor: "rgba(230, 230, 230, 0.9)",
+        bodyFontColor: "#555555",
+    },
     plugins: {
         datalabels: {
             font: { family: "Menlo, Monospace", weight: "bold" },
             textAlign: "center",
             formatter: (value, ctx) => {
-                let datasets = ctx.chart.data.datasets;
+                var datasets = ctx.chart.data.datasets;
 
                 if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
-                    let sum = datasets[0].data.reduce((a, b) => a + b, 0);
-                    let percentage = Math.round((value / sum) * 100);
+                    var sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                    var percentage = Math.round((value / sum) * 100);
                     if (percentage > 5) {
                         return percentage + "%";
                     } else {
