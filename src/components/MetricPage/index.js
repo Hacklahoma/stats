@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { Pie } from "react-chartjs-2";
 import "chartjs-plugin-datalabels";
+import PieGraph from "./MetricChildren/PieGraph";
+import Grid from "@material-ui/core/Grid";
 
 const StyledMetricPage = styled.div`
     margin-top: 20px;
@@ -23,13 +24,20 @@ const StyledMetricPage = styled.div`
         }
     }
     .graphs {
-        canvas {
-            width: 500px;
-            height: 300px;
-            float: left;
+        margin-top: 40px;
+        .MuiGrid-container {
+            width: calc(100% - 30px);
         }
     }
     @media only screen and (max-width: 619px) {
+        .graphs {
+            .MuiGrid-container {
+                width: calc(100% - 20px);
+                .MuiGrid-item {
+                    width: 100%;
+                }
+            }
+        }
     }
 `;
 
@@ -58,39 +66,6 @@ const OVERALL_METRICS = gql`
         }
     }
 `;
-
-/**
- * Options for Pie chart
- */
-const pieOptions = {
-    responsive: false,
-    legend: {
-        display: true,
-        position: "right",
-    },
-    plugins: {
-        datalabels: {
-            font: { family: "Menlo, Monospace", weight: "bold" },
-            textAlign: "center",
-            formatter: (value, ctx) => {
-                let datasets = ctx.chart.data.datasets;
-
-                if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
-                    let sum = datasets[0].data.reduce((a, b) => a + b, 0);
-                    let percentage = Math.round((value / sum) * 100) + "%";
-                    return percentage;
-                } else {
-                    return percentage;
-                }
-            },
-            color: "#fff",
-        },
-    },
-};
-
-// const pieColors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#D6D6D6"];
-
-const pieColors = ["#FF6F8E", "#49ACED", "#FFCE56", "#5AC5C5", "#A274FF", "#D6D6D6"];
 
 function MetricPage({ year, yearId }) {
     const { loading, error, data, refetch } = useQuery(
@@ -127,94 +102,30 @@ function MetricPage({ year, yearId }) {
                 </div>
             </div>
             <div className="graphs">
-                {/* Diversity */}
-                <Pie
-                    width="500"
-                    height="300"
-                    className="graph"
-                    data={{
-                        labels: [
+                <Grid container spacing={3}>
+                    <PieGraph
+                        title="Gender"
+                        labels={["Male", "Female", "Non-binary", "Prefer not to answer"]}
+                        data={[12, 19, 3, 2]}
+                    />
+                    <PieGraph
+                        title="Diversity"
+                        labels={[
                             "White/Caucasian",
                             "Asian/Pacific Islander",
                             "Hispanic",
                             "Black or African American",
                             "American Indian or Alaskan Native",
                             "Prefer not to answer",
-                        ],
-                        datasets: [
-                            {
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: pieColors
-                                    .slice(0, 5)
-                                    .concat(pieColors[pieColors.length - 1]),
-                                borderWidth: 0,
-                            },
-                        ],
-                    }}
-                    options={{
-                        ...pieOptions,
-                        title: {
-                            display: true,
-                            text: "Diversity",
-                            fontSize: "20",
-                            fontFamily: "Avenir",
-                        },
-                    }}
-                />
-                {/* Gender */}
-                <Pie
-                    width="500"
-                    height="300"
-                    className="graph"
-                    data={{
-                        labels: ["Male", "Female", "Non-binary", "Prefer not to answer"],
-                        datasets: [
-                            {
-                                data: [14, 6, 3, 6],
-                                backgroundColor: pieColors
-                                    .slice(0, 3)
-                                    .concat(pieColors[pieColors.length - 1]),
-                                borderColor: ["white"],
-                                borderWidth: 0,
-                            },
-                        ],
-                    }}
-                    options={{
-                        ...pieOptions,
-                        title: {
-                            display: true,
-                            text: "Gender",
-                            fontSize: "20",
-                            fontFamily: "Avenir",
-                        },
-                    }}
-                />
-                {/* Level of Study */}
-                <Pie
-                    width="500"
-                    height="300"
-                    className="graph"
-                    data={{
-                        labels: ["High School", "Tech School", "Undergraduate", "Graduate"],
-                        datasets: [
-                            {
-                                data: [14, 6, 3, 6],
-                                backgroundColor: pieColors,
-                                borderColor: ["white"],
-                                borderWidth: 0,
-                            },
-                        ],
-                    }}
-                    options={{
-                        ...pieOptions,
-                        title: {
-                            display: true,
-                            text: "Level of Study",
-                            fontSize: "20",
-                            fontFamily: "Avenir",
-                        },
-                    }}
-                />
+                        ]}
+                        data={[12, 19, 3, 2, 15, 5]}
+                    />
+                    <PieGraph
+                        title="Level of study"
+                        labels={["High School", "Tech School", "Undergraduate", "Graduate"]}
+                        data={[12, 19, 3, 2]}
+                    />
+                </Grid>
             </div>
         </StyledMetricPage>
     );
