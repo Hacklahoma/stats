@@ -154,7 +154,6 @@ function AddYear({ user, open, setModal, refetch }) {
                 />
                 {/* Number of projects */}
                 <TextField
-                    autoFocus
                     error={projects === null}
                     id="projects"
                     value={projects === null ? "" : projects}

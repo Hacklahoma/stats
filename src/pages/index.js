@@ -28,7 +28,7 @@ function Home({ user }) {
         <StyledHome>
             <h1 className="title">{year === "" ? "Overall" : year} Metrics</h1>
             <SelectYear setYearId={setYearId} setYear={setYear} yearId={yearId} year={year} />
-            <MetricPage yearId={yearId} year={year} />
+            <MetricPage user={user} yearId={yearId} year={year} />
         </StyledHome>
     );
 }

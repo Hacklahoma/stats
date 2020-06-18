@@ -4,17 +4,20 @@ import { Pie } from "react-chartjs-2";
 import { Grid } from "@material-ui/core";
 
 const StyledPieGraph = styled.div`
-    border: 3px solid #eee;
+    border: 3px solid #f7f7f7;
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
     padding: 25px;
+    min-height: 205px;
+    max-height: 205px;
+    box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.05);
     .left {
         display: flex;
         flex-direction: column;
         padding: 0 20px 0 0;
         h3 {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         ul {
             margin-left: 2px;
@@ -32,12 +35,11 @@ const StyledPieGraph = styled.div`
     }
 
     @media only screen and (max-width: 619px) {
-        border: none;
-        border-radius: 0;
-        border-top: 3px solid #eee;
         flex-direction: column;
         align-items: center;
-        padding: 40px 0 20px 0;
+        padding: 30px 0;
+        min-height: none;
+        max-height: none;
         .left {
             min-width: 90%;
             max-width: 90%;
@@ -56,7 +58,7 @@ function PieGraph({ data, labels, title }) {
                         {labels.map((label, i) => {
                             if (label === "Prefer not to answer")
                                 return (
-                                    <li>
+                                    <li key={i}>
                                         <div
                                             style={{
                                                 background: pieColors()[pieColors().length - 1],
@@ -68,7 +70,7 @@ function PieGraph({ data, labels, title }) {
                                 );
                             else
                                 return (
-                                    <li>
+                                    <li key={i}>
                                         <div
                                             style={{ background: pieColors()[i] }}
                                             className="box"

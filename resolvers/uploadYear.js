@@ -388,7 +388,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                         }
                     }
                 }
-            ){School
+            ){
                 year
                 metrics { hackers
                     projects
@@ -426,6 +426,9 @@ const uploadYear = async (_, { year, projects, data }) => {
             }
         }
     `)
+
+    console.log(test);
+    
 
     return yearData.data.createYear;
 }
