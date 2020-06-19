@@ -207,6 +207,8 @@ function Login() {
             setTimeout(() => {
                 setAlert({});
             }, 2000);
+        } else if (router.asPath.includes("error=")) {
+            setAlert({ severity: "error", message: "Unable to log you in, try again." });
         }
         function handleResize() {
             setMobile(window.innerWidth < 720);
