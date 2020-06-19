@@ -2,7 +2,7 @@ import Head from "next/head";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { Button, Fade } from "@material-ui/core";
+import { Button, Fade, CircularProgress } from "@material-ui/core";
 import { gql, useMutation } from "@apollo/client";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
@@ -154,6 +154,7 @@ function Login() {
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
     const [alert, setAlert] = useState({});
+    const [loading, setLoading] = useState(false);
     // Router
     const router = useRouter();
 
@@ -221,6 +222,9 @@ function Login() {
     const onSubmit = (e) => {
         event.preventDefault();
         event.stopPropagation();
+
+        setLoading(true);
+
         // Calling mutation
         login({
             variables: {
@@ -241,10 +245,17 @@ function Login() {
                     },
                 });
                 // Push to dashboard and force reload
-                setTimeout(() => router.push("/"), 500);
+                setTimeout(
+                    () =>
+                        router.push("/").then(() => {
+                            setLoading(false);
+                        }),
+                    500
+                );
             })
             // Error logging in
             .catch((e) => {
+                setLoading(false);
                 if (alert) {
                     setAlert({});
                     setTimeout(() => {
@@ -299,7 +310,13 @@ function Login() {
                         </Button>
                     </div>
                     <div className="submit">
-                        <Button onClick={onSubmit} variant="outlined" size="small" color="primary">
+                        <Button
+                            onClick={onSubmit}
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            endIcon={loading ? <CircularProgress size={14} /> : null}
+                        >
                             Login
                         </Button>
                         <a
