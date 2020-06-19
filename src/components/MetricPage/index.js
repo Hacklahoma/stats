@@ -5,6 +5,7 @@ import PieGraph from "./MetricChildren/PieGraph";
 import Grid from "@material-ui/core/Grid";
 import { defaultMetrics } from "./utils";
 import { useEffect } from "react";
+import Router from "next/router";
 
 const StyledMetricPage = styled.div`
     margin-top: 20px;
@@ -167,7 +168,7 @@ function MetricPage({ user, year, yearId }) {
     } else if (data.allYears && data.allYears.length > 0) {
         // Get data for OVERALL data
         for (var i in data.allYears) {
-            if(data.allYears[i].disabled) {
+            if (data.allYears[i].disabled) {
                 break;
             }
             metrics.hackers += data.allYears[i].metrics.hackers;

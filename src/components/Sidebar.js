@@ -65,7 +65,8 @@ const StyledSidebar = styled.div`
 `;
 
 // Styling for mobile menu
-const MENU_HEIGHT = "240px";
+const MENU_HEIGHT_ADMIN = "240px";
+const MENU_HEIGHT = "180px";
 const StyledHamburger = styled.div`
     z-index: 100;
     position: fixed;
@@ -92,7 +93,7 @@ const StyledHamburger = styled.div`
         .container {
             cursor: auto;
             background: white;
-            height: ${MENU_HEIGHT};
+            height: ${(props) => (props.isAdmin ? MENU_HEIGHT_ADMIN : MENU_HEIGHT)};
             overflow: hidden;
             box-shadow: 0 4px 4px -3px rgba(0, 0, 0, 0.15);
             .item {
@@ -127,7 +128,7 @@ const StyledHamburger = styled.div`
         background: rgba(0, 0, 0, 0.15);
         transition: background 250ms;
         .container {
-            height: ${MENU_HEIGHT};
+            height: ${(props) => (props.isAdmin ? MENU_HEIGHT_ADMIN : MENU_HEIGHT)};
             transition: height 250ms;
         }
     }
@@ -135,7 +136,7 @@ const StyledHamburger = styled.div`
         background: rgba(0, 0, 0, 0.15);
         cursor: auto;
         .container {
-            height: ${MENU_HEIGHT};
+            height: ${(props) => (props.isAdmin ? MENU_HEIGHT_ADMIN : MENU_HEIGHT)};
         }
     }
     .expanded-exit-active {
@@ -199,7 +200,7 @@ function Sidebar({ user }) {
     if (isMobile) {
         // Return mobile
         return (
-            <StyledHamburger isExpanded={isExpanded}>
+            <StyledHamburger isAdmin={user.isAdmin} isExpanded={isExpanded}>
                 {/* Open and Close buttons */}
                 <Button
                     onClick={() => setExpanded(!isExpanded)}
@@ -217,18 +218,36 @@ function Sidebar({ user }) {
                     <div className="expanded">
                         <ClickAwayListener onClickAway={() => setExpanded(false)}>
                             <div className="container">
-                                {/* Metrics */}
-                                <Link href="/">
+                                {/**
+                                 * Metrics
+                                 * Includes a hacky solution to fix problem where
+                                 * data duplicates when pressing button
+                                 */}
+                                {router.asPath !== "/" ? (
+                                    <Link href="/">
+                                        <div className="item">
+                                            <Button
+                                                onClick={() => setExpanded(false)}
+                                                className="button"
+                                                id="metrics-button"
+                                            >
+                                                <FiPieChart className="icon" />
+                                                <p>Metrics</p>
+                                            </Button>
+                                        </div>
+                                    </Link>
+                                ) : (
                                     <div className="item">
                                         <Button
                                             onClick={() => setExpanded(false)}
                                             className="button"
+                                            id="metrics-button"
                                         >
                                             <FiPieChart className="icon" />
                                             <p>Metrics</p>
                                         </Button>
                                     </div>
-                                </Link>
+                                )}
                                 {/* Finances */}
                                 <Link href="/finances">
                                     <div className="item">
@@ -279,14 +298,26 @@ function Sidebar({ user }) {
                     </a>
                 </Link>
                 <div className="tabs">
-                    {/* Metrics */}
-                    <Link href="/">
+                    {/**
+                     * Metrics
+                     * Includes a hacky solution to fix problem where
+                     * data duplicates when pressing button
+                     */}
+                    {router.asPath !== "/" ? (
+                        <Link href="/">
+                            <Tooltip title="Metrics" arrow placement="right">
+                                <Button className="button" id="metrics-button">
+                                    <FiPieChart className="icon" />
+                                </Button>
+                            </Tooltip>
+                        </Link>
+                    ) : (
                         <Tooltip title="Metrics" arrow placement="right">
-                            <Button className="button">
+                            <Button className="button" id="metrics-button">
                                 <FiPieChart className="icon" />
                             </Button>
                         </Tooltip>
-                    </Link>
+                    )}
                     {/* Finances */}
                     <Link href="/finances">
                         <Tooltip title="Finances" arrow placement="right">
