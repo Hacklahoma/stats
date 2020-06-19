@@ -3,7 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import "chartjs-plugin-datalabels";
 import PieGraph from "./MetricChildren/PieGraph";
 import Grid from "@material-ui/core/Grid";
-import { defaultMetrics } from "./constants";
+import { defaultMetrics } from "./utils";
 import { useEffect } from "react";
 
 const StyledMetricPage = styled.div`
@@ -198,8 +198,8 @@ function MetricPage({ user, year, yearId }) {
             metrics.shirt_XL += data.allYears[i].metrics.shirt_XL;
             metrics.shirt_XXL += data.allYears[i].metrics.shirt_XXL;
         }
-        // metrics.levelOfStudy_N -= data.allYears[2].metrics.levelOfStudy_N;
-        // metrics.race_N -= data.allYears[2].metrics.race_N;
+        metrics.levelOfStudy_N -= data.allYears[2].metrics.levelOfStudy_N;
+        metrics.race_N -= data.allYears[2].metrics.race_N;
     } else if (data.Year) {
         // Get data for YEAR data
         metrics.hackers = data.Year.metrics.hackers;

@@ -153,7 +153,7 @@ function Login() {
     const [addEvent] = useMutation(ADD_EVENT);
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
-    const [error, setError] = useState();
+    const [alert, setAlert] = useState({});
     // Router
     const router = useRouter();
 
@@ -163,7 +163,7 @@ function Login() {
         if (router.asPath.includes("code=")) {
             const params = new URLSearchParams(window.location.search);
 
-            console.log("Checking validity...");
+            setAlert({severity: "info", message: "Checking validity..."});
 
             //Login mutation
             login({
@@ -176,7 +176,7 @@ function Login() {
                     // Set token to local storage
                     localStorage.setItem("token", snapshot.data.login.token);
 
-                    console.log("Logging you in via slack...");
+                    setAlert({ severity: "success", message: "Logging you in homie..." });
 
                     //Event logger
                     addEvent({
@@ -191,13 +191,13 @@ function Login() {
                 })
                 // Error logging in
                 .catch((e) => {
-                    if (error) {
-                        setError(undefined);
+                    if (alert) {
+                        setAlert({});
                         setTimeout(() => {
-                            setError(e.message.substring(15));
+                            setAlert({severity: "error", message: e.message.substring(15)});
                         }, 125);
                     } else {
-                        setError(e.message.substring(15));
+                        setAlert({ severity: "error", message: e.message.substring(15) });
                     }
                 });
         }
@@ -239,13 +239,13 @@ function Login() {
             })
             // Error logging in
             .catch((e) => {
-                if (error) {
-                    setError(undefined);
+                if (alert) {
+                    setAlert({});
                     setTimeout(() => {
-                        setError(e.message.substring(15));
+                        setAlert({severity: "error", message: e.message.substring(15)});
                     }, 125);
                 } else {
-                    setError(e.message.substring(15));
+                    setAlert({severity: "error", message: e.message.substring(15)});
                 }
             });
     };
@@ -303,10 +303,10 @@ function Login() {
                             team member?
                         </a>
                     </div>
-                    {/* Error alert */}
-                    <Fade in={error !== undefined} timeout={250}>
-                        <Alert severity="error" className="alert">
-                            {error}
+                    {/* Alerts */}
+                    <Fade in={alert.message} timeout={0}>
+                        <Alert severity={alert.severity} className="alert">
+                            {alert.message}
                         </Alert>
                     </Fade>
                 </form>
