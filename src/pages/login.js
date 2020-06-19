@@ -163,7 +163,7 @@ function Login() {
         if (router.asPath.includes("code=")) {
             const params = new URLSearchParams(window.location.search);
 
-            setAlert({severity: "info", message: "Checking validity..."});
+            setAlert({ severity: "info", message: "Checking validity..." });
 
             //Login mutation
             login({
@@ -194,12 +194,18 @@ function Login() {
                     if (alert) {
                         setAlert({});
                         setTimeout(() => {
-                            setAlert({severity: "error", message: e.message.substring(15)});
+                            setAlert({ severity: "error", message: e.message.substring(15) });
                         }, 125);
                     } else {
                         setAlert({ severity: "error", message: e.message.substring(15) });
                     }
                 });
+        } else if (router.asPath.includes("?logout")) {
+            setAlert({ severity: "success", message: "Successfully logged you out." });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 2000);
         }
         function handleResize() {
             setMobile(window.innerWidth < 720);
@@ -242,10 +248,10 @@ function Login() {
                 if (alert) {
                     setAlert({});
                     setTimeout(() => {
-                        setAlert({severity: "error", message: e.message.substring(15)});
+                        setAlert({ severity: "error", message: e.message.substring(15) });
                     }, 125);
                 } else {
-                    setAlert({severity: "error", message: e.message.substring(15)});
+                    setAlert({ severity: "error", message: e.message.substring(15) });
                 }
             });
     };

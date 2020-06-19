@@ -188,7 +188,7 @@ function Sidebar({ user }) {
             },
         });
         localStorage.removeItem("token");
-        router.push("/login");
+        router.push("/login?logout");
     };
 
     // Closing menu when transitioning from desktop to mobile
