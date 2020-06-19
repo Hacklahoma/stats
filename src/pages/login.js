@@ -329,7 +329,7 @@ function Login() {
                         </a>
                     </div>
                     {/* Alerts */}
-                    <Fade in={alert.message} timeout={0}>
+                    <Fade in={alert.message !== undefined} timeout={0}>
                         <Alert severity={alert.severity} className="alert">
                             {alert.message}
                         </Alert>
