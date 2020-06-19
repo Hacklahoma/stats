@@ -6,7 +6,7 @@ const login = async (_, { password, code }) => {
 
     //First check to ensure a password or login code was given
     if(!password && !code){
-        throw new Error("Login Failed.");
+        throw new Error("Please enter a password.");
     }
 
     const { keystone } = require("../index.js");
