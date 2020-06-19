@@ -58,6 +58,9 @@ function SelectYear({ setYearId, year, yearId, setYear }) {
                     <MenuItem value="">Overall</MenuItem>
                     {!loading &&
                         data.allYears.map((row) => {
+                            if(row.disabled) {
+                                return;
+                            }
                             return (
                                 <MenuItem key={row.id} value={`${row.id}:${row.year}`}>
                                     {row.year}

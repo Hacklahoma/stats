@@ -25,6 +25,9 @@ const StyledMetrics = styled.div`
         width: 100%;
         margin-top: 40px;
     }
+    .message {
+        margin-top: 40px;
+    }
 
     @media only screen and (max-width: 619px) {
         .buttons {
@@ -60,9 +63,9 @@ function Metrics({ user }) {
                 </Button>
             </div>
             {loading ? (
-                <p>Loading...</p>
+                <p className="message">Loading...</p>
             ) : data.allYears.length === 0 ? (
-                <p>No data to display.</p>
+                <p className="message">No data to display.</p>
             ) : (
                 <div className="years">
                     {data.allYears.map((row) => {

@@ -49,6 +49,7 @@ const StyledMetricPage = styled.div`
 const YEAR_METRICS = gql`
     query Year($id: ID!) {
         Year(where: { id: $id }) {
+            disabled
             metrics {
                 hackers
                 projects
@@ -96,6 +97,7 @@ const YEAR_METRICS = gql`
 const OVERALL_METRICS = gql`
     query {
         allYears {
+            disabled
             metrics {
                 hackers
                 projects
@@ -165,6 +167,9 @@ function MetricPage({ user, year, yearId }) {
     } else if (data.allYears && data.allYears.length > 0) {
         // Get data for OVERALL data
         for (var i in data.allYears) {
+            if(data.allYears[i].disabled) {
+                break;
+            }
             metrics.hackers += data.allYears[i].metrics.hackers;
             metrics.projects += data.allYears[i].metrics.projects;
             metrics.gender_F += data.allYears[i].metrics.gender_F;
@@ -198,9 +203,9 @@ function MetricPage({ user, year, yearId }) {
             metrics.shirt_XL += data.allYears[i].metrics.shirt_XL;
             metrics.shirt_XXL += data.allYears[i].metrics.shirt_XXL;
         }
-        metrics.levelOfStudy_N -= data.allYears[2].metrics.levelOfStudy_N;
-        metrics.race_N -= data.allYears[2].metrics.race_N;
-    } else if (data.Year) {
+        // metrics.levelOfStudy_N -= data.allYears[2].metrics.levelOfStudy_N;
+        // metrics.race_N -= data.allYears[2].metrics.race_N;
+    } else if (data.Year && !data.Year.disabled) {
         // Get data for YEAR data
         metrics.hackers = data.Year.metrics.hackers;
         metrics.projects = data.Year.metrics.projects;

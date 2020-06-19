@@ -74,6 +74,7 @@ function Admin({ user }) {
                 </div>
                 {view === "accounts" && <Accounts user={user} />}
                 {view === "metrics" && <Metrics user={user} />}
+                {view === "finances" && <p style={{marginTop: "40px"}}>Work in progress...</p>}
             </StyledAdmin>
         );
     else
