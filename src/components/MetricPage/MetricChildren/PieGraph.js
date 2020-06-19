@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { pieWidth, pieColors, pieOptions } from "../constants";
+import { pieWidth, pieColors, pieOptions } from "../utils";
 import { Pie } from "react-chartjs-2";
 import { Grid } from "@material-ui/core";
 
