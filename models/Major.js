@@ -8,7 +8,7 @@ const Major = {
             options: "Arts and Humanities, Business, Health and Medicine, " +
             "Multi/Interdisciplinary Studies, Public and Social Services, " +
             "STEM, Computer Technologies, Social Sciences, " +
-            "Trades and Personal Services"
+            "Trades and Personal Services, Other"
         },
         raw: { type: Text, many: true },
         quantity: { type: Integer },
