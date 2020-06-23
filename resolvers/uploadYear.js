@@ -110,7 +110,18 @@ const uploadYear = async (_, { year, projects, data }) => {
             shirt_M = 0,
             shirt_L = 0,
             shirt_XL = 0,
-            shirt_XXL = 0;
+            shirt_XXL = 0
+            rawArts = [],
+            rawBusiness = [],
+            rawHealth = [],
+            rawInterdisciplinary = [],
+            rawPublicSocialServices = [],
+            rawSTEM = [],
+            rawCompTech = [],
+            rawSocialSciences = [],
+            rawTrades = [],
+            rawOther = [];
+            
 
 
     //Go through the hacker data and parse it all
@@ -291,40 +302,69 @@ const uploadYear = async (_, { year, projects, data }) => {
                 shirt_XXL++;
         }
 
-        /*
-        let major = hacker.data[i].major.split(" ");
+        if(hackerData.data[i].major.length > 0){
+            //store majors into a variable
+            let majors = hackerData.data[i].major;
 
-        for(i in major){
-            if(ARTS_KEYWORDS.includes(major)){
-
+            //First check if the hacker has more than one major
+            if(hackerData.data[i].major.indexOf(",") > -1){
+                //Split majors up by commas
+                majors = majors.split(", ");
             }
-            else if(BUSINESS_KEYWORDS.includes(major)) {
-
+            else {
+                //store major into an array
+                majors = majors.split();
             }
-            else if(HEALTH_KEYWORDS.includes(major)) {
+            //Loop through the one or more majors a stuend may have
+            for(k in majors){
+                //Split majors at spaces
+                let major = majors[k].split(" ");
 
-            }
-            else if(HEALTH_KEYWORDS.includes(major)){
-
-            }
-            else if(PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major)){
-
-            }
-            else if(STEM_KEYWORDS.includes(major)){
-
-            }
-            else if(COMP_TECH_KEYWORDS.includes(major)){
-
-            }
-            else if(SOCIAL_SCIENCES_KEYWORDS.includes(major)){
-
-            }
-            else if(TRADES_KEYWORDS.includes(majors)){
-
-
+                //Loop through each word looking for keywords
+                for(j in major){
+                    if(ARTS_KEYWORDS.includes(major[j])){
+                        rawArts.push(majors[k]);
+                        break;
+                    }
+                    else if(BUSINESS_KEYWORDS.includes(major[j])) {
+                        rawBusiness.push(majors[k]);
+                        break;
+                    }
+                    else if(HEALTH_KEYWORDS.includes(major[j])) {
+                        rawHealth.push(majors[k]);
+                        break;
+                    }
+                    else if(INTERDISCIPLINARY_KEYWORDS.includes(major[j])){
+                        rawInterdisciplinary.push(majors[k]);
+                        break;
+                    }
+                    else if(PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major[j])){
+                        rawPublicSocialServices.push(majors[k]);
+                        break;
+                    }
+                    else if(COMP_TECH_KEYWORDS.includes(major[j])){
+                        rawCompTech.push(majors[k]);
+                        break;
+                    }
+                    else if(STEM_KEYWORDS.includes(major[j])){
+                        rawSTEM.push(majors[k]);
+                        break;
+                    }
+                    else if(SOCIAL_SCIENCES_KEYWORDS.includes(major[j])){
+                        rawSocialSciences.push(majors[k]);
+                        break;
+                    }
+                    else if(TRADES_KEYWORDS.includes(major[j])){
+                        rawTrades.push(majors[k]);
+                        break;
+                    }
+                    else if(j >= +major.length - +1) {
+                        rawOther.push(majors[k]);
+                    }
+                }
             }
         }
-        */
+
         // Pushing hacker ids to array in case we need to remove them
         hackerIDs.push(hacker.data.createHacker.id);
 
@@ -345,14 +385,14 @@ const uploadYear = async (_, { year, projects, data }) => {
     }
 
     //Create the metrics
-    //Currently a const because I need to test majors still
-    const test = await keystone.executeQuery(`
+    const metrics = await keystone.executeQuery(`
         mutation {
             updateYear(
                 id: ${yearData.data.createYear.id},
                 data: {
                     metrics: {
                         create: {
+                            parent: {connect:{id:"${yearData.data.createYear.id}"}}
                             hackers: ${hackerData.data.length},
                             projects: ${projects},
                             gender_F: ${gender_F}, 
@@ -390,7 +430,10 @@ const uploadYear = async (_, { year, projects, data }) => {
                 }
             ){
                 year
-                metrics { hackers
+                metrics { 
+                    id
+                    parent {year}
+                    hackers
                     projects
                     gender_F 
                     gender_M
@@ -426,9 +469,87 @@ const uploadYear = async (_, { year, projects, data }) => {
             }
         }
     `)
-
-    console.log(test);
     
+    //Update the metrics by adding the majors
+    await keystone.executeQuery(`
+        mutation{
+            updateMetric(
+                id: ${metrics.data.updateYear.metrics.id},
+                data: {
+                    majors: {
+                        create: [
+                            {   
+                                type: "Arts and Humanities",
+                                raw: "${rawArts.join(',')}",
+                                quantity: ${rawArts.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Business",
+                                raw: "${rawBusiness.join(',')}",
+                                quantity: ${rawBusiness.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Health and Medicine",
+                                raw: "${rawHealth.join(',')}",
+                                quantity: ${rawHealth.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Multi/Interdisciplinary Studies",
+                                raw: "${rawInterdisciplinary.join(',')}",
+                                quantity: ${rawInterdisciplinary.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Public and Social Services",
+                                raw: "${rawPublicSocialServices.join(',')}",
+                                quantity: ${rawPublicSocialServices.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "STEM",
+                                raw: "${rawSTEM.join(',')}",
+                                quantity: ${rawSTEM.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Computer Technologies",
+                                raw: "${rawCompTech.join(',')}",
+                                quantity: ${rawCompTech.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Social Sciences",
+                                raw: "${rawSocialSciences.join(',')}",
+                                quantity: ${rawSocialSciences.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Trades and Personal Services",
+                                raw: "${rawTrades.join(',')}",
+                                quantity: ${rawTrades.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                            {   
+                                type: "Other",
+                                raw: "${rawOther.join(',')}",
+                                quantity: ${rawOther.length},
+                                parent: {connect:{id:"${metrics.data.updateYear.metrics.id}"}}
+                            },
+                        ]
+                    },
+                        
+                }
+            ){
+                majors {
+                    type 
+                    raw
+                }
+            }
+        }
+    `);
 
     return yearData.data.createYear;
 }

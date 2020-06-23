@@ -2,6 +2,10 @@ const { Relationship, Integer } = require("@keystonejs/fields");
 
 const Metric = {
     fields: {
+        parent: {
+            type: Relationship,
+            ref: "Year"
+        },
         hackers: {type: Integer},
         projects: {type: Integer},
         majors: {
