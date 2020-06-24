@@ -28,9 +28,20 @@ const keystone = new Keystone({
     cookieSecret: process.env.COOKIE_SECRET,
     onConnect: async () => {
         // Setting up admin account
-        keystone.createItems({
-            Admin: [{ username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD }],
-        });
+        const admins = await keystone.executeQuery(`
+            query {
+                allAdmins(where:{username:"${process.env.ADMIN_USERNAME}"}) {
+                    id
+                }
+            }
+        `);
+
+        // Adding new admin account from env vars if none are created
+        if(admins.data.allAdmins.length <= 0) {
+            keystone.createItems({
+                Admin: [{ username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD }],
+            });
+        }
     },
 });
 
@@ -51,7 +62,8 @@ keystone.extendGraphQLSchema({
             resolver: addUser,
         },
         {
-            schema: "changeUser(id: ID!, company: String, password: String, disabled: Boolean): User",
+            schema:
+                "changeUser(id: ID!, company: String, password: String, disabled: Boolean): User",
             resolver: changeUser,
         },
         {
@@ -65,8 +77,8 @@ keystone.extendGraphQLSchema({
         {
             schema: "addEvent(id: ID!, type: String!, description: String): Event",
             resolver: addEvent,
-        }
-    ]
+        },
+    ],
 });
 
 // Securing admin panel
