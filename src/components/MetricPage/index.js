@@ -169,7 +169,7 @@ function MetricPage({ user, year, yearId }) {
         // Get data for OVERALL data
         for (var i in data.allYears) {
             if (data.allYears[i].disabled) {
-                break;
+                continue;
             }
             metrics.hackers += data.allYears[i].metrics.hackers;
             metrics.projects += data.allYears[i].metrics.projects;
