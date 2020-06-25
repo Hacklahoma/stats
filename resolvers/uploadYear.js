@@ -81,123 +81,51 @@ const uploadYear = async (_, { year, projects, data }) => {
         header: true,
     })
 
-        var gender_F = 0, 
-            gender_M = 0,
-            gender_NB = 0,
-            gender_N = 0,
-            race_WC = 0,
-            race_API = 0,
-            race_H = 0,
-            race_BAA = 0,
-            race_AIAN = 0,
-            race_N = 0,
-            levelOfStudy_HS = 0,
-            levelOfStudy_TS = 0,
-            levelOfStudy_UU = 0,
-            levelOfStudy_GU = 0,
-            levelOfStudy_N = 0,
-            diet_VT = 0,
-            diet_VE = 0,
-            diet_L = 0,
-            diet_G = 0,
-            diet_NA = 0,
-            diet_H = 0,
-            diet_K = 0,
-            diet_O = 0,
-            diet_N = 0,
-            shirt_XS = 0,
-            shirt_S = 0,
-            shirt_M = 0,
-            shirt_L = 0,
-            shirt_XL = 0,
-            shirt_XXL = 0
-            rawArts = [],
-            rawBusiness = [],
-            rawHealth = [],
-            rawInterdisciplinary = [],
-            rawPublicSocialServices = [],
-            rawSTEM = [],
-            rawCompTech = [],
-            rawSocialSciences = [],
-            rawTrades = [],
-            rawOther = []
-            emails = [];
+    var gender_F = 0, 
+        gender_M = 0,
+        gender_NB = 0,
+        gender_N = 0,
+        race_WC = 0,
+        race_API = 0,
+        race_H = 0,
+        race_BAA = 0,
+        race_AIAN = 0,
+        race_N = 0,
+        levelOfStudy_HS = 0,
+        levelOfStudy_TS = 0,
+        levelOfStudy_UU = 0,
+        levelOfStudy_GU = 0,
+        levelOfStudy_N = 0,
+        diet_VT = 0,
+        diet_VE = 0,
+        diet_L = 0,
+        diet_G = 0,
+        diet_NA = 0,
+        diet_H = 0,
+        diet_K = 0,
+        diet_O = 0,
+        diet_N = 0,
+        shirt_XS = 0,
+        shirt_S = 0,
+        shirt_M = 0,
+        shirt_L = 0,
+        shirt_XL = 0,
+        shirt_XXL = 0
+        rawArts = [],
+        rawBusiness = [],
+        rawHealth = [],
+        rawInterdisciplinary = [],
+        rawPublicSocialServices = [],
+        rawSTEM = [],
+        rawCompTech = [],
+        rawSocialSciences = [],
+        rawTrades = [],
+        rawOther = []
+        emails = [];
             
-
-
     //Go through the hacker data and parse it all
     const hackerIDs = [];
     for (i in hackerData.data){
-        //Create a new hacker
-        const hacker = await keystone.executeQuery(`
-                mutation {
-                    createHacker(data:{
-                        parent: {connect: {id: ${yearData.data.createYear.id}}}
-                        ${hackerData.data[i].name.length > 0 ? `name: "${hackerData.data[i].name}",` : ``}
-                        ${hackerData.data[i].email.length > 0 ? `email: "${hackerData.data[i].email}",` : ``}
-                        ${hackerData.data[i].school.length > 0 ? `school: "${hackerData.data[i].school}",` : ``}
-                        ${hackerData.data[i].birthday.length > 0 ? `birthday: "${convertDate(hackerData.data[i].birthday)}",` : ``}
-                        ${hackerData.data[i].gender.length > 0 ? `gender: "${hackerData.data[i].gender}",` : ``}
-                        ${hackerData.data[i].race.length > 0 ? `race: "${hackerData.data[i].race}",` : ``}
-                        ${hackerData.data[i].levelOfStudy.length > 0 ? `levelOfStudy: "${hackerData.data[i].levelOfStudy}",` : ``}
-                        ${hackerData.data[i].graduation.length > 0 ? `graduation: "${convertDate(hackerData.data[i].graduation)}",` : ``} 
-                        ${hackerData.data[i].major.length > 0 ? `major: "${hackerData.data[i].major}",` : ``} 
-                        ${hackerData.data[i].hackathons.length > 0 ? `hackathons: ${hackerData.data[i].hackathons},` : ``} 
-                        ${hackerData.data[i].diet.length > 0 ? `diet: "${hackerData.data[i].diet}",` : ``} 
-                        ${hackerData.data[i].shirt.length > 0 ? `shirt: "${hackerData.data[i].shirt}",` : ``} 
-                        needsReimbursement: false,
-                        ${hackerData.data[i].github.length > 0 ? `github: "${hackerData.data[i].github}",` : ``} 
-                        ${hackerData.data[i].website.length > 0 ? `website: "${hackerData.data[i].website}",` : ``} 
-                    }) {
-                        id
-                        parent {year}
-                        name
-                        email
-                        school
-                        birthday
-                        gender
-                        race
-                        levelOfStudy
-                        graduation
-                        major
-                        hackathons
-                        diet
-                        shirt
-                        needsReimbursement
-                        github
-                        website
-                    }
-                }
-            `);
-
-        // Checks for errors within parsing process
-        if(hacker.errors) {
-            // Remove hackers
-            await keystone.executeQuery(`
-                mutation {
-                    deleteHackers(
-                        ids: ${JSON.stringify(hackerIDs)}, 
-                    ){
-                        id
-                    }
-                }
-            `);
-
-            // Remove year
-            await keystone.executeQuery(`
-                mutation {
-                    deleteYear(
-                        id: ${yearData.data.createYear.id}, 
-                    ){
-                        id
-                    }
-                }
-            `);            
-
-            // Throw error
-            throw new Error(`${hacker.errors[0].message} at line ${+i + +2}.`);
-        }
-
         //Switch statement for gender
         switch (hackerData.data[i].gender) {
             case "Male":
@@ -370,24 +298,6 @@ const uploadYear = async (_, { year, projects, data }) => {
         if(hackerData.data[i].email.length > 0){
             emails.push(hackerData.data[i].email);
         }
-
-        // Pushing hacker ids to array in case we need to remove them
-        hackerIDs.push(hacker.data.createHacker.id);
-
-        //Add the hacker to the year
-        await keystone.executeQuery(`
-                mutation {
-                    updateYear(
-                        id: ${yearData.data.createYear.id}, 
-                        data:{
-                            hackers: {connect:{id:"${hacker.data.createHacker.id}"}}
-                        }
-                    ){
-                        year
-                        hackers {name}
-                    }
-                }
-            `);
     }
 
     //Create the metrics
