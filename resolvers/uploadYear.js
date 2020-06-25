@@ -34,7 +34,7 @@ function convertDate(date){
 }
 
 //Major Keywords
-const ARTS_KEYWORDS = ["Arts", "Ballet", "Crafts", "Dance", "Film", "Documentary", "Music", "Photography", "Theater", "Performing"];
+const ARTS_KEYWORDS = ["Arts", "Art", "Ballet", "Crafts", "Dance", "Film", "Documentary", "Music", "Photography", "Theater", "Performing"];
 const BUSINESS_KEYWORDS = ["Business", "Accounting", "Human Resources" ];
 const HEALTH_KEYWORDS = ["Health", "Medicine", "Nursing"];
 const INTERDISCIPLINARY_KEYWORDS = ["Gender", "Family", "Liberal", "Recreation", "Fitness"];
@@ -120,7 +120,8 @@ const uploadYear = async (_, { year, projects, data }) => {
             rawCompTech = [],
             rawSocialSciences = [],
             rawTrades = [],
-            rawOther = [];
+            rawOther = []
+            emails = [];
             
 
 
@@ -365,6 +366,11 @@ const uploadYear = async (_, { year, projects, data }) => {
             }
         }
 
+        //Add the hacker email to the list of emails if the email field isn't blank
+        if(hackerData.data[i].email.length > 0){
+            emails.push(hackerData.data[i].email);
+        }
+
         // Pushing hacker ids to array in case we need to remove them
         hackerIDs.push(hacker.data.createHacker.id);
 
@@ -425,6 +431,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                             shirt_L: ${shirt_L},
                             shirt_XL: ${shirt_XL},
                             shirt_XXL: ${shirt_XXL},
+                            emails: "${emails.join(',')}",
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-const { Relationship, Integer } = require("@keystonejs/fields");
+const { Relationship, Integer, Text } = require("@keystonejs/fields");
 
 const Metric = {
     fields: {
@@ -43,6 +43,7 @@ const Metric = {
         shirt_L: {type: Integer},
         shirt_XL: {type: Integer},
         shirt_XXL: {type: Integer},
+        emails: {type: Text},
     },
 };
 
