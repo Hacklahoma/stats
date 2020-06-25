@@ -27,22 +27,16 @@ const login = async (_, { password, code }) => {
 
         //Checks to see if any users with the same password was returned
         if (result.data.allUsers.length === 0 || password === "") {
-            //Future: Add Event
             throw new Error("Incorrect password was given.");
         }
 
         //Checks to see if the user account is disabled
         if (result.data.allUsers[0].disabled) {
-            //Future: Add Event
             throw new Error("User account disabled.");
         }
 
-        //Future: Add Event
-
         return result.data.allUsers[0];
     }
-
-
 
     //Checks to see if code is given
     if(code !== null){

@@ -119,8 +119,6 @@ const changeUser = async (_, { id, company, password, disabled }) => {
         }
     `);
 
-    //Future: Add Event
-
     return result.data.updateUser;
 };
 

@@ -47,8 +47,6 @@ const addUser = async (_, { company, password }) => {
         }
     `);
 
-    //Future: Add Event
-
     return result.data.createUser;
 };
 
