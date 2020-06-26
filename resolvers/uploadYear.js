@@ -110,7 +110,9 @@ const uploadYear = async (_, { year, projects, data }) => {
         shirt_M = 0,
         shirt_L = 0,
         shirt_XL = 0,
-        shirt_XXL = 0
+        shirt_XXL = 0,
+        firstTimeHackers = 0,
+        emails = [],
         rawArts = [],
         rawBusiness = [],
         rawHealth = [],
@@ -120,8 +122,7 @@ const uploadYear = async (_, { year, projects, data }) => {
         rawCompTech = [],
         rawSocialSciences = [],
         rawTrades = [],
-        rawOther = []
-        emails = [];
+        rawOther = [];
             
     //Go through the hacker data and parse it all
     const hackerIDs = [];
@@ -294,6 +295,13 @@ const uploadYear = async (_, { year, projects, data }) => {
             }
         }
 
+        
+
+        //Check to see if the hacker is a first time hacker
+        if(hackerData.data[i].hackathons == '0') {
+            firstTimeHackers++;
+        }
+
         //Add the hacker email to the list of emails if the email field isn't blank
         if(hackerData.data[i].email.length > 0){
             emails.push(hackerData.data[i].email);
@@ -341,6 +349,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                             shirt_L: ${shirt_L},
                             shirt_XL: ${shirt_XL},
                             shirt_XXL: ${shirt_XXL},
+                            firstTimeHackers: ${firstTimeHackers},
                             emails: "${emails.join(',')}",
                         }
                     }
@@ -382,6 +391,8 @@ const uploadYear = async (_, { year, projects, data }) => {
                     shirt_L
                     shirt_XL
                     shirt_XXL
+                    firstTimeHackers
+                    emails
                 }
             }
         }
@@ -467,7 +478,7 @@ const uploadYear = async (_, { year, projects, data }) => {
             }
         }
     `);
-
+    
     return yearData.data.createYear;
 }
 
