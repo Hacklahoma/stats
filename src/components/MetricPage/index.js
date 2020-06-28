@@ -140,9 +140,8 @@ const OVERALL_METRICS = gql`
     }
 `;
 
-var metrics = JSON.parse(JSON.stringify(defaultMetrics));
-
 function MetricPage({ user, year, yearId }) {
+    var metrics = JSON.parse(JSON.stringify(defaultMetrics));
     // Rendering either all years or a single year
     const { loading, error, data, refetch } = useQuery(
         yearId > 0 ? YEAR_METRICS : OVERALL_METRICS,

@@ -218,25 +218,7 @@ function Sidebar({ user }) {
                     <div className="expanded">
                         <ClickAwayListener onClickAway={() => setExpanded(false)}>
                             <div className="container">
-                                {/**
-                                 * Metrics
-                                 * Includes a hacky solution to fix problem where
-                                 * data duplicates when pressing button
-                                 */}
-                                {router.asPath !== "/" ? (
-                                    <Link href="/">
-                                        <div className="item">
-                                            <Button
-                                                onClick={() => setExpanded(false)}
-                                                className="button"
-                                                id="metrics-button"
-                                            >
-                                                <FiPieChart className="icon" />
-                                                <p>Metrics</p>
-                                            </Button>
-                                        </div>
-                                    </Link>
-                                ) : (
+                                <Link href="/">
                                     <div className="item">
                                         <Button
                                             onClick={() => setExpanded(false)}
@@ -247,7 +229,7 @@ function Sidebar({ user }) {
                                             <p>Metrics</p>
                                         </Button>
                                     </div>
-                                )}
+                                </Link>
                                 {/* Finances */}
                                 <Link href="/finances">
                                     <div className="item">
@@ -298,26 +280,13 @@ function Sidebar({ user }) {
                     </a>
                 </Link>
                 <div className="tabs">
-                    {/**
-                     * Metrics
-                     * Includes a hacky solution to fix problem where
-                     * data duplicates when pressing button
-                     */}
-                    {router.asPath !== "/" ? (
-                        <Link href="/">
-                            <Tooltip title="Metrics" arrow placement="right">
-                                <Button className="button" id="metrics-button">
-                                    <FiPieChart className="icon" />
-                                </Button>
-                            </Tooltip>
-                        </Link>
-                    ) : (
+                    <Link href="/">
                         <Tooltip title="Metrics" arrow placement="right">
                             <Button className="button" id="metrics-button">
                                 <FiPieChart className="icon" />
                             </Button>
                         </Tooltip>
-                    )}
+                    </Link>
                     {/* Finances */}
                     <Link href="/finances">
                         <Tooltip title="Finances" arrow placement="right">
