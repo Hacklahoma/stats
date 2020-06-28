@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { pieWidth, pieColors, pieOptions } from "../utils";
+import { pieWidth, colors, pieOptions } from "../utils";
 import { Pie } from "react-chartjs-2";
 import { Grid } from "@material-ui/core";
 
@@ -70,7 +70,7 @@ function PieGraph({ data, labels, title, subtitle }) {
                                     <li key={i}>
                                         <div
                                             style={{
-                                                background: pieColors()[pieColors().length - 1],
+                                                background: colors()[colors().length - 1],
                                             }}
                                             className="box"
                                         />
@@ -81,7 +81,7 @@ function PieGraph({ data, labels, title, subtitle }) {
                                 return (
                                     <li key={i}>
                                         <div
-                                            style={{ background: pieColors()[i] }}
+                                            style={{ background: colors()[i] }}
                                             className="box"
                                         />
                                         {label}
@@ -98,7 +98,7 @@ function PieGraph({ data, labels, title, subtitle }) {
                         datasets: [
                             {
                                 data: data,
-                                backgroundColor: pieColors(
+                                backgroundColor: colors(
                                     labels.indexOf("Prefer not to answer") !== -1
                                         ? labels.length - 1
                                         : null

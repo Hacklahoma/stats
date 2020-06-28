@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
 import "chartjs-plugin-datalabels";
 import PieGraph from "./MetricChildren/PieGraph";
+import LineGraph from "./MetricChildren/LineGraph";
 import Grid from "@material-ui/core/Grid";
 import { ArrowDropUp, ArrowDropDown } from "@material-ui/icons";
 import { defaultMetrics } from "./utils";
@@ -73,60 +74,12 @@ const StyledMetricPage = styled.div`
 `;
 
 /**
- * Query's metrics from specific year from DB
- */
-const YEAR_METRICS = gql`
-    query Year($id: ID!) {
-        Year(where: { id: $id }) {
-            disabled
-            metrics {
-                hackers
-                projects
-                firstTimeHackers
-                majors {
-                    type
-                }
-                gender_F
-                gender_M
-                gender_NB
-                gender_N
-                race_WC
-                race_API
-                race_H
-                race_BAA
-                race_AIAN
-                race_N
-                levelOfStudy_HS
-                levelOfStudy_TS
-                levelOfStudy_UU
-                levelOfStudy_GU
-                levelOfStudy_N
-                diet_VT
-                diet_VE
-                diet_L
-                diet_G
-                diet_NA
-                diet_H
-                diet_K
-                diet_O
-                diet_N
-                shirt_XS
-                shirt_S
-                shirt_M
-                shirt_L
-                shirt_XL
-                shirt_XXL
-            }
-        }
-    }
-`;
-
-/**
  * Query's overall metrics from DB
  */
 const OVERALL_METRICS = gql`
     query {
         allYears {
+            year
             disabled
             metrics {
                 hackers
@@ -172,6 +125,11 @@ const OVERALL_METRICS = gql`
 
 function MetricPage({ user, year, yearId }) {
     var metrics = JSON.parse(JSON.stringify(defaultMetrics));
+    var timeline = {
+        labels: [],
+        hackers: [],
+        projects: [],
+    };
     const { loading, error, data, refetch } = useQuery(OVERALL_METRICS);
 
     /**
@@ -192,7 +150,13 @@ function MetricPage({ user, year, yearId }) {
             if (data.allYears[i].disabled) {
                 continue;
             }
+            
+            // Settings up timeline
+            timeline.labels.push(data.allYears[i].year);
+            timeline.hackers.push(data.allYears[i].metrics.hackers);
+            timeline.projects.push(data.allYears[i].metrics.projects);
 
+            // Settings up metrics
             metrics.hackers += data.allYears[i].metrics.hackers;
             metrics.projects += data.allYears[i].metrics.projects;
             metrics.firstTimeHackers += data.allYears[i].metrics.firstTimeHackers;
@@ -229,6 +193,10 @@ function MetricPage({ user, year, yearId }) {
             metrics.shirt_XL += data.allYears[i].metrics.shirt_XL;
             metrics.shirt_XXL += data.allYears[i].metrics.shirt_XXL;
         }
+        // Reversing order of timeline
+        timeline.labels.reverse();
+        timeline.hackers.reverse();
+        timeline.projects.reverse();
     } else if (data.allYears[yearId - 1] && !data.allYears[yearId - 1].disabled) {
         // Get data for YEAR data
         metrics.hackers = data.allYears[yearId - 1].metrics.hackers;
@@ -266,6 +234,13 @@ function MetricPage({ user, year, yearId }) {
         metrics.shirt_XXL = data.allYears[yearId - 1].metrics.shirt_XXL;
     }
 
+    /**
+     * Gets the difference and renders it
+     *
+     * @param {Number} current
+     * @param {Number} past
+     * @param {Boolean} percentage
+     */
     function getDifference(current, past, percentage) {
         if (yearId === 0) return;
         const diff = current - past;
@@ -328,6 +303,26 @@ function MetricPage({ user, year, yearId }) {
             </div>
             <div className="graphs">
                 <Grid container spacing={3}>
+                    {/* HACKERS TIMELINE */}
+                    {yearId === 0 && (
+                        <LineGraph
+                            title="Hackers Timeline"
+                            label="Hackers"
+                            labels={timeline.labels}
+                            data={timeline.hackers}
+                        />
+                    )}
+
+                    {/* PROJECTS TIMELINE */}
+                    {yearId === 0 && (
+                        <LineGraph
+                            title="Projects Timeline"
+                            label="Projects"
+                            labels={timeline.labels}
+                            data={timeline.projects}
+                        />
+                    )}
+
                     {/* GENDER */}
                     <PieGraph
                         title="Gender"
@@ -339,6 +334,7 @@ function MetricPage({ user, year, yearId }) {
                             metrics.gender_N,
                         ]}
                     />
+
                     {/* DIVERSITY */}
                     {metrics.levelOfStudy_N !== metrics.hackers && (
                         <PieGraph
@@ -361,6 +357,7 @@ function MetricPage({ user, year, yearId }) {
                             ]}
                         />
                     )}
+
                     {/* LEVEL OF STUDY */}
                     {metrics.levelOfStudy_N !== metrics.hackers && (
                         <PieGraph
@@ -381,6 +378,7 @@ function MetricPage({ user, year, yearId }) {
                             ]}
                         />
                     )}
+
                     {/* Diet */}
                     <PieGraph
                         title="Diet"
@@ -417,6 +415,7 @@ function MetricPage({ user, year, yearId }) {
                             metrics.diet_O,
                         ]}
                     />
+
                     {/* Shirt size (ADMIN ONLY) */}
                     {user.isAdmin && (
                         <PieGraph
