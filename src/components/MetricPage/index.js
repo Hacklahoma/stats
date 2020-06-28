@@ -85,8 +85,9 @@ const OVERALL_METRICS = gql`
                 hackers
                 projects
                 firstTimeHackers
-                majors {
+                majors (sortBy: type_ASC) {
                     type
+                    quantity
                 }
                 gender_F
                 gender_M
@@ -145,16 +146,28 @@ function MetricPage({ user, year, yearId }) {
     if (loading) {
         return <p>Loading...</p>;
     } else if (yearId === 0 && data.allYears.length > 0) {
+        // Setup first year's majors
+        for (var i in data.allYears[0].metrics.majors) {
+            metrics.majors.types.push(data.allYears[0].metrics.majors[i].type);
+            metrics.majors.quantities.push(data.allYears[0].metrics.majors[i].quantity);
+        }
+
         // Get data for OVERALL data
         for (var i in data.allYears) {
             if (data.allYears[i].disabled) {
                 continue;
             }
-            
+
             // Settings up timeline
             timeline.labels.push(data.allYears[i].year);
             timeline.hackers.push(data.allYears[i].metrics.hackers);
             timeline.projects.push(data.allYears[i].metrics.projects);
+
+            // Setting up majors, skip first one
+            if (i !== '0') {
+                for (var j in data.allYears[i].metrics.majors)
+                    metrics.majors.quantities[j] += data.allYears[i].metrics.majors[j].quantity;
+            }
 
             // Settings up metrics
             metrics.hackers += data.allYears[i].metrics.hackers;
@@ -198,6 +211,12 @@ function MetricPage({ user, year, yearId }) {
         timeline.hackers.reverse();
         timeline.projects.reverse();
     } else if (data.allYears[yearId - 1] && !data.allYears[yearId - 1].disabled) {
+        // Setup majors
+        for (var i in data.allYears[yearId - 1].metrics.majors) {            
+            metrics.majors.types.push(data.allYears[yearId - 1].metrics.majors[i].type);
+            metrics.majors.quantities.push(data.allYears[yearId - 1].metrics.majors[i].quantity);
+        }
+
         // Get data for YEAR data
         metrics.hackers = data.allYears[yearId - 1].metrics.hackers;
         metrics.projects = data.allYears[yearId - 1].metrics.projects;
@@ -333,6 +352,14 @@ function MetricPage({ user, year, yearId }) {
                             metrics.gender_NB,
                             metrics.gender_N,
                         ]}
+                    />
+
+                    {/* MAJORS */}
+                    <PieGraph
+                        title="Majors"
+                        subtitle="click a slice for more information"
+                        labels={metrics.majors.types}
+                        data={metrics.majors.quantities}
                     />
 
                     {/* DIVERSITY */}

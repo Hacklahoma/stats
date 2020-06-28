@@ -22,7 +22,7 @@ export const pieOptions = {
                 var value = data.datasets[0].data[tooltipItem.index];
                 var percentage = Math.round((value / sum) * 100);
                 var label = data.labels[tooltipItem.index];
-                if (label.length > 20) {
+                if (label.length > 20 && label.length !== 22) {
                     label = label.substring(0, 20) + "..";
                 }
                 return ` ${label}: ${percentage}% (${value})`;
@@ -88,10 +88,12 @@ export const colors = (numLabels) => {
         "#FF6F8E",
         "#49ACED",
         "#FFCE56",
-        "#5AC5C5",
-        "#A274FF",
         "#ffa974",
-        "#70ffd9",
+        "#3ccfcf",
+        "#7be38f",
+        "#A274FF",
+        "#bbb3ff",
+        "#ffb3f9",
         "#D6D6D6",
     ];
     if (numLabels) {
@@ -104,7 +106,7 @@ export const colors = (numLabels) => {
 /**
  * Width of pie graph
  */
-export const pieWidth = 200;
+export const pieWidth = 250;
 
 /**
  * Width of line graph
@@ -118,7 +120,11 @@ export const defaultMetrics = {
     hackers: null,
     projects: null,
     firstTimeHackers: null,
-    majors: null,
+    majors: {
+        types: [],
+        quantities: [],
+        raw: [],
+    },
     gender_F: null,
     gender_M: null,
     gender_NB: null,

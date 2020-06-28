@@ -9,8 +9,8 @@ const StyledPieGraph = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 25px;
-    min-height: 205px;
-    max-height: 205px;
+    min-height: 255px;
+    max-height: 255px;
     box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.05);
     .left {
         display: flex;
