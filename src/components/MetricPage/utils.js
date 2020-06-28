@@ -84,6 +84,7 @@ export const pieWidth = 200;
 export const defaultMetrics = {
     hackers: null,
     projects: null,
+    firstTimeHackers: null,
     majors: null,
     gender_F: null,
     gender_M: null,

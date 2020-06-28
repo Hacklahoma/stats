@@ -19,6 +19,12 @@ const StyledPieGraph = styled.div`
         h3 {
             margin-bottom: 10px;
         }
+        .subtitle {
+            font-weight: normal;
+            font-size: .8em;
+            margin-bottom: 8px;
+            margin-top: -8px;
+        }
         ul {
             margin-left: 2px;
             li {
@@ -48,12 +54,15 @@ const StyledPieGraph = styled.div`
     }
 `;
 
-function PieGraph({ data, labels, title }) {
+function PieGraph({ data, labels, title, subtitle }) {
     return (
         <Grid item>
             <StyledPieGraph>
                 <div className="left">
-                    <h3>{title}</h3>
+                    <h3>
+                        {title}
+                        {subtitle && <span className="subtitle"> ({subtitle})</span>}
+                    </h3>
                     <ul>
                         {labels.map((label, i) => {
                             if (label === "Prefer not to answer")
