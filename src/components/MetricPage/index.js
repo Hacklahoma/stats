@@ -6,8 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import { ArrowDropUp, ArrowDropDown } from "@material-ui/icons";
 import { defaultMetrics } from "./utils";
 import { useEffect } from "react";
-import Router from "next/router";
-import { Tooltip } from "@material-ui/core";
 
 const StyledMetricPage = styled.div`
     margin-top: 20px;
@@ -272,7 +270,7 @@ function MetricPage({ user, year, yearId }) {
         if (yearId === 0) return;
         const diff = current - past;
         return (
-            <span className={`difference ${diff > 0 && "up"} ${ diff < 0 && "down"}`}>
+            <span className={`difference ${diff > 0 && "up"} ${diff < 0 && "down"}`}>
                 {diff > 0 && <ArrowDropUp />}
                 {diff < 0 && <ArrowDropDown />}
                 {diff === 0 && "• "}
@@ -301,23 +299,18 @@ function MetricPage({ user, year, yearId }) {
                             getDifference(metrics.projects, data.allYears[yearId].metrics.projects)}
                     </p>
                 </div>
-                <Tooltip
-                    arrow
-                    title="Hackers who have never been to a Hacklahoma event, regardless of how many hackathons they've attended."
-                >
-                    <div className="item">
-                        <p className="label">First Hacklahomie</p>
-                        <p className="data">
-                            {((0 / metrics.hackers) * 100).toFixed()}%{" "}
-                            {data.allYears[yearId] &&
-                                getDifference(
-                                    (0 / metrics.hackers) * 100,
-                                    (0 / data.allYears[yearId].metrics.hackers) * 100,
-                                    true
-                                )}
-                        </p>
-                    </div>
-                </Tooltip>
+                <div className="item">
+                    <p className="label">First Hacklahomie</p>
+                    <p className="data">
+                        {((0 / metrics.hackers) * 100).toFixed()}%{" "}
+                        {data.allYears[yearId] &&
+                            getDifference(
+                                (0 / metrics.hackers) * 100,
+                                (0 / data.allYears[yearId].metrics.hackers) * 100,
+                                true
+                            )}
+                    </p>
+                </div>
                 <div className="item">
                     <p className="label">First Hackathon</p>
                     <p className="data">
