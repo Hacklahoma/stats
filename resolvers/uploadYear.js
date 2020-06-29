@@ -227,22 +227,22 @@ const uploadYear = async (_, { year, projects, data }) => {
 
         //Switch statement for shirt size
         switch (hackerData.data[i].shirt) {
-            case "X-Small":
+            case "XS":
                 shirt_XS++;
                 break;
-            case "Small":
+            case "S":
                 shirt_S++;
                 break;
-            case "Medium":
+            case "M":
                 shirt_M++;
                 break;
-            case "Large":
+            case "L":
                 shirt_L++;
                 break;
-            case "X-Large":
+            case "XL":
                 shirt_XL++;
                 break;
-            case "XX-Large":
+            case "XXL":
                 shirt_XXL++;
         }
 
@@ -348,7 +348,6 @@ const uploadYear = async (_, { year, projects, data }) => {
     else {
         uniqueHackers = hackerData.data.length;
     }
-
 
     //Create the metrics
     const metrics = await keystone.executeQuery(`
