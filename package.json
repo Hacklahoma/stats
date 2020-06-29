@@ -7,6 +7,7 @@
     "repository": "https://github.com/keystonejs/keystone/tree/master/packages/create-keystone-app/example-projects/blank",
     "homepage": "https://github.com/keystonejs/keystone",
     "license": "MIT",
+    "cacheDirectories": [".next/cache"],
     "engines": {
         "node": ">=10.0.0"
     },
