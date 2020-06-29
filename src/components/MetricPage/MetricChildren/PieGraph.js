@@ -137,7 +137,6 @@ function PieGraph({ data, rawMajors, labels, title, subtitle }) {
                             if (chart[0]) {
                                 var index = chart[0]._index;
                                 var counts = {};
-                                console.log(rawMajors);
                                 
                                 rawMajors[index].split(",").forEach(function(x) {
                                     counts[x] = (counts[x] || 0) + 1;
@@ -159,8 +158,6 @@ function PieGraph({ data, rawMajors, labels, title, subtitle }) {
                                 sortable.forEach(function(item) {
                                     objSorted[item[0]] = item[1];
                                 });
-
-                                console.log(rawMajors);
 
                                 setCategory(chart[0]._model.label);
                                 setMajors(objSorted);

@@ -177,8 +177,6 @@ function MetricPage({ user, year, yearId }) {
                 }
             }
 
-            console.log(metrics.majors.raw);
-
             // Settings up metrics
             metrics.hackers += data.allYears[i].metrics.hackers;
             metrics.projects += data.allYears[i].metrics.projects;

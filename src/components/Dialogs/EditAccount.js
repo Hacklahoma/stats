@@ -58,7 +58,7 @@ function EditAccount({ row, open, setModal, refetch }) {
                 refetch();
             })
             .catch((error) => {
-                setError(error.message.substring(15));
+                setError(error.message);
             });
     };
 

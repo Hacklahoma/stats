@@ -7,7 +7,9 @@
     "repository": "https://github.com/keystonejs/keystone/tree/master/packages/create-keystone-app/example-projects/blank",
     "homepage": "https://github.com/keystonejs/keystone",
     "license": "MIT",
-    "cacheDirectories": [".next/cache"],
+    "cacheDirectories": [
+        ".next/cache"
+    ],
     "engines": {
         "node": ">=10.0.0"
     },
@@ -18,25 +20,25 @@
         "create-tables": "keystone create-tables"
     },
     "dependencies": {
-        "@apollo/client": "^3.0.0-beta.44",
-        "@keystonejs/adapter-knex": "^10.0.0",
-        "@keystonejs/app-admin-ui": "^6.0.0",
-        "@keystonejs/app-graphql": "^5.1.7",
-        "@keystonejs/app-next": "^5.1.2",
-        "@keystonejs/auth-password": "^5.1.9",
-        "@keystonejs/keystone": "^9.0.0",
-        "@material-ui/core": "^4.9.14",
+        "@apollo/client": "^3.0.0-rc.9",
+        "@keystonejs/adapter-knex": "^10.1.0",
+        "@keystonejs/app-admin-ui": "^6.0.2",
+        "@keystonejs/app-graphql": "^5.1.8",
+        "@keystonejs/app-next": "^5.2.0",
+        "@keystonejs/auth-password": "^5.1.10",
+        "@keystonejs/keystone": "^9.0.1",
+        "@material-ui/core": "^4.10.2",
         "@material-ui/icons": "^4.9.1",
-        "@material-ui/lab": "^4.0.0-alpha.54",
-        "@material-ui/styles": "^4.9.14",
+        "@material-ui/lab": "^4.0.0-alpha.56",
+        "@material-ui/styles": "^4.10.0",
         "bcrypt": "^4.0.1",
         "chart.js": "^2.9.3",
         "chartjs-plugin-datalabels": "^0.7.0",
         "cross-env": "^7.0.0",
-        "csv-parser": "^2.3.2",
+        "csv-parser": "^2.3.3",
         "dotenv": "^8.2.0",
         "install": "^0.13.0",
-        "next": "^9.3.6",
+        "next": "^9.4.4",
         "npm": "^6.14.5",
         "papaparse": "^5.2.0",
         "react": "^16.13.1",
@@ -45,8 +47,8 @@
         "react-dropzone": "^11.0.1",
         "react-icons": "^3.10.0",
         "react-transition-group": "^4.4.1",
-        "styled-components": "^5.1.0",
-        "uuid": "^8.1.0"
+        "styled-components": "^5.1.1",
+        "uuid": "^8.2.0"
     },
     "devDependencies": {
         "babel-plugin-styled-components": "^1.10.7"

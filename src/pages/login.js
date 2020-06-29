@@ -6,7 +6,7 @@ import { Button, Fade, CircularProgress } from "@material-ui/core";
 import { gql, useMutation } from "@apollo/client";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 
 const StyledLogin = styled.div`
     display: flex;
@@ -195,10 +195,10 @@ function Login() {
                     if (alert) {
                         setAlert({});
                         setTimeout(() => {
-                            setAlert({ severity: "error", message: e.message.substring(15) });
+                            setAlert({ severity: "error", message: e.message });
                         }, 125);
                     } else {
-                        setAlert({ severity: "error", message: e.message.substring(15) });
+                        setAlert({ severity: "error", message: e.message });
                     }
                 });
         } else if (router.asPath.includes("?logout")) {
@@ -261,10 +261,10 @@ function Login() {
                 if (alert) {
                     setAlert({});
                     setTimeout(() => {
-                        setAlert({ severity: "error", message: e.message.substring(15) });
+                        setAlert({ severity: "error", message: e.message });
                     }, 125);
                 } else {
-                    setAlert({ severity: "error", message: e.message.substring(15) });
+                    setAlert({ severity: "error", message: e.message });
                 }
             });
     };
