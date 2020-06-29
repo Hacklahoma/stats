@@ -227,22 +227,22 @@ const uploadYear = async (_, { year, projects, data }) => {
 
         //Switch statement for shirt size
         switch (hackerData.data[i].shirt) {
-            case "XS":
+            case "X-Small":
                 shirt_XS++;
                 break;
-            case "S":
+            case "Small":
                 shirt_S++;
                 break;
-            case "M":
+            case "Medium":
                 shirt_M++;
                 break;
-            case "L":
+            case "Large":
                 shirt_L++;
                 break;
-            case "XL":
+            case "X-Large":
                 shirt_XL++;
                 break;
-            case "XXL":
+            case "XX-Large":
                 shirt_XXL++;
         }
 
@@ -334,10 +334,11 @@ const uploadYear = async (_, { year, projects, data }) => {
 
         //Go through email array
         for(i in emails){
+            var unique = true;
             //Go through previous years checking for hacker emails
             for(j in prevYearsEmails){
                 if(prevYearsEmails[j].emails.includes(emails[i])){
-                    break;
+                    unique = false;
                 }
                 else if(j >= +prevYearsEmails.length - +1){
                     uniqueHackers++;
