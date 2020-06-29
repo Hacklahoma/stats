@@ -33,5 +33,18 @@ html {
 }
 
 .MuiMenu-paper {
-    border: 1px solid rgba(0,0,0,0.2) !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.MuiDialogTitle-root h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.MuiDialogTitle-root strong {
+    margin-bottom: -2px;
+    padding-right: 30px;
+}
+.MuiDialogTitle-root {
+    padding: 8px 24px;
 }

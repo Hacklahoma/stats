@@ -85,9 +85,10 @@ const OVERALL_METRICS = gql`
                 hackers
                 projects
                 firstTimeHackers
-                majors (sortBy: type_ASC) {
+                majors(sortBy: type_ASC) {
                     type
                     quantity
+                    raw
                 }
                 gender_F
                 gender_M
@@ -150,6 +151,7 @@ function MetricPage({ user, year, yearId }) {
         for (var i in data.allYears[0].metrics.majors) {
             metrics.majors.types.push(data.allYears[0].metrics.majors[i].type);
             metrics.majors.quantities.push(data.allYears[0].metrics.majors[i].quantity);
+            metrics.majors.raw.push(data.allYears[0].metrics.majors[i].raw);
         }
 
         // Get data for OVERALL data
@@ -164,10 +166,18 @@ function MetricPage({ user, year, yearId }) {
             timeline.projects.push(data.allYears[i].metrics.projects);
 
             // Setting up majors, skip first one
-            if (i !== '0') {
-                for (var j in data.allYears[i].metrics.majors)
+            if (i !== "0") {
+                for (var j in data.allYears[i].metrics.majors) {
                     metrics.majors.quantities[j] += data.allYears[i].metrics.majors[j].quantity;
+                    if (metrics.majors.raw[j].length === 0) {
+                        metrics.majors.raw[j] += data.allYears[i].metrics.majors[j].raw;
+                    } else {
+                        metrics.majors.raw[j] += "," + data.allYears[i].metrics.majors[j].raw;
+                    }
+                }
             }
+
+            console.log(metrics.majors.raw);
 
             // Settings up metrics
             metrics.hackers += data.allYears[i].metrics.hackers;
@@ -212,9 +222,10 @@ function MetricPage({ user, year, yearId }) {
         timeline.projects.reverse();
     } else if (data.allYears[yearId - 1] && !data.allYears[yearId - 1].disabled) {
         // Setup majors
-        for (var i in data.allYears[yearId - 1].metrics.majors) {            
+        for (var i in data.allYears[yearId - 1].metrics.majors) {
             metrics.majors.types.push(data.allYears[yearId - 1].metrics.majors[i].type);
             metrics.majors.quantities.push(data.allYears[yearId - 1].metrics.majors[i].quantity);
+            metrics.majors.raw.push(data.allYears[yearId - 1].metrics.majors[i].raw);
         }
 
         // Get data for YEAR data
@@ -360,6 +371,7 @@ function MetricPage({ user, year, yearId }) {
                         subtitle="click a slice for more information"
                         labels={metrics.majors.types}
                         data={metrics.majors.quantities}
+                        rawMajors={metrics.majors.raw}
                     />
 
                     {/* DIVERSITY */}

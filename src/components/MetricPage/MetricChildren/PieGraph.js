@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { pieWidth, colors, pieOptions } from "../utils";
 import { Pie } from "react-chartjs-2";
-import { Grid } from "@material-ui/core";
+import { Grid, Dialog, DialogTitle, DialogContent, IconButton } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
+import { Fragment, useState } from "react";
 
 const StyledPieGraph = styled.div`
     border: 3px solid #f7f7f7;
@@ -12,6 +14,7 @@ const StyledPieGraph = styled.div`
     min-height: 255px;
     max-height: 255px;
     box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.05);
+
     .left {
         display: flex;
         flex-direction: column;
@@ -21,7 +24,7 @@ const StyledPieGraph = styled.div`
         }
         .subtitle {
             font-weight: normal;
-            font-size: .8em;
+            font-size: 0.8em;
             margin-bottom: 8px;
             margin-top: -8px;
         }
@@ -54,10 +57,32 @@ const StyledPieGraph = styled.div`
     }
 `;
 
-function PieGraph({ data, labels, title, subtitle }) {
+function PieGraph({ data, rawMajors, labels, title, subtitle }) {
+    const [open, setOpen] = useState(false);
+    const [majors, setMajors] = useState({});
+    const [category, setCategory] = useState();
     return (
         <Grid item>
             <StyledPieGraph>
+                {/* Dialog for showing raw majors */}
+                <Dialog onClose={() => setOpen(false)} open={open}>
+                    <DialogTitle onClose={() => setOpen(false)}>
+                        <strong>{category}</strong>
+                        <IconButton onClick={() => setOpen(false)}>
+                            <Close />
+                        </IconButton>
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        {Object.keys(majors).map((i) => {
+                            return (
+                                <p key={i}>
+                                    <strong>{i}:</strong> {majors[i]}
+                                </p>
+                            );
+                        })}
+                    </DialogContent>
+                </Dialog>
+
                 <div className="left">
                     <h3>
                         {title}
@@ -80,10 +105,7 @@ function PieGraph({ data, labels, title, subtitle }) {
                             else
                                 return (
                                     <li key={i}>
-                                        <div
-                                            style={{ background: colors()[i] }}
-                                            className="box"
-                                        />
+                                        <div style={{ background: colors()[i] }} className="box" />
                                         {label}
                                     </li>
                                 );
@@ -109,6 +131,42 @@ function PieGraph({ data, labels, title, subtitle }) {
                     }}
                     options={{
                         ...pieOptions,
+                        onClick: (e, chart) => {
+                            if (title !== "Majors") return;
+                            // If majors, parse and show raw majors dialog
+                            if (chart[0]) {
+                                var index = chart[0]._index;
+                                var counts = {};
+                                console.log(rawMajors);
+                                
+                                rawMajors[index].split(",").forEach(function(x) {
+                                    counts[x] = (counts[x] || 0) + 1;
+                                });
+
+                                // Make obj into array
+                                var sortable = [];
+                                for (var i in counts) {
+                                    sortable.push([i, counts[i]]);
+                                }
+
+                                // Sort array
+                                sortable.sort(function(a, b) {
+                                    return b[1] - a[1];
+                                });
+
+                                // Rebuild sorted array into object
+                                var objSorted = {};
+                                sortable.forEach(function(item) {
+                                    objSorted[item[0]] = item[1];
+                                });
+
+                                console.log(rawMajors);
+
+                                setCategory(chart[0]._model.label);
+                                setMajors(objSorted);
+                                setOpen(true);
+                            }
+                        },
                     }}
                 />
             </StyledPieGraph>
