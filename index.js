@@ -27,23 +27,6 @@ const keystone = new Keystone({
     adapter: new Adapter(adapterConfig),
     cookieSecret: process.env.COOKIE_SECRET,
     onConnect: async () => {
-        // Setting up admin account
-        const admins = await keystone.executeQuery(`
-            query {
-                allAdmins(where:{username:"${process.env.ADMIN_USERNAME}"}) {
-                    id
-                }
-            }
-        `);
-
-        // Adding new admin account from env vars if none are created
-        if (admins.data.allAdmins && admins.data.allAdmins.length <= 0) {
-            keystone.createItems({
-                Admin: [
-                    { username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD },
-                ],
-            });
-        }
     },
 });
 
