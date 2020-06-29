@@ -3,6 +3,7 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { useState } from "react";
 import { Button } from "@material-ui/core";
 import { gql, useMutation } from "@apollo/client";
+import { useEffect } from "react";
 
 const StyledYearItem = styled.div`
     border: 3px solid #eaeaea;
@@ -50,10 +51,13 @@ const ADD_EVENT = gql`
 `;
 
 function YearItem({ user, row, refetch }) {
-    refetch();
     const [locked, setLocked] = useState(row.disabled);
     const [addEvent] = useMutation(ADD_EVENT);
     const [updateYear] = useMutation(UPDATE_YEAR);
+
+    useEffect(() => {
+        refetch();
+    }, [row]);
 
     const toggleLock = () => {
         // Update year when locking/unlocking
