@@ -6,7 +6,7 @@ import { Button, Fade, CircularProgress } from "@material-ui/core";
 import { gql, useMutation } from "@apollo/client";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 const StyledLogin = styled.div`
     display: flex;
@@ -188,7 +188,9 @@ function Login() {
                         },
                     });
                     // Push to dashboard and force reload
-                    setTimeout(() => router.push("/"), 500);
+                    setTimeout(() => {
+                        router.push("/").then(() => location.reload());
+                    }, 500);
                 })
                 // Error logging in
                 .catch((e) => {
