@@ -334,13 +334,12 @@ const uploadYear = async (_, { year, projects, data }) => {
 
         //Go through email array
         for(i in emails){
-            var unique = true;
             //Go through previous years checking for hacker emails
             for(j in prevYearsEmails){
                 if(prevYearsEmails[j].emails.includes(emails[i])){
-                    unique = false;
+                    break;
                 }
-                else if(j >= +prevYearsEmails.length - +1){
+                if(j >= +prevYearsEmails.length - +1){
                     uniqueHackers++;
                 }
             }
