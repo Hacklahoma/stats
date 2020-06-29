@@ -61,6 +61,19 @@ const uploadYear = async (_, { year, projects, data }) => {
     if(yearCheck.data.allYears.length > 0){
         throw new Error("Year is currently already being used.")
     }
+
+    //Get the previous years for unique hackers
+    const prevYearsData = await keystone.executeQuery(`
+                query{
+                    allYears(
+                        orderBy: "year" 
+                    ){
+                        id
+                        year 
+                        metrics{ emails }
+                    }
+                }
+            `);
     
     //Create the initial year
     const yearData = await keystone.executeQuery(`
@@ -68,7 +81,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                     createYear(data:{
                         year: ${year},
                     }) {
-                        id ,year
+                        id year
                     }
                 }
             `);
@@ -112,6 +125,7 @@ const uploadYear = async (_, { year, projects, data }) => {
         shirt_XL = 0,
         shirt_XXL = 0,
         firstTimeHackers = 0,
+        uniqueHackers = 0,
         emails = [],
         rawArts = [],
         rawBusiness = [],
@@ -308,6 +322,34 @@ const uploadYear = async (_, { year, projects, data }) => {
         }
     }
 
+    //Check to see if there are any previous years
+    if(prevYearsData.data.allYears.length > 0) {
+        var prevYearsEmails = [];
+        //Get all the emails from the previous years
+        for(i in prevYearsData.data.allYears){
+            prevYearsEmails.push({
+                emails: prevYearsData.data.allYears[i].metrics.emails.split(","),
+            })
+        }
+
+        //Go through email array
+        for(i in emails){
+            //Go through previous years checking for hacker emails
+            for(j in prevYearsEmails){
+                if(prevYearsEmails[j].emails.includes(emails[i])){
+                    break;
+                }
+                else if(j >= +prevYearsEmails.length - +1){
+                    uniqueHackers++;
+                }
+            }
+        }
+    }
+    else {
+        uniqueHackers = hackerData.data.length;
+    }
+
+
     //Create the metrics
     const metrics = await keystone.executeQuery(`
         mutation {
@@ -350,6 +392,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                             shirt_XL: ${shirt_XL},
                             shirt_XXL: ${shirt_XXL},
                             firstTimeHackers: ${firstTimeHackers},
+                            uniqueHackers: ${uniqueHackers},
                             emails: "${emails.join(',')}",
                         }
                     }
@@ -392,6 +435,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                     shirt_XL
                     shirt_XXL
                     firstTimeHackers
+                    uniqueHackers
                     emails
                 }
             }

@@ -44,6 +44,7 @@ const Metric = {
         shirt_XL: {type: Integer},
         shirt_XXL: {type: Integer},
         firstTimeHackers: {type: Integer},
+        uniqueHackers: {type: Integer},
         emails: {type: Text},
         
     },
