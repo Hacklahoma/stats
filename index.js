@@ -26,8 +26,6 @@ const keystone = new Keystone({
     name: PROJECT_NAME,
     adapter: new Adapter(adapterConfig),
     cookieSecret: process.env.COOKIE_SECRET,
-    onConnect: async () => {
-    },
 });
 
 //Creating lists for Users and Events
@@ -80,7 +78,7 @@ module.exports = {
     keystone,
     apps: [
         new GraphQLApp(),
-        new AdminUIApp({ enableDefaultRoute: false, adminPath: "/admin-ui", authStrategy }),
+        new AdminUIApp({ enableDefaultRoute: false, adminPath: "/admin-ui" }),
         new NextApp({ dir: "src" }),
         "dist",
     ],
