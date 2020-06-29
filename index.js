@@ -37,7 +37,7 @@ const keystone = new Keystone({
         `);
 
         // Adding new admin account from env vars if none are created
-        if (admins.data.allAdmins || admins.data.allAdmins.length <= 0) {
+        if (admins.data.allAdmins && admins.data.allAdmins.length <= 0) {
             keystone.createItems({
                 Admin: [
                     { username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD },
