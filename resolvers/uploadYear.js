@@ -68,9 +68,8 @@ const uploadYear = async (_, { year, projects, data }) => {
                     allYears(
                         orderBy: "year" 
                     ){
-                        id
                         year 
-                        metrics{ emails }
+                        metrics{ id uniqueHackers emails }
                     }
                 }
             `);
@@ -309,8 +308,6 @@ const uploadYear = async (_, { year, projects, data }) => {
             }
         }
 
-        
-
         //Check to see if the hacker is a first time hacker
         if(hackerData.data[i].hackathons == '0') {
             firstTimeHackers++;
@@ -329,20 +326,42 @@ const uploadYear = async (_, { year, projects, data }) => {
         for(i in prevYearsData.data.allYears){
             prevYearsEmails.push({
                 emails: prevYearsData.data.allYears[i].metrics.emails.split(","),
+                uniqueHackers: prevYearsData.data.allYears[i].metrics.uniqueHackers,
             })
         }
 
         //Go through email array
         for(i in emails){
+            var unique = true;
             //Go through previous years checking for hacker emails
             for(j in prevYearsEmails){
+                //Check to see if the email matches
                 if(prevYearsEmails[j].emails.includes(emails[i])){
-                    break;
+                    //mark it as not unique
+                    unique = false;
+                    //Decrease the number of hackers from previous Year
+                    prevYearsEmails[j].uniqueHackers--;
                 }
-                if(j >= +prevYearsEmails.length - +1){
+                else if(j >= +prevYearsEmails.length - +1 && unique){
                     uniqueHackers++;
                 }
             }
+        }
+
+        //Update previous years metrics
+        for (i in prevYearsData.data.allYears) {
+            await keystone.executeQuery(`
+                mutation {
+                    updateMetric(
+                        id: ${prevYearsData.data.allYears[i].metrics.id},
+                        data: {
+                            uniqueHackers: ${prevYearsEmails[i].uniqueHackers},
+                        }
+                    ){
+                        uniqueHackers
+                    }
+                }
+            `)
         }
     }
     else {
