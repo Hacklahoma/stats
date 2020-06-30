@@ -11,6 +11,9 @@ const keepAwake = require("./src/lib/keepAwake");
 // Get environmental variables
 require("dotenv").config();
 
+// Generates uuid
+const { v4: uuidv4 } = require("uuid");
+
 // Keep heroku app alive
 keepAwake();
 
@@ -42,6 +45,21 @@ const keystone = new Keystone({
             keystone.createItems({
                 Admin: [
                     { username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD },
+                ],
+            });
+        }
+
+        // Adding developer account if in dev environment
+        if (process.env.NODE_ENV === "development") {
+            keystone.createItems({
+                User: [
+                    {
+                        company: "Dev",
+                        password: "dev",
+                        isAdmin: true,
+                        disabled: false,
+                        token: uuidv4(),
+                    },
                 ],
             });
         }

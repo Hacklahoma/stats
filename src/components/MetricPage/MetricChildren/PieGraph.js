@@ -3,7 +3,7 @@ import { pieWidth, colors, pieOptions } from "../utils";
 import { Pie } from "react-chartjs-2";
 import { Grid, Dialog, DialogTitle, DialogContent, IconButton } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 const StyledPieGraph = styled.div`
     border: 3px solid #f7f7f7;
@@ -11,8 +11,8 @@ const StyledPieGraph = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 25px;
-    min-height: 255px;
-    max-height: 255px;
+    min-height: 250px;
+    max-height: 250px;
     box-shadow: 2px 3px 9px rgba(0, 0, 0, 0.05);
 
     .left {

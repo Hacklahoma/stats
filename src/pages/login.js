@@ -253,6 +253,7 @@ function Login() {
                     () =>
                         router.push("/").then(() => {
                             setLoading(false);
+                            location.reload();
                         }),
                     500
                 );
