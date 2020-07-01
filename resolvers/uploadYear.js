@@ -34,15 +34,15 @@ function convertDate(date){
 }
 
 //Major Keywords
-const ARTS_KEYWORDS = ["Arts", "Art", "Ballet", "Crafts", "Dance", "Film", "Documentary", "Music", "Photography", "Theater", "Performing"];
-const BUSINESS_KEYWORDS = ["Business", "Accounting", "Human Resources" ];
-const HEALTH_KEYWORDS = ["Health", "Medicine", "Nursing"];
-const INTERDISCIPLINARY_KEYWORDS = ["Gender", "Family", "Liberal", "Recreation", "Fitness"];
-const PUBLIC_SOCIAL_SERVICES_KEYWORDS = ["Law", "Prelaw", "Legal", "Court", "Public", "Social", "Services", "Community"];
-const STEM_KEYWORDS = ["Math", "Mathematics", "Engineering", "Data", "Science"];
-const COMP_TECH_KEYWORDS = ["Software", "Computer"];
-const SOCIAL_SCIENCES_KEYWORDS = ["Education", "Psychology", "History", "Library", "Sociology"];
-const TRADES_KEYWORDS = ["Construction", "Mechanic", "Culinary", "Production", "Transportation"];
+const ARTS_KEYWORDS = ["arts", "art", "ballet", "crafts", "dance", "film", "documentary", "music", "photography", "theater", "performing"];
+const BUSINESS_KEYWORDS = ["business", "accounting", "human resources" ];
+const HEALTH_KEYWORDS = ["health", "medicine", "nursing"];
+const INTERDISCIPLINARY_KEYWORDS = ["gender", "family", "liberal", "recreation", "fitness"];
+const PUBLIC_SOCIAL_SERVICES_KEYWORDS = ["law", "prelaw", "legal", "court", "public", "social", "services", "community"];
+const STEM_KEYWORDS = ["math", "mathematics", "engineering", "data", "science", "statistics", "biochemistry", "physics", "biology", "microbiology"];
+const COMP_TECH_KEYWORDS = ["software", "computer", "tech", "technology", "systems"];
+const SOCIAL_SCIENCES_KEYWORDS = ["education", "psychology", "history", "library", "sociology"];
+const TRADES_KEYWORDS = ["construction", "mechanic", "culinary", "production", "transportation"];
 
 const uploadYear = async (_, { year, projects, data }) => {
     const { keystone } = require("../index.js");
@@ -266,39 +266,39 @@ const uploadYear = async (_, { year, projects, data }) => {
 
                 //Loop through each word looking for keywords
                 for(j in major){
-                    if(ARTS_KEYWORDS.includes(major[j])){
+                    if(ARTS_KEYWORDS.includes(major[j].toLowerCase())){
                         rawArts.push(majors[k]);
                         break;
                     }
-                    else if(BUSINESS_KEYWORDS.includes(major[j])) {
+                    else if(BUSINESS_KEYWORDS.includes(major[j].toLowerCase())) {
                         rawBusiness.push(majors[k]);
                         break;
                     }
-                    else if(HEALTH_KEYWORDS.includes(major[j])) {
+                    else if(HEALTH_KEYWORDS.includes(major[j].toLowerCase())) {
                         rawHealth.push(majors[k]);
                         break;
                     }
-                    else if(INTERDISCIPLINARY_KEYWORDS.includes(major[j])){
+                    else if(INTERDISCIPLINARY_KEYWORDS.includes(major[j].toLowerCase())){
                         rawInterdisciplinary.push(majors[k]);
                         break;
                     }
-                    else if(PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major[j])){
+                    else if(PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major[j].toLowerCase())){
                         rawPublicSocialServices.push(majors[k]);
                         break;
                     }
-                    else if(COMP_TECH_KEYWORDS.includes(major[j])){
+                    else if(COMP_TECH_KEYWORDS.includes(major[j].toLowerCase())){
                         rawCompTech.push(majors[k]);
                         break;
                     }
-                    else if(STEM_KEYWORDS.includes(major[j])){
+                    else if(STEM_KEYWORDS.includes(major[j].toLowerCase())){
                         rawSTEM.push(majors[k]);
                         break;
                     }
-                    else if(SOCIAL_SCIENCES_KEYWORDS.includes(major[j])){
+                    else if(SOCIAL_SCIENCES_KEYWORDS.includes(major[j].toLowerCase())){
                         rawSocialSciences.push(majors[k]);
                         break;
                     }
-                    else if(TRADES_KEYWORDS.includes(major[j])){
+                    else if(TRADES_KEYWORDS.includes(major[j].toLowerCase())){
                         rawTrades.push(majors[k]);
                         break;
                     }
