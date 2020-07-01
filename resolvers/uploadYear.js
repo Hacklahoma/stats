@@ -69,7 +69,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                         orderBy: "year" 
                     ){
                         year 
-                        metrics{ id uniqueHackers emails }
+                        metrics{ id uniqueHackers }
                     }
                 }
             `);
@@ -124,8 +124,7 @@ const uploadYear = async (_, { year, projects, data }) => {
         shirt_XL = 0,
         shirt_XXL = 0,
         firstTimeHackers = 0,
-        uniqueHackers = 0,
-        emails = [],
+        uniqueHackers = [],
         rawArts = [],
         rawBusiness = [],
         rawHealth = [],
@@ -315,10 +314,11 @@ const uploadYear = async (_, { year, projects, data }) => {
 
         //Add the hacker email to the list of emails if the email field isn't blank
         if(hackerData.data[i].email.length > 0){
-            emails.push(hackerData.data[i].email);
+            uniqueHackers.push(hackerData.data[i].email);
         }
     }
 
+    /*
     //Check to see if there are any previous years
     if(prevYearsData.data.allYears.length > 0) {
         var prevYearsEmails = [];
@@ -366,7 +366,7 @@ const uploadYear = async (_, { year, projects, data }) => {
     }
     else {
         uniqueHackers = hackerData.data.length;
-    }
+    }*/
 
     //Create the metrics
     const metrics = await keystone.executeQuery(`
@@ -410,8 +410,7 @@ const uploadYear = async (_, { year, projects, data }) => {
                             shirt_XL: ${shirt_XL},
                             shirt_XXL: ${shirt_XXL},
                             firstTimeHackers: ${firstTimeHackers},
-                            uniqueHackers: ${uniqueHackers},
-                            emails: "${emails.join(',')}",
+                            uniqueHackers: "${uniqueHackers.join(',')}",
                         }
                     }
                 }
@@ -454,7 +453,6 @@ const uploadYear = async (_, { year, projects, data }) => {
                     shirt_XXL
                     firstTimeHackers
                     uniqueHackers
-                    emails
                 }
             }
         }
