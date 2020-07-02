@@ -46,7 +46,7 @@ const TRADES_KEYWORDS = ["construction", "mechanic", "culinary", "production", "
 
 const uploadYear = async (_, { year, projects, data }) => {
     const { keystone } = require("../index.js");
-    const { parse } = require("papaparse")
+    const { parse } = require("papaparse");
 
     //Check to make sure the year isn't already being used
     const yearCheck = await keystone.executeQuery(`
@@ -62,7 +62,7 @@ const uploadYear = async (_, { year, projects, data }) => {
         throw new Error("Year is currently already being used.")
     }
 
-    //Get the previous years for unique hackers
+    //Get the previously added years
     const prevYearsData = await keystone.executeQuery(`
                 query{
                     allYears(
@@ -318,44 +318,48 @@ const uploadYear = async (_, { year, projects, data }) => {
         }
     }
 
-    /*
-    //Check to see if there are any previous years
+    
+    //Check to see if there are any previous added years
     if(prevYearsData.data.allYears.length > 0) {
-        var prevYearsEmails = [];
-        //Get all the emails from the previous years
+        var prevYears = [];
+        //Get all the emails from the previous added years
         for(i in prevYearsData.data.allYears){
-            prevYearsEmails.push({
-                emails: prevYearsData.data.allYears[i].metrics.emails.split(","),
-                uniqueHackers: prevYearsData.data.allYears[i].metrics.uniqueHackers,
+            prevYears.push({
+                year: prevYearsData.data.allYears[i].year,
+                metricId: prevYearsData.data.allYears[i].metrics.id,
+                uniqueHackers: prevYearsData.data.allYears[i].metrics.uniqueHackers.split(","),
             })
         }
 
         //Go through email array
-        for(i in emails){
-            var unique = true;
-            //Go through previous years checking for hacker emails
-            for(j in prevYearsEmails){
+        for(i in uniqueHackers){
+            //Go through previous added years checking for hacker emails
+            for(j in prevYears){
                 //Check to see if the email matches
-                if(prevYearsEmails[j].emails.includes(emails[i])){
-                    //mark it as not unique
-                    unique = false;
-                    //Decrease the number of hackers from previous Year
-                    prevYearsEmails[j].uniqueHackers--;
-                }
-                else if(j >= +prevYearsEmails.length - +1 && unique){
-                    uniqueHackers++;
+                if(prevYears[j].uniqueHackers.includes(uniqueHackers[i])){
+                    //Check the different cases a year may have
+                    //If the year being added is less than the current previously added year
+                    if (+year < +prevYears[j].year){
+                        //Splice the year from the previously added year
+                        prevYears[j].uniqueHackers.splice(prevYears[j].uniqueHackers.indexOf(uniqueHackers[i]),1);
+                    }
+                    else {
+                        //Splice the year from the year being added
+                        uniqueHackers.splice(i,1);
+                    }
+                    break;
                 }
             }
         }
 
         //Update previous years metrics
-        for (i in prevYearsData.data.allYears) {
+        for (i in prevYears) {
             await keystone.executeQuery(`
                 mutation {
                     updateMetric(
-                        id: ${prevYearsData.data.allYears[i].metrics.id},
+                        id: ${prevYears[i].metricsId},
                         data: {
-                            uniqueHackers: ${prevYearsEmails[i].uniqueHackers},
+                            uniqueHackers: ${prevYears[i].uniqueHackers.join(",")},
                         }
                     ){
                         uniqueHackers
@@ -364,9 +368,6 @@ const uploadYear = async (_, { year, projects, data }) => {
             `)
         }
     }
-    else {
-        uniqueHackers = hackerData.data.length;
-    }*/
 
     //Create the metrics
     const metrics = await keystone.executeQuery(`
