@@ -85,7 +85,7 @@ function PieGraph({ data, rawMajors, labels, title, subtitle }) {
           <DialogContent dividers>
             {Object.keys(majors).map((i) => (
               <p key={i}>
-                <strong>{i}:</strong>{majors[i]}
+                <strong>{i}: </strong>{majors[i]}
               </p>
             ))}
           </DialogContent>
