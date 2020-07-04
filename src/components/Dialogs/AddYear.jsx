@@ -143,7 +143,7 @@ function AddYear({ user, open, setModal, refetch }) {
           id="name"
           value={name === null ? '' : name}
           required
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setName(parseInt(e.target.value))}
           label="Year"
           type="number"
           style={{ marginRight: '50px' }}
@@ -154,7 +154,7 @@ function AddYear({ user, open, setModal, refetch }) {
           id="projects"
           value={projects === null ? '' : projects}
           required
-          onChange={(e) => setProjects(e.target.value)}
+          onChange={(e) => setProjects(parseInt(e.target.value))}
           label="Number of projects"
           type="number"
         />

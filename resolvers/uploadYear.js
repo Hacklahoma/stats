@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 const { parse } = require('papaparse');
-const { keystone } = require('../index.js');
 
 // Major Keywords
 const ARTS_KEYWORDS = [
@@ -81,6 +80,8 @@ const TRADES_KEYWORDS = [
  * Creates a new year with all of the hacker data
  */
 const uploadYear = async (_, { year, projects, data }) => {
+  const { keystone } = require('../index.js');
+
   // Check to make sure the year isn't already being used
   const yearCheck = await keystone.executeQuery(`
     query {
@@ -369,7 +370,7 @@ const uploadYear = async (_, { year, projects, data }) => {
     });
 
     // Update previous years metrics
-    prevYears.keys((i) => {
+    await prevYears.keys((i) => {
       keystone.executeQuery(`
         mutation {
           updateMetric(

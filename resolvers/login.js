@@ -1,11 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const fetch = require('node-fetch');
-const { keystone } = require('../index.js');
 
 /**
  * logs the user in and returns the user
  */
 const login = async (_, { password, code }) => {
+  const { keystone } = require('../index.js');
+
   // First check to ensure a password or login code was given
   if (!password && !code) {
     throw new Error('Please enter a password.');
@@ -14,16 +15,16 @@ const login = async (_, { password, code }) => {
   // Checks to see if the password was given
   if (password) {
     const result = await keystone.executeQuery(`
-            query {
-                allUsers(where:{password:"${password}"}) {
-                    id
-                    token
-                    company
-                    disabled
-                    isAdmin
-                }
-            }
-        `);
+      query {
+        allUsers(where:{password:"${password}"}) {
+          id
+          token
+          company
+          disabled
+          isAdmin
+        }
+      }
+    `);
 
     // Checks to see if any users with the same password was returned
     if (result.data.allUsers.length === 0 || password === '') {

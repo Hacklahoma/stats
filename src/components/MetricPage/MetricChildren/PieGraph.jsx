@@ -93,7 +93,7 @@ function PieGraph({ data, rawMajors, labels, title, subtitle }) {
 
         <div className="left">
           <h3>
-            {title}
+            {title}{' '}
             {subtitle && <span className="subtitle">({subtitle})</span>}
           </h3>
           <ul>

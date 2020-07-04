@@ -1,9 +1,9 @@
-const { keystone } = require('../index.js');
-
 /**
  * Creates a new user with the company name and a password
  */
 const addUser = async (_, { company, password }) => {
+  const { keystone } = require('../index.js');
+
   // Check to see if the company name was already used
   const companyCheck = await keystone.executeQuery(`
             query {

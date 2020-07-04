@@ -1,9 +1,9 @@
-const { keystone } = require('../index.js');
-
 /**
  * Create an event based off of a user's id, the type of event, and a description
  */
 const addEvent = async (_, { id, type, description }) => {
+  const { keystone } = require('../index.js');
+
   // Get date in CST
   const date = new Date();
   const convertedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();

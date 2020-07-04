@@ -1,10 +1,11 @@
 const { v4: uuidv4 } = require('uuid');
-const { keystone } = require('../index.js');
 
 /**
  * Updates the user based on values given. ID is only required argument.
  */
 const changeUser = async (_, { id, company, password, disabled }) => {
+  const { keystone } = require('../index.js');
+
   // Checks to see if any of the variables were given
   if (!company && !password && disabled === null) {
     // Future: Add Event
