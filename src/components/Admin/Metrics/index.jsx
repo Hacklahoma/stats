@@ -72,7 +72,7 @@ function Metrics({ user }) {
     }
 
     const yearItems = [];
-    data.allYears.entries((row) => {
+    Object.values(data.allYears).forEach((row) => {
       yearItems.push(<YearItem user={user} key={row.id} refetch={refetch} row={row} />);
     });
 
@@ -93,7 +93,7 @@ function Metrics({ user }) {
           <FiPlus />
         </Button>
       </div>
-      {conditionalRender}
+      {conditionalRender()}
     </StyledMetrics>
   );
 }

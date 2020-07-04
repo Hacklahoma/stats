@@ -166,14 +166,14 @@ function MetricPage({ user, yearId }) {
     return <p>Loading...</p>;
   } if (yearId === 0 && data.allYears.length > 0) {
     // Setup first year's majors
-    data.allYears[0].metrics.majors.keys((i) => {
+    Object.keys(data.allYears[0].metrics.majors).forEach((i) => {
       metrics.majors.types.push(data.allYears[0].metrics.majors[i].type);
       metrics.majors.quantities.push(data.allYears[0].metrics.majors[i].quantity);
       metrics.majors.raw.push(data.allYears[0].metrics.majors[i].raw);
     });
 
     // Get data for OVERALL data
-    data.allYears.keys((i) => {
+    Object.keys(data.allYears).forEach((i) => {
       if (!data.allYears[i].disabled) {
         // Settings up timeline
         timeline.labels.push(data.allYears[i].year);
@@ -182,7 +182,7 @@ function MetricPage({ user, yearId }) {
 
         // Setting up majors, skip first one
         if (i !== '0') {
-          data.allYears[i].metrics.majors.keys((j) => {
+          Object.keys(data.allYears[i].metrics.majors).forEach((j) => {
             metrics.majors.quantities[j] += data.allYears[i].metrics.majors[j].quantity;
             if (metrics.majors.raw[j].length === 0) {
               metrics.majors.raw[j] += data.allYears[i].metrics.majors[j].raw;
@@ -240,7 +240,7 @@ function MetricPage({ user, yearId }) {
     timeline.projects.reverse();
   } else if (data.allYears[yearId - 1] && !data.allYears[yearId - 1].disabled) {
     // Setup majors
-    data.allYears[yearId - 1].metrics.majors.keys((i) => {
+    Object.keys(data.allYears[yearId - 1].metrics.majors).forEach((i) => {
       metrics.majors.types.push(data.allYears[yearId - 1].metrics.majors[i].type);
       metrics.majors.quantities.push(data.allYears[yearId - 1].metrics.majors[i].quantity);
       metrics.majors.raw.push(data.allYears[yearId - 1].metrics.majors[i].raw);

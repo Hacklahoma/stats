@@ -98,15 +98,15 @@ const uploadYear = async (_, { year, projects, data }) => {
 
   // Get the previously added years
   const prevYearsData = await keystone.executeQuery(`
-    query{
-      allYears(
-        orderBy: "year" 
-      ){
-        year 
-        metrics{ id uniqueHackers }
+    query {
+      allYears (
+        orderBy: "year"
+        ) {
+          year
+          metrics { id uniqueHackers }
+        }
       }
-    }
-  `);
+    `);
 
   // Create the initial year
   const yearData = await keystone.executeQuery(`
@@ -171,7 +171,7 @@ const uploadYear = async (_, { year, projects, data }) => {
   const rawOther = [];
 
   // Go through the hacker data and parse it all
-  hackerData.data.keys((i) => {
+  Object.keys(hackerData.data).forEach((i) => {
     // Switch statement for gender
     switch (hackerData.data[i].gender) {
       case 'Male':
@@ -292,13 +292,13 @@ const uploadYear = async (_, { year, projects, data }) => {
         // store major into an array
         majors = majors.split();
       }
-      // Loop through the one or more majors a stuend may have
-      majors.keys((k) => {
+      // Loop through the one or more majors a student may have
+      Object.keys(majors).forEach((k) => {
         // Split majors at spaces
         const major = majors[k].split(' ');
 
         // Loop through each word looking for keywords
-        major.keys((j) => {
+        Object.keys(major).forEach((j) => {
           if (ARTS_KEYWORDS.includes(major[j].toLowerCase())) {
             rawArts.push(majors[k]);
           } else if (BUSINESS_KEYWORDS.includes(major[j].toLowerCase())) {
@@ -339,7 +339,7 @@ const uploadYear = async (_, { year, projects, data }) => {
   if (prevYearsData.data.allYears.length > 0) {
     const prevYears = [];
     // Get all the emails from the previous added years
-    prevYearsData.data.allYears.keys((i) => {
+    Object.keys(prevYearsData.data.allYears).forEach((i) => {
       prevYears.push({
         year: prevYearsData.data.allYears[i].year,
         metricId: prevYearsData.data.allYears[i].metrics.id,
@@ -348,9 +348,9 @@ const uploadYear = async (_, { year, projects, data }) => {
     });
 
     // Go through email array
-    uniqueHackers.keys((i) => {
+    Object.keys(uniqueHackers).forEach((i) => {
       // Go through previous added years checking for hacker emails
-      prevYears.keys((j) => {
+      Object.keys(prevYears).forEach((j) => {
         // Check to see if the email matches
         if (prevYears[j].uniqueHackers.includes(uniqueHackers[i])) {
           // Check the different cases a year may have
@@ -370,7 +370,7 @@ const uploadYear = async (_, { year, projects, data }) => {
     });
 
     // Update previous years metrics
-    await prevYears.keys((i) => {
+    await Object.keys(prevYears).forEach((i) => {
       keystone.executeQuery(`
         mutation {
           updateMetric(

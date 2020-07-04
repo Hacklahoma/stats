@@ -152,7 +152,7 @@ function PieGraph({ data, rawMajors, labels, title, subtitle }) {
 
                 // Make obj into array
                 const sortable = [];
-                counts.keys((i) => sortable.push([i, counts[i]]));
+                Object.keys(counts).forEach((i) => sortable.push([i, counts[i]]));
 
                 // Sort array
                 sortable.sort((a, b) => b[1] - a[1]);
