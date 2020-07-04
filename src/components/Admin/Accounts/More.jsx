@@ -85,34 +85,36 @@ function More({ user, row, refetch }) {
                 keepMounted
                 elevation={0}
                 style={{
-                    margin: "43px 0 0 -30px",
-                }}
+    margin: "43px 0 0 -30px",
+  }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
                 {/* Copy password / confirmation */}
-                <MenuItem style={{ color: "#1d1d1d", fontSize: ".85em" }} onClick={copyPassword}>
+                <MenuItem style={{ color: "#1d1d1d",
+    fontSize: "0.85em" }} onClick={copyPassword}>
                     {copied ? "Copied  ✔️" : "Copy password"}
                 </MenuItem>
                 {/* Edit credentials */}
-                <MenuItem style={{ color: "#1d1d1d", fontSize: ".85em" }} onClick={editUser}>
+                <MenuItem style={{ color: "#1d1d1d",
+    fontSize: "0.85em" }} onClick={editUser}>
                     Edit company
                 </MenuItem>
                 {/* divider */}
                 <div
                     style={{
-                        width: "100%",
-                        margin: "4px 0",
-                        background: "rgba(0,0,0,0.2)",
-                        minHeight: "1px",
-                    }}
+    width: "100%",
+    margin: "4px 0",
+    background: "rgba(0, 0, 0, 0.2)",
+    minHeight: "1px",
+  }}
                 />
                 {/* Disable/Enable */}
                 <MenuItem
                     style={{
-                        color: `${row.disabled ? "#249c24" : "#e81c0e"}`,
-                        fontSize: ".85em",
-                    }}
+    color: `${row.disabled ? '#249c24' : '#e81c0e'}`,
+    fontSize: "0.85em",
+  }}
                     onClick={changeStatus}
                 >
                     {row.disabled ? "Enable" : "Disable"}

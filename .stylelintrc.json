@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "stylelint-config-standard", 
+    "stylelint-config-sass-guidelines",
+    "stylelint-config-idiomatic-order"
+  ],
+	"plugins": [
+		"stylelint-order"
+	],
+	"rules": {
+    "max-nesting-depth": "off"
+	}
+}
