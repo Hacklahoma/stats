@@ -7,7 +7,7 @@
                 "displayName": true,
                 "preprocess": false
             }
-        ],
+        ]
     ],
     "presets": [
         "next/babel"
