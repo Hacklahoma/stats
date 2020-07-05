@@ -1,5 +1,5 @@
 /**
- * Create an event based off of a user's id, the type of event, and a description
+ * Remove a year and all of it's helper objects
  */
 const removeYear = async (_, { id }) => {
   const { keystone } = require('../index.js');

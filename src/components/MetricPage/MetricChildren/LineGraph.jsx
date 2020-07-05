@@ -24,8 +24,14 @@ const StyledLineGraph = styled.div`
 `;
 
 /**
- * TODO
- * @param {*} param0
+ * LineGraph template that is used multiple times.
+ *
+ * @param {array} data Data to display
+ * @param {array} labels X-axis labels for each data in array
+ * @param {array} label What to call the data that is graphed
+ * (ex: hackers, projects, etc.)
+ * @param {string} title Title for pie graph
+ *
  */
 function PieGraph({ data, label, labels, title }) {
   return (

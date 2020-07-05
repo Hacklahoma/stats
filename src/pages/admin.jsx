@@ -50,7 +50,7 @@ const StyledAdmin = styled.div`
 `;
 
 /**
- * TODO
+ * Admin page that routes what admin panel to display, defaults to accounts.
  *
  * @param {*} param0
  */

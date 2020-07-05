@@ -55,7 +55,8 @@ const GET_YEARS = gql`
 `;
 
 /**
- * TODO
+ * Admin page for displaying and adding metrics
+ *
  * @param {*} param0
  */
 function Metrics({ user }) {
@@ -64,7 +65,7 @@ function Metrics({ user }) {
   const { loading, data, refetch } = useQuery(GET_YEARS);
 
   /**
-   * TODO
+   * Controls whether to render loading screen, no data, or year items.
    */
   function conditionalRender() {
     if (loading) {

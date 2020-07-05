@@ -29,7 +29,7 @@ const StyledTable = styled.div`
 `;
 
 /**
- * TODO
+ * Table that renders rows of accounts and their attributes
  * @param {*} param0
  */
 function CompanyTable({ user, rows, refetch }) {

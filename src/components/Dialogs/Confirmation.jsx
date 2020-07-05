@@ -6,8 +6,12 @@ import {
 } from '@material-ui/core';
 
 /**
- * TODO
- * @param {*} param0
+ * Shows confirmation dialog to make sure user knows what they are doing
+ *
+ * @param open Whether modal is open or not
+ * @param setModal Setting this to null will close the modal
+ * @param setConfirmed Whether user pressed confirmed
+ * @param Title Title for dialog
  */
 function Confirmation({ open, setModal, confirmationButton, setConfirmed, title }) {
   /**

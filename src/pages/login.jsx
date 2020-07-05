@@ -165,7 +165,11 @@ const ADD_EVENT = gql`
 `;
 
 /**
- * TODO
+ * Displays login page. Controls slack authentication and regular password
+ * authentication.
+ *
+ * It will be nice if we eventually move slack authentication fully to backend
+ * instead of checking validity on front end.
  */
 function Login() {
   // State to determine whether to render for mobile or not
@@ -237,7 +241,7 @@ function Login() {
     }
 
     /**
-     * TODO
+     * Called on window resizes and checks if small enough for mobile.
      */
     function handleResize() {
       setMobile(window.innerWidth < 720);

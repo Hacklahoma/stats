@@ -28,6 +28,8 @@ const ADD_EVENT = gql`
  * This overwrites Next.js default app to include providers.
  * This will be rendered on every page.
  *
+ * Will route unauthenticated users to login page if token is not found.
+ *
  * @param {*} param0
  */
 function MyApp({ Component, pageProps }) {

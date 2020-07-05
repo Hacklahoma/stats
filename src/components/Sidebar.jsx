@@ -186,7 +186,13 @@ const ADD_EVENT = gql`
 `;
 
 /**
- * TODO
+ * Renders the sidebar on all windows except for login
+ *
+ * Will also render a mobile sidebar with a hamburger menu
+ *
+ * When adding more buttons to sidebar, make sure you also
+ * add it to the mobile one.
+ *
  * @param {*} param0
  */
 function Sidebar({ user }) {
@@ -199,7 +205,8 @@ function Sidebar({ user }) {
   // Populating isMobile state
   useEffect(() => {
     /**
-     * TODO
+     * When resizing, determine whether to set to mobile
+     * which will enable hamburger menu
      */
     function onResize() {
       setMobile(window.innerWidth < 620);

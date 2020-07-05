@@ -8,7 +8,7 @@ const StyledFinances = styled.div`
 `;
 
 /**
- * TODO
+ * Finances admin panel, WIP.
  */
 function Finances() {
   return (

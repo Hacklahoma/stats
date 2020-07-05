@@ -26,8 +26,12 @@ const EDIT_USER = gql`
 `;
 
 /**
- * TODO
- * @param {*} param0
+ * Modal to edit an account and its properties
+ *
+ * @param row Information user row being edited
+ * @param open Whether to show modal
+ * @param setModal Setting this to null will close the modal
+ * @param refetch Calling this will refetch data to make sure it updates changes
  */
 function EditAccount({ row, open, setModal, refetch }) {
   const [changeUser] = useMutation(EDIT_USER);
@@ -38,7 +42,9 @@ function EditAccount({ row, open, setModal, refetch }) {
   const [password, setPassword] = useState(row.password);
 
   /**
-   * TODO
+   * Cleans up before closing. Will remove any errors so
+   * they aren't there if user opens modal again before
+   * refreshing.
    */
   const handleClose = () => {
     setModal(null);
@@ -50,7 +56,8 @@ function EditAccount({ row, open, setModal, refetch }) {
   };
 
   /**
-   * TODO
+   * Handles submission. Will make sure all entries are filled and
+   * are proper adds a year
    */
   const submit = () => {
     // Checking to make sure name and password is not empty

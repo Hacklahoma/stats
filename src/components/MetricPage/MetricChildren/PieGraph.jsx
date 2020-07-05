@@ -64,8 +64,14 @@ const StyledPieGraph = styled.div`
 `;
 
 /**
- * TODO
- * @param {*} param0
+ * PieGraph template that is used multiple times.
+ *
+ * @param {array} data Data to display
+ * @param {array} rawMajors Only used for display majors, it's all
+ * the raw data to display dialog of raw majors when clicking slice
+ * @param {array} labels Labels for each data in array
+ * @param {string} title Title for pie graph
+ * @param {string} subtitle Subtitle for pie graph
  */
 function PieGraph({ data, rawMajors, labels, title, subtitle }) {
   const [open, setOpen] = useState(false);

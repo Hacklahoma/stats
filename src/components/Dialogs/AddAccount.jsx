@@ -35,8 +35,12 @@ const ADD_EVENT = gql`
 `;
 
 /**
- * TODO
- * @param {*} param0
+ * Dialog to add an account
+ *
+ * @param user Logged in usre
+ * @param open Whether dialog is open or not
+ * @param setModal Setting this to null will close modal
+ * @param refetch Refreshes data on metrics page
  */
 function AddAccount({ user, open, setModal, refetch }) {
   const [addUser] = useMutation(ADD_USER);
@@ -48,7 +52,9 @@ function AddAccount({ user, open, setModal, refetch }) {
   const [password, setPassword] = useState('');
 
   /**
-   * TODO
+   * Cleans up before closing. Will remove any errors so
+   * they aren't there if user opens modal again before
+   * refreshing
    */
   const handleClose = () => {
     setModal(null);
@@ -58,7 +64,8 @@ function AddAccount({ user, open, setModal, refetch }) {
   };
 
   /**
-   * TODO
+   * Handles submission. Will make sure all entries are filled and
+   * adds a user
    */
   const submit = () => {
     // Checking to make sure name and password is not empty
@@ -126,7 +133,7 @@ function AddAccount({ user, open, setModal, refetch }) {
                   {isVisible ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-                          )}
+            )}
           />
         </FormControl>
       </DialogContent>

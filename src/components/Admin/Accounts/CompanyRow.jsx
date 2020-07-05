@@ -2,7 +2,8 @@ import { TableRow, TableCell } from '@material-ui/core';
 import More from './More';
 
 /**
- * TODO
+ * Adds a row for the CompanyTable full of an account's attributes
+ *
  * @param {*} param0
  */
 function CompanyRow({ user, row, refetch }) {

@@ -2,7 +2,10 @@
 const http = require('http'); // importing http
 
 /**
- * TODO
+ * Function to keep heroku app awake. Currently this pings the
+ * hacklahoma-stats.herokuapp.com domain every 20 minutes. Keep this until we
+ * find a better hosting solution, but while we have the free plan of heroku we
+ * need to keep this to keep it awake.
  */
 function keepAwake() {
   setInterval(() => {

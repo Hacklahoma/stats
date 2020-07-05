@@ -140,7 +140,15 @@ const OVERALL_METRICS = gql`
   `;
 
 /**
- * TODO
+ * Main page to display metrics for Overall, and year metrics
+ *
+ * For the future, I would like to make all these calculations
+ * through the backend instead.
+ *
+ * The data populates an object and uses a schema from utils.js called
+ * "defaultMetrics". When adding more data, make sure you also update
+ * the schema so that it can populate the object properly.
+ *
  * @param {*} param0
  */
 function MetricPage({ user, yearId }) {
@@ -153,9 +161,9 @@ function MetricPage({ user, yearId }) {
   const { loading, data, refetch } = useQuery(OVERALL_METRICS);
 
   /**
-       * Called when switching year
-       * Refetch and reset our variable
-       */
+   * Called when switching year
+   * Refetch and reset our variable
+   */
   useEffect(() => {
     metrics = JSON.parse(JSON.stringify(defaultMetrics));
     refetch();

@@ -1,7 +1,3 @@
-/**
- * Handles displaying and functionality of adding a year
- */
-
 import {
   Dialog,
   DialogTitle,
@@ -52,8 +48,12 @@ const ADD_EVENT = gql`
 `;
 
 /**
- * TODO
- * @param {*} param0
+ * Handles displaying and functionality of adding a year
+ *
+ * @param user Currently logged in user
+ * @param open Whether to show modal
+ * @param setModal Setting this to null will close the modal
+ * @param refetch Refetch data to make sure it sees changes
  */
 function AddYear({ user, open, setModal, refetch }) {
   const [uploadYear, info] = useMutation(ADD_YEAR);
@@ -68,7 +68,9 @@ function AddYear({ user, open, setModal, refetch }) {
   });
 
   /**
-   * TODO
+   * Cleans up before closing. Will remove any errors so
+   * they aren't there if user opens modal again before
+   * refreshing
    */
   const handleClose = () => {
     setModal(null);
@@ -78,7 +80,8 @@ function AddYear({ user, open, setModal, refetch }) {
   };
 
   /**
-   * TODO
+   * Handles submission. Will make sure all entries are filled and
+   * are proper adds a year
    */
   const submit = () => {
     // Checking to make sure name and password is not empty
