@@ -152,6 +152,8 @@ function PieGraph({ data, rawMajors, labels, title, subtitle }) {
                 const index = chart[0]._index;
                 const counts = {};
 
+                console.log(rawMajors);
+
                 rawMajors[index].split(',').forEach((x) => {
                   counts[x] = (counts[x] || 0) + 1;
                 });

@@ -118,6 +118,7 @@ export const defaultMetrics = {
   hackers: null,
   projects: null,
   firstTimeHackers: null,
+  firstHacklahomie: null,
   majors: {
     types: [],
     quantities: [],

@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import 'chartjs-plugin-datalabels';
 import Grid from '@material-ui/core/Grid';
 import { ArrowDropUp, ArrowDropDown } from '@material-ui/icons';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PieGraph from './MetricChildren/PieGraph';
 import LineGraph from './MetricChildren/LineGraph';
 import { defaultMetrics } from './utils';
@@ -92,13 +92,15 @@ margin-top: 20px;
  */
 const OVERALL_METRICS = gql`
     query {
-      allYears {
+      allYears(sortBy: year_ASC) {
+        id
         year
         disabled
         metrics {
           hackers
           projects
           firstTimeHackers
+          uniqueHackers
           majors(sortBy: type_ASC) {
             type
             quantity
@@ -158,20 +160,30 @@ function MetricPage({ user, yearId }) {
     hackers: [],
     projects: [],
   };
-  const { loading, data, refetch } = useQuery(OVERALL_METRICS);
+  const { loading, data } = useQuery(OVERALL_METRICS);
+  const [index, setIndex] = useState();
 
   /**
    * Called when switching year
-   * Refetch and reset our variable
+   *
+   * Will also get index to reference when switching years
    */
   useEffect(() => {
     metrics = JSON.parse(JSON.stringify(defaultMetrics));
-    refetch();
+    if (data) {
+      Object.keys(data.allYears).forEach((i) => {
+        if (data.allYears[i].id === yearId) {
+          setIndex(i);
+        }
+      });
+    }
   }, [yearId]);
 
   // Loading state
   if (loading) {
     return <p>Loading...</p>;
+  } if (data.allYears.length === 0) {
+    return (<p style={{ marginTop: '20px' }}>No data to display.</p>);
   } if (yearId === 0 && data.allYears.length > 0) {
     // Setup first year's majors
     Object.keys(data.allYears[0].metrics.majors).forEach((i) => {
@@ -180,13 +192,18 @@ function MetricPage({ user, yearId }) {
       metrics.majors.raw.push(data.allYears[0].metrics.majors[i].raw);
     });
 
-    // Get data for OVERALL data
+    /**
+     * Get data for OVERALL data
+     */
     Object.keys(data.allYears).forEach((i) => {
       if (!data.allYears[i].disabled) {
         // Settings up timeline
         timeline.labels.push(data.allYears[i].year);
         timeline.hackers.push(data.allYears[i].metrics.hackers);
         timeline.projects.push(data.allYears[i].metrics.projects);
+
+        // Adding percentage of first hacklahomie from each year
+        metrics.firstHacklahomie += (data.allYears[i].metrics.uniqueHackers.split(',').length / data.allYears[i].metrics.hackers) * 100;
 
         // Setting up majors, skip first one
         if (i !== '0') {
@@ -242,52 +259,54 @@ function MetricPage({ user, yearId }) {
         metrics.shirt_XXL += data.allYears[i].metrics.shirt_XXL;
       }
     });
-    // Reversing order of timeline
-    timeline.labels.reverse();
-    timeline.hackers.reverse();
-    timeline.projects.reverse();
-  } else if (data.allYears[yearId - 1] && !data.allYears[yearId - 1].disabled) {
+  /**
+   * Get data for single year
+   */
+  } else if (data.allYears[index] && !data.allYears[index].disabled) {
     // Setup majors
-    Object.keys(data.allYears[yearId - 1].metrics.majors).forEach((i) => {
-      metrics.majors.types.push(data.allYears[yearId - 1].metrics.majors[i].type);
-      metrics.majors.quantities.push(data.allYears[yearId - 1].metrics.majors[i].quantity);
-      metrics.majors.raw.push(data.allYears[yearId - 1].metrics.majors[i].raw);
+    Object.keys(data.allYears[index].metrics.majors).forEach((i) => {
+      metrics.majors.types.push(data.allYears[index].metrics.majors[i].type);
+      metrics.majors.quantities.push(data.allYears[index].metrics.majors[i].quantity);
+      metrics.majors.raw.push(data.allYears[index].metrics.majors[i].raw);
     });
 
+    // Setup unique hackers (or first hacklahomies)
+    metrics.firstHacklahomie = data.allYears[index].metrics.uniqueHackers.split(',').length;
+
     // Get data for YEAR data
-    metrics.hackers = data.allYears[yearId - 1].metrics.hackers;
-    metrics.projects = data.allYears[yearId - 1].metrics.projects;
-    metrics.firstTimeHackers = data.allYears[yearId - 1].metrics.firstTimeHackers;
-    metrics.gender_F = data.allYears[yearId - 1].metrics.gender_F;
-    metrics.gender_M = data.allYears[yearId - 1].metrics.gender_M;
-    metrics.gender_NB = data.allYears[yearId - 1].metrics.gender_NB;
-    metrics.gender_N = data.allYears[yearId - 1].metrics.gender_N;
-    metrics.race_WC = data.allYears[yearId - 1].metrics.race_WC;
-    metrics.race_API = data.allYears[yearId - 1].metrics.race_API;
-    metrics.race_H = data.allYears[yearId - 1].metrics.race_H;
-    metrics.race_BAA = data.allYears[yearId - 1].metrics.race_BAA;
-    metrics.race_AIAN = data.allYears[yearId - 1].metrics.race_AIAN;
-    metrics.race_N = data.allYears[yearId - 1].metrics.race_N;
-    metrics.levelOfStudy_HS = data.allYears[yearId - 1].metrics.levelOfStudy_HS;
-    metrics.levelOfStudy_TS = data.allYears[yearId - 1].metrics.levelOfStudy_TS;
-    metrics.levelOfStudy_UU = data.allYears[yearId - 1].metrics.levelOfStudy_UU;
-    metrics.levelOfStudy_GU = data.allYears[yearId - 1].metrics.levelOfStudy_GU;
-    metrics.levelOfStudy_N = data.allYears[yearId - 1].metrics.levelOfStudy_N;
-    metrics.diet_VT = data.allYears[yearId - 1].metrics.diet_VT;
-    metrics.diet_VE = data.allYears[yearId - 1].metrics.diet_VE;
-    metrics.diet_L = data.allYears[yearId - 1].metrics.diet_L;
-    metrics.diet_G = data.allYears[yearId - 1].metrics.diet_G;
-    metrics.diet_NA = data.allYears[yearId - 1].metrics.diet_NA;
-    metrics.diet_H = data.allYears[yearId - 1].metrics.diet_H;
-    metrics.diet_K = data.allYears[yearId - 1].metrics.diet_K;
-    metrics.diet_O = data.allYears[yearId - 1].metrics.diet_O;
-    metrics.diet_N = data.allYears[yearId - 1].metrics.diet_N;
-    metrics.shirt_XS = data.allYears[yearId - 1].metrics.shirt_XS;
-    metrics.shirt_S = data.allYears[yearId - 1].metrics.shirt_S;
-    metrics.shirt_M = data.allYears[yearId - 1].metrics.shirt_M;
-    metrics.shirt_L = data.allYears[yearId - 1].metrics.shirt_L;
-    metrics.shirt_XL = data.allYears[yearId - 1].metrics.shirt_XL;
-    metrics.shirt_XXL = data.allYears[yearId - 1].metrics.shirt_XXL;
+    metrics.hackers = data.allYears[index].metrics.hackers;
+    metrics.projects = data.allYears[index].metrics.projects;
+    metrics.firstTimeHackers = data.allYears[index].metrics.firstTimeHackers;
+    metrics.gender_F = data.allYears[index].metrics.gender_F;
+    metrics.gender_M = data.allYears[index].metrics.gender_M;
+    metrics.gender_NB = data.allYears[index].metrics.gender_NB;
+    metrics.gender_N = data.allYears[index].metrics.gender_N;
+    metrics.race_WC = data.allYears[index].metrics.race_WC;
+    metrics.race_API = data.allYears[index].metrics.race_API;
+    metrics.race_H = data.allYears[index].metrics.race_H;
+    metrics.race_BAA = data.allYears[index].metrics.race_BAA;
+    metrics.race_AIAN = data.allYears[index].metrics.race_AIAN;
+    metrics.race_N = data.allYears[index].metrics.race_N;
+    metrics.levelOfStudy_HS = data.allYears[index].metrics.levelOfStudy_HS;
+    metrics.levelOfStudy_TS = data.allYears[index].metrics.levelOfStudy_TS;
+    metrics.levelOfStudy_UU = data.allYears[index].metrics.levelOfStudy_UU;
+    metrics.levelOfStudy_GU = data.allYears[index].metrics.levelOfStudy_GU;
+    metrics.levelOfStudy_N = data.allYears[index].metrics.levelOfStudy_N;
+    metrics.diet_VT = data.allYears[index].metrics.diet_VT;
+    metrics.diet_VE = data.allYears[index].metrics.diet_VE;
+    metrics.diet_L = data.allYears[index].metrics.diet_L;
+    metrics.diet_G = data.allYears[index].metrics.diet_G;
+    metrics.diet_NA = data.allYears[index].metrics.diet_NA;
+    metrics.diet_H = data.allYears[index].metrics.diet_H;
+    metrics.diet_K = data.allYears[index].metrics.diet_K;
+    metrics.diet_O = data.allYears[index].metrics.diet_O;
+    metrics.diet_N = data.allYears[index].metrics.diet_N;
+    metrics.shirt_XS = data.allYears[index].metrics.shirt_XS;
+    metrics.shirt_S = data.allYears[index].metrics.shirt_S;
+    metrics.shirt_M = data.allYears[index].metrics.shirt_M;
+    metrics.shirt_L = data.allYears[index].metrics.shirt_L;
+    metrics.shirt_XL = data.allYears[index].metrics.shirt_XL;
+    metrics.shirt_XXL = data.allYears[index].metrics.shirt_XXL;
   }
 
   /**
@@ -311,10 +330,6 @@ function MetricPage({ user, yearId }) {
     );
   }
 
-  if (data.allYears.length === 0) {
-    return (<p style={{ marginTop: '20px' }}>No data to display.</p>);
-  }
-
   return (
     <StyledMetricPage>
       <div className="topStats">
@@ -322,9 +337,9 @@ function MetricPage({ user, yearId }) {
           <p className="label">Total Hackers</p>
           <p className="data">
             {metrics.hackers}
-            {data.allYears[yearId] && getDifference(
+            {data.allYears[index - 1] && getDifference(
               metrics.hackers,
-              data.allYears[yearId].metrics.hackers,
+              data.allYears[index - 1].metrics.hackers,
             )}
           </p>
         </div>
@@ -332,19 +347,19 @@ function MetricPage({ user, yearId }) {
           <p className="label">Total Projects</p>
           <p className="data">
             {metrics.projects}
-            {data.allYears[yearId] && getDifference(
+            {data.allYears[index - 1] && getDifference(
               metrics.projects,
-              data.allYears[yearId].metrics.projects,
+              data.allYears[index - 1].metrics.projects,
             )}
           </p>
         </div>
         <div className="item">
           <p className="label">First Hacklahomie</p>
           <p className="data">
-            {((0 / metrics.hackers) * 100).toFixed()}%{' '}
-            {data.allYears[yearId] && getDifference(
-              (0 / metrics.hackers) * 100,
-              (0 / data.allYears[yearId].metrics.hackers) * 100,
+            {((metrics.firstHacklahomie / (yearId === 0 ? data.allYears.length * 100 : metrics.hackers)) * 100).toFixed()}%{' '}
+            {data.allYears[index - 1] && getDifference(
+              (metrics.firstHacklahomie / metrics.hackers) * 100,
+              (data.allYears[index - 1].metrics.uniqueHackers.split(',').length / data.allYears[index - 1].metrics.hackers) * 100,
               true,
             )}
           </p>
@@ -353,11 +368,11 @@ function MetricPage({ user, yearId }) {
           <p className="label">First Hackathon</p>
           <p className="data">
             {((metrics.firstTimeHackers / metrics.hackers) * 100).toFixed()}%
-            {data.allYears[yearId]
+            {data.allYears[index - 1]
               && getDifference(
                 (metrics.firstTimeHackers / metrics.hackers) * 100,
-                (data.allYears[yearId].metrics.firstTimeHackers
-                  / data.allYears[yearId].metrics.hackers)
+                (data.allYears[index - 1].metrics.firstTimeHackers
+                  / data.allYears[index - 1].metrics.hackers)
                 * 100,
                 true,
               )}

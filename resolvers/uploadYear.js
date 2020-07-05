@@ -297,28 +297,42 @@ const uploadYear = async (_, { year, projects, data }) => {
         // Split majors at spaces
         const major = majors[k].split(' ');
 
+        let found = false;
+
         // Loop through each word looking for keywords
         Object.keys(major).forEach((j) => {
-          if (ARTS_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawArts.push(majors[k]);
-          } else if (BUSINESS_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawBusiness.push(majors[k]);
-          } else if (HEALTH_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawHealth.push(majors[k]);
-          } else if (INTERDISCIPLINARY_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawInterdisciplinary.push(majors[k]);
-          } else if (PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawPublicSocialServices.push(majors[k]);
-          } else if (COMP_TECH_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawCompTech.push(majors[k]);
-          } else if (STEM_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawSTEM.push(majors[k]);
-          } else if (SOCIAL_SCIENCES_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawSocialSciences.push(majors[k]);
-          } else if (TRADES_KEYWORDS.includes(major[j].toLowerCase())) {
-            rawTrades.push(majors[k]);
-          } else if (j >= +major.length - +1) {
-            rawOther.push(majors[k]);
+          if (!found) {
+            if (ARTS_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawArts.push(majors[k]);
+              found = true;
+            } else if (BUSINESS_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawBusiness.push(majors[k]);
+              found = true;
+            } else if (HEALTH_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawHealth.push(majors[k]);
+              found = true;
+            } else if (INTERDISCIPLINARY_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawInterdisciplinary.push(majors[k]);
+              found = true;
+            } else if (PUBLIC_SOCIAL_SERVICES_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawPublicSocialServices.push(majors[k]);
+              found = true;
+            } else if (COMP_TECH_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawCompTech.push(majors[k]);
+              found = true;
+            } else if (STEM_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawSTEM.push(majors[k]);
+              found = true;
+            } else if (SOCIAL_SCIENCES_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawSocialSciences.push(majors[k]);
+              found = true;
+            } else if (TRADES_KEYWORDS.includes(major[j].toLowerCase())) {
+              rawTrades.push(majors[k]);
+              found = true;
+            } else if (j >= +major.length - +1) {
+              rawOther.push(majors[k]);
+              found = true;
+            }
           }
         });
       });
