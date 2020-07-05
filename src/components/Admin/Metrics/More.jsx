@@ -7,20 +7,9 @@ import Confirmation from '../../Dialogs/Confirmation';
 /**
  * Mutation to delete a year
  */
-const DELETE_YEAR = gql`
-    mutation deleteYear($id: ID!) {
-      deleteYear(id: $id) {
-            id
-        }
-    }
-`;
-
-/**
- * Mutation to delete a year
- */
-const DELETE_METRIC = gql`
-    mutation deleteMetric($id: ID!) {
-      deleteMetric(id: $id) {
+const REMOVE_YEAR = gql`
+    mutation removeYear($id: ID!) {
+      removeYear(id: $id) {
             id
         }
     }
@@ -56,8 +45,7 @@ const ADD_EVENT = gql`
  */
 function More({ user, row, refetch }) {
   const [mutateStatus] = useMutation(MUTATE_STATUS);
-  const [deleteMetric] = useMutation(DELETE_METRIC);
-  const [deleteYear] = useMutation(DELETE_YEAR);
+  const [removeYear] = useMutation(REMOVE_YEAR);
   const [addEvent] = useMutation(ADD_EVENT);
   const [anchorEl, setAnchorEl] = useState(null);
   const [modal, setModal] = useState();
@@ -65,25 +53,19 @@ function More({ user, row, refetch }) {
 
   useEffect(() => {
     if (confirmed === true) {
-      deleteYear({
+      removeYear({
         variables: {
           id: row.id,
         },
       }).then(() => {
-        deleteMetric({
+        addEvent({
           variables: {
-            id: row.metrics.id,
+            id: user.id,
+            type: 'DELETE_YEAR',
+            description: `${row.year} Deleted`,
           },
-        }).then(() => {
-          addEvent({
-            variables: {
-              id: user.id,
-              type: 'DELETE_YEAR',
-              description: `${row.year} Deleted`,
-            },
-          });
-          refetch();
         });
+        refetch();
       });
     }
   }, [confirmed]);

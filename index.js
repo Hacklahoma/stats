@@ -6,7 +6,7 @@ const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 const { NextApp } = require('@keystonejs/app-next');
 const { v4: uuidv4 } = require('uuid');
 const { User, Event, Year, Admin, Metric, Major } = require('./models');
-const { addUser, changeUser, login, uploadYear, addEvent } = require('./resolvers');
+const { addUser, changeUser, login, uploadYear, addEvent, removeYear } = require('./resolvers');
 const keepAwake = require('./src/lib/keepAwake');
 
 // Get environmental variables
@@ -94,6 +94,10 @@ keystone.extendGraphQLSchema({
     {
       schema: 'addEvent(id: ID!, type: String!, description: String): Event',
       resolver: addEvent,
+    },
+    {
+      schema: 'removeYear(id: ID!): Year',
+      resolver: removeYear,
     },
   ],
 });
