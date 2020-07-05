@@ -17,7 +17,9 @@
         "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true keystone dev",
         "build": "cross-env NODE_ENV=production DISABLE_LOGGING=true keystone build",
         "start": "cross-env NODE_ENV=production DISABLE_LOGGING=true keystone start",
-        "create-tables": "keystone create-tables"
+        "create-tables": "keystone create-tables",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
     },
     "dependencies": {
         "@apollo/client": "^3.0.0-rc.9",
@@ -48,9 +50,22 @@
         "react-icons": "^3.10.0",
         "react-transition-group": "^4.4.1",
         "styled-components": "^5.1.1",
+        "stylelint-config-sass-guidelines": "^7.0.0",
         "uuid": "^8.2.0"
     },
     "devDependencies": {
-        "babel-plugin-styled-components": "^1.10.7"
+        "babel-plugin-styled-components": "^1.10.7",
+        "eslint": "^7.2.0",
+        "eslint-config-airbnb": "^18.2.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-jsx-a11y": "^6.3.1",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-react": "^7.20.3",
+        "eslint-plugin-react-hooks": "^4.0.0",
+        "stylelint": "^13.6.1",
+        "stylelint-config-idiomatic-order": "^8.1.0",
+        "stylelint-config-standard": "^20.0.0",
+        "stylelint-order": "^4.1.0"
     }
 }

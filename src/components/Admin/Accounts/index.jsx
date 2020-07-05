@@ -7,49 +7,57 @@ import CompanyTable from "./CompanyTable";
 import { gql, useQuery } from "@apollo/client";
 
 const StyledAccounts = styled.div`
+  .buttons {
+    position: absolute;
+    right: 30px;
+    top: 52px;
+    z-index: 101;
+
+    .icon {
+      min-width: unset;
+      padding: 8px;
+
+      svg {
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .add {
+      margin-right: 10px;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    margin-top: 30px;
+    width: 100%;
+
+    tr {
+      th {
+        border-bottom: 1px solid #ebebeb;
+        padding: 5px 0;
+        text-align: left;
+      }
+
+      td {
+        padding: 10px 0;
+      }
+    }
+
+    tr:nth-child(odd) {
+      td {
+        background: #f4f4f4;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 619px) {
     .buttons {
-        z-index: 101;
-        position: absolute;
-        top: 52px;
-        right: 30px;
-        .icon {
-            padding: 8px;
-            min-width: unset;
-            svg {
-                width: 24px;
-                height: 24px;
-            }
-        }
-        .add {
-            margin-right: 10px;
-        }
+      position: fixed;
+      top: 17px;
     }
-    table {
-        margin-top: 30px;
-        border-collapse: collapse;
-        width: 100%;
-        tr {
-            th {
-                border-bottom: 1px solid #ebebeb;
-                text-align: left;
-                padding: 5px 0;
-            }
-            td {
-                padding: 10px 0;
-            }
-        }
-        tr:nth-child(odd) {
-            td {
-                background: #f4f4f4;
-            }
-        }
-    }
-    @media only screen and (max-width: 619px) {
-        .buttons {
-            position: fixed;
-            top: 17px;
-        }
-    }
+  }
 `;
 
 const GET_USERS = gql`
