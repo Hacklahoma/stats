@@ -18,7 +18,8 @@
         "build": "cross-env NODE_ENV=production DISABLE_LOGGING=true keystone build",
         "start": "cross-env NODE_ENV=production DISABLE_LOGGING=true keystone start",
         "create-tables": "keystone create-tables",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
     },
     "dependencies": {
         "@apollo/client": "^3.0.0-rc.9",
