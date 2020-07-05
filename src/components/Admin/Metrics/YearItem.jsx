@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import { FaLock, FaLockOpen } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
-import { Button } from '@material-ui/core';
-import { gql, useMutation } from '@apollo/client';
+import More from './More';
 
 const StyledYearItem = styled.div`
   align-items: center;
@@ -23,78 +20,30 @@ const StyledYearItem = styled.div`
     ${(props) => props.locked && 'color: rgb(244, 68 ,54)'}
   }
 
-  .lock {
+  .more {
     color: #aaa;
     cursor: pointer;
     margin: 8px;
     min-width: 30px;
 
     .icon {
-      height: 17px;
-      width: 17px;
+      height: 22px;
+      width: 22px;
     }
   }
 `;
 
-const UPDATE_YEAR = gql`
-    mutation updateYear($id: ID!, $disabled: Boolean!) {
-        updateYear(id: $id, data: { disabled: $disabled }) {
-            id
-        }
-    }
-`;
-
-// Mutation for adding events
-const ADD_EVENT = gql`
-    mutation addEvent($id: ID!, $type: String!, $description: String) {
-        addEvent(id: $id, type: $type, description: $description) {
-            id
-        }
-    }
-`;
-
 /**
- * TODO
+ * Displays year name with more dropdown.
+ * Will change the styling when locked.
+ *
  * @param {*} param0
  */
 function YearItem({ user, row, refetch }) {
-  const [locked, setLocked] = useState(row.disabled);
-  const [addEvent] = useMutation(ADD_EVENT);
-  const [updateYear] = useMutation(UPDATE_YEAR);
-
-  useEffect(() => {
-    refetch();
-  }, [row]);
-
-  /**
-   * TODO
-   */
-  const toggleLock = () => {
-    // Update year when locking/unlocking
-    updateYear({
-      variables: {
-        id: row.id,
-        disabled: !locked,
-      },
-    }).then(() => {
-      // Event logger
-      addEvent({
-        variables: {
-          id: user.id,
-          type: !locked ? 'DISABLE_YEAR' : 'ENABLE_YEAR',
-          description: !locked ? `${row.year} Disabled` : `${row.year} Enabled`,
-        },
-      });
-      setLocked(!locked);
-    });
-  };
-
   return (
-    <StyledYearItem locked={locked}>
+    <StyledYearItem locked={row.disabled}>
       <p>{row.year}</p>
-      <Button className="lock" onClick={toggleLock}>
-        {locked ? <FaLock className="icon" /> : <FaLockOpen className="icon" />}
-      </Button>
+      <More row={row} refetch={refetch} user={user} />
     </StyledYearItem>
   );
 }

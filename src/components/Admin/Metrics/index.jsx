@@ -47,6 +47,9 @@ const GET_YEARS = gql`
             id
             year
             disabled
+            metrics {
+              id
+            }
         }
     }
 `;

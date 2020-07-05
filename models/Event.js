@@ -10,7 +10,7 @@ const Event = {
     type: {
       type: Select,
       options:
-        'LOGIN, LOGOUT, DISABLE_COMPANY, ENABLE_COMPANY, DISABLE_YEAR, ENABLE_YEAR, CREATE_COMPANY, UPLOAD_YEAR, VIEW',
+        'LOGIN, LOGOUT, DISABLE_COMPANY, ENABLE_COMPANY, DISABLE_YEAR, ENABLE_YEAR, CREATE_COMPANY, UPLOAD_YEAR, VIEW, DELETE_YEAR',
     },
     description: { type: Text },
     timestamp: { type: DateTime },
