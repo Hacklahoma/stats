@@ -311,6 +311,10 @@ function MetricPage({ user, yearId }) {
     );
   }
 
+  if (data.allYears.length === 0) {
+    return (<p style={{ marginTop: '20px' }}>No data to display.</p>);
+  }
+
   return (
     <StyledMetricPage>
       <div className="topStats">
