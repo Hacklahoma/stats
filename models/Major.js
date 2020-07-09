@@ -4,7 +4,7 @@ const { Select, Text, Relationship, Integer } = require('@keystonejs/fields');
 const Major = {
   fields: {
     type: {
-      type: Select,
+      type:     Select,
       dataType: 'string',
       options:
         'Arts and Humanities, Business, Health and Medicine, '
@@ -12,11 +12,11 @@ const Major = {
         + 'STEM, Computer Technologies, Social Sciences, '
         + 'Trades and Personal Services, Other',
     },
-    raw: { type: Text, many: true },
+    raw:      { type: Text, many: true },
     quantity: { type: Integer },
-    parent: {
+    parent:   {
       type: Relationship,
-      ref: 'Metric',
+      ref:  'Metric',
     },
   },
 };

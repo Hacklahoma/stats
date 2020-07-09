@@ -70,7 +70,9 @@ const uploadYear = async (_, { year, projects, data }) => {
     helpers.populateIndependents(metrics.shirt, hacker.shirt);
   });
 
+  // eslint-disable-next-line no-console
   console.log("Here is your upload report! Make sure you look for any keys that aren't supposed to be there, this means that the parser found something that didn't match the templated keys.");
+  // eslint-disable-next-line no-console
   console.log(metrics);
 
   // Create the metrics

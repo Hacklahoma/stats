@@ -21,16 +21,16 @@ keepAwake();
 const PROJECT_NAME = 'stats';
 const adapterConfig = {
   dropDatabase: true,
-  knexOptions: { connection: process.env.DATABASE_URL },
+  knexOptions:  { connection: process.env.DATABASE_URL },
 };
 
 // Initiating keystone
 const keystone = new Keystone({
-  name: PROJECT_NAME,
-  adapter: new Adapter(adapterConfig),
-  cookieSecret: process.env.COOKIE_SECRET,
+  name:          PROJECT_NAME,
+  adapter:       new Adapter(adapterConfig),
+  cookieSecret:  process.env.COOKIE_SECRET,
   secureCookies: false,
-  onConnect: async () => {
+  onConnect:     async () => {
     // Setting up admin account
     const admins = await keystone.executeQuery(`
             query {
@@ -52,11 +52,11 @@ const keystone = new Keystone({
       keystone.createItems({
         User: [
           {
-            company: 'Dev',
+            company:  'Dev',
             password: 'dev',
-            isAdmin: true,
+            isAdmin:  true,
             disabled: false,
-            token: uuidv4(),
+            token:    uuidv4(),
           },
         ],
       });
@@ -76,27 +76,27 @@ keystone.createList('Major', Major);
 keystone.extendGraphQLSchema({
   mutations: [
     {
-      schema: 'addUser(company: String!, password: String!): User',
+      schema:   'addUser(company: String!, password: String!): User',
       resolver: addUser,
     },
     {
-      schema: 'changeUser(id: ID!, company: String, password: String, disabled: Boolean): User',
+      schema:   'changeUser(id: ID!, company: String, password: String, disabled: Boolean): User',
       resolver: changeUser,
     },
     {
-      schema: 'login(password: String, code: String): User',
+      schema:   'login(password: String, code: String): User',
       resolver: login,
     },
     {
-      schema: 'uploadYear(year: Int!, projects: Int!, data: String!): Year',
+      schema:   'uploadYear(year: Int!, projects: Int!, data: String!): Year',
       resolver: uploadYear,
     },
     {
-      schema: 'addEvent(id: ID!, type: String!, description: String): Event',
+      schema:   'addEvent(id: ID!, type: String!, description: String): Event',
       resolver: addEvent,
     },
     {
-      schema: 'removeYear(id: ID!): Year',
+      schema:   'removeYear(id: ID!): Year',
       resolver: removeYear,
     },
   ],
@@ -104,11 +104,11 @@ keystone.extendGraphQLSchema({
 
 // Securing admin panel
 const authStrategy = keystone.createAuthStrategy({
-  type: PasswordAuthStrategy,
-  list: 'Admin',
+  type:   PasswordAuthStrategy,
+  list:   'Admin',
   config: {
     identityField: 'username',
-    secretField: 'password',
+    secretField:   'password',
   },
 });
 
