@@ -100,7 +100,6 @@ const OVERALL_METRICS = gql`
           hackers
           projects
           firstTimeHackers
-          uniqueHackers
           majors(sortBy: type_ASC) {
             type
             quantity
@@ -156,8 +155,8 @@ const OVERALL_METRICS = gql`
 function MetricPage({ user, yearId }) {
   let metrics = JSON.parse(JSON.stringify(defaultMetrics));
   const timeline = {
-    labels: [],
-    hackers: [],
+    labels:   [],
+    hackers:  [],
     projects: [],
   };
   const { loading, data } = useQuery(OVERALL_METRICS);
@@ -201,9 +200,6 @@ function MetricPage({ user, yearId }) {
         timeline.labels.push(data.allYears[i].year);
         timeline.hackers.push(data.allYears[i].metrics.hackers);
         timeline.projects.push(data.allYears[i].metrics.projects);
-
-        // Adding percentage of first hacklahomie from each year
-        metrics.firstHacklahomie += (data.allYears[i].metrics.uniqueHackers.split(',').length / data.allYears[i].metrics.hackers) * 100;
 
         // Setting up majors, skip first one
         if (i !== '0') {
@@ -269,9 +265,6 @@ function MetricPage({ user, yearId }) {
       metrics.majors.quantities.push(data.allYears[index].metrics.majors[i].quantity);
       metrics.majors.raw.push(data.allYears[index].metrics.majors[i].raw);
     });
-
-    // Setup unique hackers (or first hacklahomies)
-    metrics.firstHacklahomie = data.allYears[index].metrics.uniqueHackers.split(',').length;
 
     // Get data for YEAR data
     metrics.hackers = data.allYears[index].metrics.hackers;
@@ -350,17 +343,6 @@ function MetricPage({ user, yearId }) {
             {data.allYears[index - 1] && getDifference(
               metrics.projects,
               data.allYears[index - 1].metrics.projects,
-            )}
-          </p>
-        </div>
-        <div className="item">
-          <p className="label">First Hacklahomie</p>
-          <p className="data">
-            {((metrics.firstHacklahomie / (yearId === 0 ? data.allYears.length * 100 : metrics.hackers)) * 100).toFixed()}%{' '}
-            {data.allYears[index - 1] && getDifference(
-              (metrics.firstHacklahomie / metrics.hackers) * 100,
-              (data.allYears[index - 1].metrics.uniqueHackers.split(',').length / data.allYears[index - 1].metrics.hackers) * 100,
-              true,
             )}
           </p>
         </div>
