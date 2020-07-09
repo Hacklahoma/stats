@@ -117,7 +117,10 @@ module.exports = {
   keystone,
   apps: [
     new GraphQLApp(),
-    new AdminUIApp({ enableDefaultRoute: false, adminPath: '/admin-ui', authStrategy }),
+    new AdminUIApp({
+      enableDefaultRoute: false,
+      adminPath:          '/admin-ui',
+      authStrategy:       process.env.NODE_ENV === 'development' ? false : authStrategy }),
     new NextApp({ dir: 'src' }),
     'dist',
   ],
