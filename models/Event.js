@@ -5,15 +5,15 @@ const Event = {
   fields: {
     parent: {
       type: Relationship,
-      ref: 'User',
+      ref:  'User',
     },
     type: {
-      type: Select,
+      type:    Select,
       options:
         'LOGIN, LOGOUT, DISABLE_COMPANY, ENABLE_COMPANY, DISABLE_YEAR, ENABLE_YEAR, CREATE_COMPANY, UPLOAD_YEAR, VIEW, DELETE_YEAR',
     },
     description: { type: Text },
-    timestamp: { type: DateTime },
+    timestamp:   { type: DateTime },
   },
 };
 

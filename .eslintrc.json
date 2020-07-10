@@ -25,6 +25,11 @@
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "global-require": "off",
     "radix": "off",
+
+    "key-spacing": ["error", { 
+        "align": "value"
+      }
+    ],
     "require-jsdoc": ["error", {
       "require": {
           "FunctionDeclaration": true,
