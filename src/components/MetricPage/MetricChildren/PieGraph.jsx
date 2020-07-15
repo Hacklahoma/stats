@@ -19,6 +19,7 @@ const StyledPieGraph = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0 20px 0 0;
+    overflow-y: scroll;
 
     h3 {
       margin-bottom: 10px;

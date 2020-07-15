@@ -10,6 +10,7 @@ import { defaultMetrics } from './utils';
 
 const StyledMetricPage = styled.div`
 margin-top: 20px;
+overflow-y: hidden;
 
 .topStats {
   max-width: calc(100vw - 20px);

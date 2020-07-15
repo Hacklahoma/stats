@@ -109,7 +109,7 @@ export const pieWidth = 250;
 /**
  * Width of line graph
  */
-export const lineWidth = 600;
+export const lineWidth = 500;
 
 /**
  * Default values for metrics, update when adding more data
