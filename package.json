@@ -28,7 +28,7 @@
         "@keystonejs/app-graphql": "^5.1.9",
         "@keystonejs/app-next": "^5.2.0",
         "@keystonejs/auth-password": "^5.1.10",
-        "@keystonejs/keystone": "^11.2.0",
+        "@keystonejs/keystone": "^9.0.1",
         "@material-ui/core": "^4.10.2",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.56",
