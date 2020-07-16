@@ -68,6 +68,7 @@ const uploadYear = async (_, { year, projects, data }) => {
     helpers.populateIndependents(metrics.levelOfStudy, hacker.levelOfStudy);
     helpers.populateIndependents(metrics.diet, hacker.diet);
     helpers.populateIndependents(metrics.shirt, hacker.shirt);
+    helpers.populateGraduationYear(metrics, hacker, year);
   });
 
   // eslint-disable-next-line no-console
