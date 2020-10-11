@@ -7,7 +7,7 @@ const { NextApp } = require('@keystonejs/app-next');
 const { v4: uuidv4 } = require('uuid');
 const { User, Event, Year, Admin, Metric, Major } = require('./models');
 const { addUser, changeUser, login, uploadYear, addEvent, removeYear } = require('./resolvers');
-const keepAwake = require('./src/lib/keepAwake');
+// const keepAwake = require('./src/lib/keepAwake');
 
 // Get environmental variables
 require('dotenv').config();
@@ -15,7 +15,7 @@ require('dotenv').config();
 // Generates uuid
 
 // Keep heroku app alive
-keepAwake();
+// keepAwake();
 
 // Configuration for initiating keystone
 const PROJECT_NAME = 'stats';
