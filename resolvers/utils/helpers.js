@@ -106,4 +106,29 @@ function populateMajors(metrics, hacker) {
   }
 }
 
-module.exports = { populateIndependents, populateFirstTimeHackers, populateMajors };
+/**
+ * Called for each individual hacker to update graduation year values
+ * 
+ * @param {object} metrics
+ * @param {object} hacker
+ * @param {object} year
+ */
+function populateGraduationYear(metrics, hacker, year) {
+  //Check to see if there is a graduation year
+  //Also check to see if hacker is an undergraduate or in techschool
+  if (hacker.graduation && 
+    hacker.levelOfStudy === "Undergraduate University" ||
+    hacker.levelOfStudy === "Tech School") {
+    if (+year + +3 === +hacker.graduation) {
+      metrics.graduationYear.freshman++;
+    } else if (+year + +2 === +hacker.graduation) {
+      metrics.graduationYear.sophomore++;
+    } else if (+year + +1 === +hacker.graduation) {
+      metrics.graduationYear.junior++;
+    } else if (+year === +hacker.graduation) {
+      metrics.graduationYear.senior++;
+    }
+  }
+}
+
+module.exports = { populateIndependents, populateFirstTimeHackers, populateMajors, populateGraduationYear };

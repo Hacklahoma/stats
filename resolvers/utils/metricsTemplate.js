@@ -62,6 +62,12 @@ const metricsTemplate = {
     'trades':               [],
     'other':                [],
   },
+  graduationYear: {
+    'freshman':  0,
+    'sophomore': 0,
+    'junior':    0,
+    'senior':    0,
+  },
 };
 
 module.exports = metricsTemplate;
